@@ -1,72 +1,72 @@
-# name: Build and Deploy Node.js App
-# on:
-#   push:
-#     branches:
-#       - master
-#       - staging
-# env:
-#   IMAGE_NAME: "sandbox-inventory-frontend"
-#   VERSION_TAG: "1.0.0"
+name: Build and Deploy Node.js App
+on:
+  push:
+    branches:
+      - master
+      - staging
+env:
+  IMAGE_NAME: "sandbox-inventory-frontend"
+  VERSION_TAG: "1.0.0"
 
-# jobs:
-#   build:
-#     runs-on: self-hosted
-#     outputs:
-#       container_name: ${{ steps.set_env.outputs.container_name }}
-#       port: ${{ steps.set_env.outputs.port }}
-#       image_tag: ${{ steps.set_env.outputs.image_tag }}
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
-#       - name: Set environment variables
-#         id: set_env
-#         run: |
-#           if [[ ${{ github.ref }} == 'refs/heads/master' ]]; then
-#             echo "container_name=prod-sandbox-inventory-frontend" >> $GITHUB_OUTPUT
-#             echo "port=3002:3000" >> $GITHUB_OUTPUT
-#             echo "image_tag=sandbox-latest" >> $GITHUB_OUTPUT
-#           else
-#             echo "container_name=staging-sandbox-inventory-frontend" >> $GITHUB_OUTPUT
-#             echo "port=3003:3000" >> $GITHUB_OUTPUT
-#             echo "image_tag=staging-sandbox" >> $GITHUB_OUTPUT
-#           fi
-#       - name: Build Docker image
-#         run: |
-#           docker build -t ${{ env.IMAGE_NAME }}:${{ github.sha }} .
-#           docker tag ${{ env.IMAGE_NAME }}:${{ github.sha }} ${{ env.IMAGE_NAME }}:${{ steps.set_env.outputs.image_tag }}
+jobs:
+  build:
+    runs-on: self-hosted
+    outputs:
+      container_name: ${{ steps.set_env.outputs.container_name }}
+      port: ${{ steps.set_env.outputs.port }}
+      image_tag: ${{ steps.set_env.outputs.image_tag }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set environment variables
+        id: set_env
+        run: |
+          if [[ ${{ github.ref }} == 'refs/heads/master' ]]; then
+            echo "container_name=prod-sandbox-inventory-frontend" >> $GITHUB_OUTPUT
+            echo "port=3002:3000" >> $GITHUB_OUTPUT
+            echo "image_tag=sandbox-latest" >> $GITHUB_OUTPUT
+          else
+            echo "container_name=staging-sandbox-inventory-frontend" >> $GITHUB_OUTPUT
+            echo "port=3003:3000" >> $GITHUB_OUTPUT
+            echo "image_tag=staging-sandbox" >> $GITHUB_OUTPUT
+          fi
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ env.IMAGE_NAME }}:${{ github.sha }} .
+          docker tag ${{ env.IMAGE_NAME }}:${{ github.sha }} ${{ env.IMAGE_NAME }}:${{ steps.set_env.outputs.image_tag }}
 
-#   deploy:
-#     needs: build
-#     runs-on: self-hosted
-#     steps:
-#       - name: Deploy
-#         env:
-#           CONTAINER_NAME: ${{ needs.build.outputs.container_name }}
-#           PORT: ${{ needs.build.outputs.port }}
-#           IMAGE_TAG: ${{ needs.build.outputs.image_tag }}
-#         run: |
-#           echo "Stopping existing container"
-#           if [ -n "$CONTAINER_NAME" ]; then
-#             docker stop "$CONTAINER_NAME" || true
-#             docker rm "$CONTAINER_NAME" || true
-#           else
-#             echo "CONTAINER_NAME is not set or empty"
-#           fi
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - name: Deploy
+        env:
+          CONTAINER_NAME: ${{ needs.build.outputs.container_name }}
+          PORT: ${{ needs.build.outputs.port }}
+          IMAGE_TAG: ${{ needs.build.outputs.image_tag }}
+        run: |
+          echo "Stopping existing container"
+          if [ -n "$CONTAINER_NAME" ]; then
+            docker stop "$CONTAINER_NAME" || true
+            docker rm "$CONTAINER_NAME" || true
+          else
+            echo "CONTAINER_NAME is not set or empty"
+          fi
           
-#           echo "Starting new container"
-#           if [ -n "$CONTAINER_NAME" ] && [ -n "$PORT" ] && [ -n "$IMAGE_TAG" ]; then
-#             docker run -d --name "$CONTAINER_NAME" -p $PORT ${{ env.IMAGE_NAME }}:$IMAGE_TAG
-#           else
-#             echo "One or more required environment variables are not set or empty"
-#             exit 1
-#           fi
+          echo "Starting new container"
+          if [ -n "$CONTAINER_NAME" ] && [ -n "$PORT" ] && [ -n "$IMAGE_TAG" ]; then
+            docker run -d --name "$CONTAINER_NAME" -p $PORT ${{ env.IMAGE_NAME }}:$IMAGE_TAG
+          else
+            echo "One or more required environment variables are not set or empty"
+            exit 1
+          fi
 
-#   cleanup:
-#     needs: deploy
-#     runs-on: self-hosted
-#     steps:
-#       - name: Cleanup
-#         run: |
-#           echo "Cleaning up"
-#           docker system prune -af
-#           docker image prune -af
+  cleanup:
+    needs: deploy
+    runs-on: self-hosted
+    steps:
+      - name: Cleanup
+        run: |
+          echo "Cleaning up"
+          docker system prune -af
+          docker image prune -af
