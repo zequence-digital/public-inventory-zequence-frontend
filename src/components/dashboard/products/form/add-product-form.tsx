@@ -1,0 +1,304 @@
+"use client";
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useAddProduct, useProducts } from "@/queries/products";
+
+import { InputField } from "@/components/form/components/input-field";
+import { ApiErrorMessage } from "@/components/messages/api-error-message";
+import { Spinner } from "@/components/spinner";
+import { useCurrentBranch } from "@/hooks/use-current-branch";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import { cn } from "@/lib/utils";
+import { useCategories } from "@/queries/categories";
+import { AddProductSchema } from "@/schemas/products/add-product-schema";
+import type { AddProduct } from "@/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRef } from "react";
+import { useForm } from "react-hook-form";
+import CustomButton from "../../custom-button";
+import { ProductListOverview } from "../product-list-overview";
+
+export function AddProductForm() {
+  const ref = useRef<HTMLFormElement | null>(null);
+  const user = useCurrentUser();
+  const {
+    data: prod,
+    isPending: pendingProd,
+    isError: isErrorProd,
+    error: errorProd,
+  } = useProducts();
+
+  const form = useForm<AddProduct>({
+    resolver: zodResolver(AddProductSchema.omit({ branchId: true })),
+    mode: "all",
+  });
+
+  const { mutate: createProduct, isPending } = useAddProduct(ref);
+
+  const {
+    data: categories,
+    isPending: pendingCategory,
+    isError,
+    error,
+  } = useCategories();
+
+  const { currentBranch, pendingBranch, isErrorBranch, errorBranch } =
+    useCurrentBranch();
+
+  const products = categories?.data?.records.filter(
+    (item) => item.categoryType === "PRODUCT" && item.status === "ACTIVE",
+  );
+
+  if (isErrorProd) {
+    return <ApiErrorMessage message={errorProd.message} />;
+  }
+
+  return (
+    <div>
+      <ProductListOverview products={prod} isPending={pendingProd} />
+      <div className="mt-8">
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit((data) =>
+              createProduct({
+                ...data,
+                branchId: currentBranch?.id as number,
+              }),
+            )}
+            ref={ref}
+          >
+            <div className="grid grid-auto-fit-xl gap-8">
+              <div>
+                {/* Branch */}
+
+                <FormField
+                  control={form.control}
+                  name="branchId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <InputField
+                          label="Branch"
+                          id="branch"
+                          name="branch"
+                          type="text"
+                          isPending={pendingBranch}
+                          placeholder="Branch"
+                          value={currentBranch?.name}
+                          disabled
+                        />
+                      </FormControl>
+
+                      {isErrorBranch && (
+                        <FormMessage>{errorBranch?.message}</FormMessage>
+                      )}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div>
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <InputField
+                          label="Product Name"
+                          id="productName"
+                          name="ProductName"
+                          type="text"
+                          placeholder="Enter product name here"
+                          isPending={isPending}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div>
+                {/* If categories exist, show select field, else show input field */}
+
+                <FormField
+                  control={form.control}
+                  name="categoryGuid"
+                  render={({ field }) => (
+                    <FormItem>
+                      {products?.length ? (
+                        <FormLabel>Product Category</FormLabel>
+                      ) : null}
+                      <FormControl>
+                        {products?.length ? (
+                          <Select onValueChange={field.onChange}>
+                            <SelectTrigger
+                              className={cn(
+                                `w-full h-[48px] px-4  text-sm bg-white border border-muted-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent`,
+                                {
+                                  "animate-pulse bg-gray-300": pendingCategory,
+                                },
+                              )}
+                            >
+                              <SelectValue placeholder="Select a Category" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {products?.map((item, index) => (
+                                <SelectItem
+                                  id={item.guid}
+                                  key={item.guid}
+                                  value={item.guid}
+                                >
+                                  {item.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        ) : (
+                          <InputField
+                            label="Product Category"
+                            id="categories"
+                            name="categories"
+                            type="text"
+                            placeholder="Enter product category here"
+                            isPending={isPending}
+                            onChange={field.onChange}
+                          />
+                        )}
+                      </FormControl>
+                      {isError && <FormMessage>{error?.message}</FormMessage>}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              {/* Quantity */}
+              <div>
+                <FormField
+                  control={form.control}
+                  name="quantity"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <InputField
+                          label="Product Quantity"
+                          id="productQuantity"
+                          name="productQuantity"
+                          type="number"
+                          placeholder="Enter product quantity here"
+                          isPending={isPending}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              {/* Price */}
+              <div>
+                <FormField
+                  control={form.control}
+                  name="price"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <InputField
+                          label="Selling Price"
+                          id="price"
+                          name="price"
+                          type="number"
+                          placeholder="Enter product price here"
+                          isPending={isPending}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div>
+                <FormField
+                  control={form.control}
+                  name="notes"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <InputField
+                          label="Product Description"
+                          id="productDescription"
+                          name="productDescription"
+                          type="text"
+                          placeholder="Enter product description here"
+                          isPending={isPending}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div>
+                <FormField
+                  control={form.control}
+                  name="threshold"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <InputField
+                          hasCustomIcon
+                          width={15}
+                          height={15}
+                          src={`/images/thresh-hold.svg`}
+                          alt="ThreshHold Alert Icon"
+                          label="Threshold alert"
+                          id="productThreshHoldLimit"
+                          name="productThreshHoldLimit"
+                          type="number"
+                          placeholder="Enter product threshold limit here"
+                          isPending={isPending}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+            <CustomButton
+              type="submit"
+              className="bg-primary-100 text-white border-primary-100 hover:bg-primary-100/90 w-fit flex justify-end ml-auto mt-8"
+              label="Add Product"
+              pendingLabel={<Spinner className=" border-white" />}
+              isPending={isPending}
+            />
+          </form>
+        </Form>
+      </div>
+    </div>
+  );
+}
