@@ -111,7 +111,7 @@ jobs:
           else
             echo "container_name=staging-sandbox-inventory-frontend" >> $GITHUB_OUTPUT
             echo "port=3003:3000" >> $GITHUB_OUTPUT
-            echo "image_tag=staging-staging" >> $GITHUB_OUTPUT
+            echo "image_tag=sandbox-staging" >> $GITHUB_OUTPUT
           fi
 
       - name: Verify Environment Variables
