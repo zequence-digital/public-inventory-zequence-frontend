@@ -71,6 +71,7 @@
 #           docker system prune -af
 #           docker image prune -af
 
+###
 
 name: Build and Deploy Node.js App
 on:
@@ -106,11 +107,11 @@ jobs:
           if [ "${{ github.ref }}" = "refs/heads/master" ]; then
             echo "container_name=prod-sandbox-inventory-frontend" >> $GITHUB_OUTPUT
             echo "port=3002:3000" >> $GITHUB_OUTPUT
-            echo "image_tag=sandbox-latest" >> $GITHUB_OUTPUT
+            echo "image_tag=sandbox-prod" >> $GITHUB_OUTPUT
           else
             echo "container_name=staging-sandbox-inventory-frontend" >> $GITHUB_OUTPUT
             echo "port=3003:3000" >> $GITHUB_OUTPUT
-            echo "image_tag=staging-sandbox" >> $GITHUB_OUTPUT
+            echo "image_tag=staging-staging" >> $GITHUB_OUTPUT
           fi
 
       - name: Verify Environment Variables
