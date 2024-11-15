@@ -22,7 +22,6 @@ export const completeSignUpSchema = z.object({
     .trim()
     .toLowerCase(),
   countryId: z.coerce.number({ invalid_type_error: "Please select a country" }),
-  branchId: z.coerce.number({ invalid_type_error: "Please select a branch" }),
   state: z.string().min(3, "Please select a state").toLowerCase().trim(),
   lga: z.string().min(3, "Please select a LGA").toLowerCase().trim(),
   mobileNumber: z

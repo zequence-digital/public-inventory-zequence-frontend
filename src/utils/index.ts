@@ -1,8 +1,6 @@
-import APIBaseUrl from "@/config.json";
-
-export const baseUrl = APIBaseUrl.API_BASE_URL;
-export const channelId = APIBaseUrl.CHANNEL_ID;
-export const channelSecret = APIBaseUrl.CHANNEL_SECRET;
+export const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+export const channelId = process.env.NEXT_PUBLIC_CHANNEL_ID;
+export const channelSecret = process.env.NEXT_PUBLIC_CHANNEL_SECRET;
 
 export const tokenKey = "token";
 

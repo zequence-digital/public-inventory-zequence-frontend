@@ -62,64 +62,52 @@ export function ViewAndPrintStockUsageModal({ className, id, ...rest }: Props) {
                     {formatDate(packedStockUsage?.data?.createdAt)}
                   </div>
                 </div>
-                <div className="space-y-1">
-                  <div className="text-sm text-slate-500">Customer Type:</div>
-                  <div className="text-xs text-slate-700">
-                    {packedStockUsage?.data?.branch?.name}
-                  </div>
-                </div>
+
                 <div className="space-y-1">
                   <div className="text-sm text-slate-500">Product ID:</div>
                   <div className="text-xs text-slate-700">
-                    {packedStockUsage?.data?.refNumber}
+                    {packedStockUsage?.data?.guid.slice(0, 8) + "..."}
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <div className="text-sm text-slate-500">Total Quantity:</div>
+                  <div className="text-xs text-slate-700">
+                    {packedStockUsage?.data?.totalQuantity}
                   </div>
                 </div>
               </AlertDialogTitle>
               <AlertDialogDescription className="border border-slate-700 p-4 rounded-lg space-y-3">
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid grid-cols-3 gap-4">
                   <div className="text-sm text-slate-500">Product Name:</div>
                   <div className="text-sm text-slate-500">Quantity:</div>
-                  <div className="text-sm text-slate-500">Unit Price:</div>
-                  <div className="text-sm text-slate-500">Total Price:</div>
+                  <div className="text-sm text-slate-500">Category:</div>
                 </div>
                 <div className="flex flex-col  gap-6">
                   {packedStockUsage?.data?.stockUsages?.map((item) => (
                     <div
                       key={item?.stock?.name}
-                      className="grid grid-cols-4 gap-4"
+                      className="grid grid-cols-3 gap-4"
                     >
                       <div className="space-y-1">
                         <div className="text-xs text-slate-700">
-                          {item?.stock?.notes}
+                          {item?.stock?.name}
                         </div>
                       </div>
                       <div className="space-y-1">
                         <div className="text-xs text-slate-700">
-                          {item?.stock?.thresholdQuantity}
-                        </div>
-                      </div>
-                      {/* <div className="space-y-1">
-                        <div className="text-xs text-slate-700">
-                          NGN {item?.rate?.toLocaleString()}
+                          {item?.quantity}
                         </div>
                       </div>
                       <div className="space-y-1">
                         <div className="text-xs text-slate-700">
-                          NGN {item?.amount?.toLocaleString()}
+                          {item?.stock?.category?.name}
                         </div>
-                      </div> */}
+                      </div>
                     </div>
                   ))}
                 </div>
               </AlertDialogDescription>
             </div>
-            {/* Grand Total */}
-            {/* <div className="grid grid-cols-4 p-4">
-              <div className="text-sm text-slate-700">Grand Total:</div>
-              <div className="text-xs text-black font-semibold col-span-3 ml-auto border-b border-black">
-                NGN {packedStockUsage?.data?.totalAmount.toLocaleString()}
-              </div>
-            </div> */}
           </AlertDialogHeader>
 
           <div className="flex items-center justify-between h-full mt-auto">

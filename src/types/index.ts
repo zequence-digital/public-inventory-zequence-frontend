@@ -1,42 +1,45 @@
-import { GetAllNotificationSchema } from "@/queries/notifications/schemas/get-all-notification-schema";
-import { AllInvitedUsersSchema } from "@/queries/settings/user-and-role/schemas/all-invited-users-schema";
-import { AllCountriesSchema } from "@/schemas/all-countries-schema";
-import { LgaSchema } from "@/schemas/all-lga";
-import { StateSchema } from "@/schemas/all-states-schema";
-import { UsersLoggedIn } from "@/schemas/auth/users-logged-in";
+import { ActiveInvitedUserSchema } from "@/schemas/settings/active-invited-user-schema";
 import { AddCategorySchema } from "@/schemas/categories/add-category-schema";
+import { AddProductSchema } from "@/schemas/products/add-product-schema";
+import { AddSalesSchema } from "@/schemas/sales/add-sales-schema";
+import { AddStockRequestSchema } from "@/schemas/stocks/request/add-stock-request-schema";
+import { AddStockSchema } from "@/schemas/stocks/add-stock-schema";
+import { AddStockUsageSchema } from "@/schemas/stocks/stock-usage/add-stock-usage-schema";
 import { AllCategorySchema } from "@/schemas/categories/all-category-schema";
-import { SingleCategorySchema } from "@/schemas/categories/single-category";
-import { completeSignUpSchema } from "@/schemas/complete-registration";
+import { AllCountriesSchema } from "@/schemas/all-countries-schema";
+import { AllInvitedUsersSchema } from "@/queries/settings/user-and-role/schemas/all-invited-users-schema";
+import { AllProductSchema } from "@/schemas/products/get-all-product-schema";
+import { AllSalesSchema } from "@/schemas/sales/all-sales-schema";
+import { AllStockSchema } from "@/schemas/stocks/get-all-stock-schema";
+import { CreateOrganizationBranchSchema } from "@/schemas/branch/create-organization-branch";
 import { DashboardItemsSchema } from "@/schemas/dashboard/items-schema";
 import { DashboardOverviewSchema } from "@/schemas/dashboard/overview-schema";
-import { NewInviteeSchema } from "@/schemas/new-invitee-schema";
-import { AddProductSchema } from "@/schemas/products/add-product-schema";
-import { AllProductSchema } from "@/schemas/products/get-all-product-schema";
-import { SingleProductSchema } from "@/schemas/products/get-single-product-schema";
-import { AddSalesSchema } from "@/schemas/sales/add-sales-schema";
-import { AllSalesSchema } from "@/schemas/sales/all-sales-schema";
-import { GroupSalesSchema } from "@/schemas/sales/group-sales-schema";
-import { SingleGroupSalesSchema } from "@/schemas/sales/single-group-sales-schema";
-import { SingleSaleSchema } from "@/schemas/sales/single-sale-schema";
-import { ActiveInvitedUserSchema } from "@/schemas/settings/active-invited-user-schema";
-import { InviteUserSchema } from "@/schemas/settings/invite-user-schema";
-import { AddStockSchema } from "@/schemas/stocks/add-stock-schema";
-import { AllStockSchema } from "@/schemas/stocks/get-all-stock-schema";
-import { GetBranchesSchema } from "@/schemas/stocks/get-branches-schema";
-import { SingleStockSchema } from "@/schemas/stocks/get-single-stock-schema";
-import { AddStockRequestSchema } from "@/schemas/stocks/request/add-stock-request-schema";
-import { GetStockRequestSchema } from "@/schemas/stocks/request/get-stock-request.schema";
-import { SingleStockRequestSchema } from "@/schemas/stocks/request/single-stock-request-schema";
-import { AddStockUsageSchema } from "@/schemas/stocks/stock-usage/add-stock-usage-schema";
 import { GetAllGroupStockUsageSchema } from "@/schemas/stocks/stock-usage/get-all-group-stock-usage-schema";
+import { GetAllNotificationSchema } from "@/queries/notifications/schemas/get-all-notification-schema";
+import { GetAllOrganizationBranchSchema } from "@/schemas/branch/get-all-organization-branch";
 import { GetAllStockUsageSchema } from "@/schemas/stocks/stock-usage/get-all-stock-usage-schema";
-import { SingleGroupStockUsageSchema } from "@/schemas/stocks/stock-usage/single-group-stock-usage-schema";
-import { SingleStockUsageSchema } from "@/schemas/stocks/stock-usage/single-stock-usage-schema";
+import { GetBranchByIdSchema } from "@/schemas/branch/get-branch-by-id-schema";
+import { GetBranchesSchema } from "@/schemas/stocks/get-branches-schema";
+import { GetStockRequestSchema } from "@/schemas/stocks/request/get-stock-request.schema";
 import { GetStockTransferSchema } from "@/schemas/stocks/transfer/get-stock-transfer-schema";
-import { SingleStockTransfer } from "@/schemas/stocks/transfer/single-stock-transfer-schema";
-import { z } from "zod";
+import { GroupSalesSchema } from "@/schemas/sales/group-sales-schema";
+import { InviteUserSchema } from "@/schemas/settings/invite-user-schema";
+import { LgaSchema } from "@/schemas/all-lga";
 import { LoginResponseSchema } from "./auth/schema/login-response-schema";
+import { NewInviteeSchema } from "@/schemas/new-invitee-schema";
+import { SingleCategorySchema } from "@/schemas/categories/single-category";
+import { SingleGroupSalesSchema } from "@/schemas/sales/single-group-sales-schema";
+import { SingleGroupStockUsageSchema } from "@/schemas/stocks/stock-usage/single-group-stock-usage-schema";
+import { SingleProductSchema } from "@/schemas/products/get-single-product-schema";
+import { SingleSaleSchema } from "@/schemas/sales/single-sale-schema";
+import { SingleStockRequestSchema } from "@/schemas/stocks/request/single-stock-request-schema";
+import { SingleStockSchema } from "@/schemas/stocks/get-single-stock-schema";
+import { SingleStockTransfer } from "@/schemas/stocks/transfer/single-stock-transfer-schema";
+import { SingleStockUsageSchema } from "@/schemas/stocks/stock-usage/single-stock-usage-schema";
+import { StateSchema } from "@/schemas/all-states-schema";
+import { UsersLoggedIn } from "@/schemas/auth/users-logged-in";
+import { completeSignUpSchema } from "@/schemas/complete-registration";
+import { z } from "zod";
 
 // SALES
 export type AllSalesData = z.infer<typeof AllSalesSchema>;
@@ -133,3 +136,15 @@ export type SingleGroupStockUsage = z.infer<typeof SingleGroupStockUsageSchema>;
 
 // NOTIFICATIONS
 export type GetAllNotifications = z.infer<typeof GetAllNotificationSchema>;
+
+// BRANCH
+export type GetAllOrganizationBranch = z.infer<
+  typeof GetAllOrganizationBranchSchema
+>;
+export type CreateOrganizationBranch = z.infer<
+  typeof CreateOrganizationBranchSchema
+>;
+export type UpdateOrganizationBranch = CreateOrganizationBranch & {
+  branchId: number;
+};
+export type GetBranchById = z.infer<typeof GetBranchByIdSchema>;

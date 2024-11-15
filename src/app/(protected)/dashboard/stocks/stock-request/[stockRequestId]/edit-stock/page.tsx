@@ -1,11 +1,15 @@
 import { EditStockRequestForm } from "@/components/dashboard/stocks/stock-request/edit-stock-request-form";
 
 type Props = {
-  params: {
+  params: Promise<{
     stockRequestId: string;
-  };
+  }>;
 };
-const EditStockRequestPage = ({ params: { stockRequestId } }: Props) => {
+const EditStockRequestPage = async (props: Props) => {
+  const params = await props.params;
+
+  const { stockRequestId } = params;
+
   return <EditStockRequestForm stockRequestId={stockRequestId} />;
 };
 

@@ -29,11 +29,10 @@ import { CardWrapper } from "@/components/auth/card-wrapper";
 import SubmitButton from "@/components/form/components/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 import { cn } from "@/lib/utils";
-import { useBranches } from "@/queries/stocks";
 import { completeSignUpSchema } from "@/schemas/complete-registration";
 import { useCompleteRegistration } from "@/services/auth";
-import { useSignUpEmail } from "@/store/use-sign-up-email";
 import type { CompleteSignUp } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
@@ -46,12 +45,11 @@ import { Spinner } from "../spinner";
 export const CompleteSignUpForm = () => {
   const [selectedImage, setSelectedImage] = useState<File | undefined>();
   const [state, setState] = useState("");
+  const [email] = useLocalStorage("email", "");
 
   const { mutate: uploadFile, isPending: pendingFileUpload } = useFileUpload(
     selectedImage as File,
   );
-
-  const { email } = useSignUpEmail();
 
   const form = useForm<CompleteSignUp>({
     resolver: zodResolver(completeSignUpSchema.omit({ emailAddress: true })),
@@ -70,13 +68,6 @@ export const CompleteSignUpForm = () => {
     isPending: isPendingCountries,
     isPaused: isPausedCountries,
   } = useCountries();
-
-  const {
-    data: branches,
-    isPending: pendingBranch,
-    isError: isErrorBranch,
-    error: errorBranch,
-  } = useBranches();
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -121,7 +112,6 @@ export const CompleteSignUpForm = () => {
               countryId: data.countryId,
               state: data.state,
               userType: data.userType,
-              branchId: Number(data.branchId),
               lga: data.lga,
               businessProfileRequest: {
                 companyLogoUrl: companyUploadUrl,
@@ -351,47 +341,6 @@ export const CompleteSignUpForm = () => {
                   </FormItem>
                 )}
               />
-              {/* Branch */}
-
-              <FormField
-                control={form.control}
-                name="branchId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Branch</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange}>
-                        <SelectTrigger
-                          className={cn(
-                            `w-full px-4  text-sm bg-white border border-muted-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent`,
-                            {
-                              "animate-pulse bg-gray-300": pendingBranch,
-                            },
-                          )}
-                        >
-                          <SelectValue placeholder="Select a Branch" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {branches?.data?.map((item) => (
-                            <SelectItem
-                              id={item.name}
-                              key={item.id}
-                              value={item.id.toString()}
-                            >
-                              {item.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-
-                    {isErrorBranch && (
-                      <FormMessage>{errorBranch?.message}</FormMessage>
-                    )}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             </div>
             <div className="space-y-3">
               {/* phoneNumber */}
@@ -418,7 +367,7 @@ export const CompleteSignUpForm = () => {
                         inputProps={{
                           name: "phoneNumber",
                           autoComplete: "phone number",
-                          placeholder: "+234 (123) 456-7890",
+                          placeholder: "Enter your phone number",
                         }}
                         country={"NG"}
                         {...field}

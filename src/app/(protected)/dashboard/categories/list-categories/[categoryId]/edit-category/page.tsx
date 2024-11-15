@@ -1,10 +1,14 @@
 import { EditCategoryForm } from "@/components/dashboard/categories/form/edit-category-form";
 
 type Props = {
-  params: {
+  params: Promise<{
     categoryId: string;
-  };
+  }>;
 };
-export default function EditProductPage({ params: { categoryId } }: Props) {
+export default async function EditProductPage(props: Props) {
+  const params = await props.params;
+
+  const { categoryId } = params;
+
   return <EditCategoryForm categoryId={categoryId} />;
 }

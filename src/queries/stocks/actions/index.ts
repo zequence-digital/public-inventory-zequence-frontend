@@ -252,10 +252,10 @@ export const updateStockUsage = async (stock: UpdateStockUsage) => {
 
 // GROUP STOCK USAGE
 
-export const submitGroupStockUsage = async (guids: string[]) => {
+export const submitGroupStockUsage = async (stockUsageGuids: string[]) => {
   const response = await apiClient.post({
     url: `/stock/stock-usage/pack`,
-    body: { guids },
+    body: { stockUsageGuids },
     auth: true,
   });
 

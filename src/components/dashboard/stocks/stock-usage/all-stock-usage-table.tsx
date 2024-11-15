@@ -29,19 +29,20 @@ export function AllStockUsage() {
     isPending,
   } = useGroupStockUsage(pageNumber, search);
 
-  console.log(stockUsage);
-
   const csvData = useMemo(() => {
-    const stockData = stockUsage?.data.records;
-    if (stockData) {
-      return stockData.map((stock) => ({
-        ID: stock.guid,
-        Branch: stock.branch.name,
-        Date: formatDate(stock.createdAt),
-      }));
-    }
-    return [];
-  }, [stockUsage?.data.records]);
+    const tableData = stockUsage?.data?.records.flatMap((stock) =>
+      stock.stockUsages.map((usage) => ({
+        ...usage,
+      })),
+    );
+    if (!tableData) return [];
+    return tableData.map((data) => ({
+      "Stock Name": data.stock?.name,
+      Category: data.stock?.category?.name,
+      "Created At": formatDate(data.createdAt),
+      "Quantity Used": data.quantity,
+    }));
+  }, [stockUsage?.data?.records]);
 
   if (isError) {
     return <ApiErrorMessage message={error?.message} />;
@@ -78,37 +79,39 @@ export function AllStockUsage() {
           columns={stockUsagePackedListColumns ?? []}
           data={stockUsage?.data?.records ?? []}
         />
-        <div className=" w-full items-center flex justify-between">
-          <div className="flex items-center gap-2">
-            <CustomButton
-              label="Previous page"
-              onClick={() => {
-                if (!isPlaceholderData && pageNumber > 1) {
-                  setPageNumber((old) => old - 1);
+        {(stockUsage?.data?.records?.length ?? 0) > 0 && (
+          <div className=" w-full items-center flex justify-between">
+            <div className="flex items-center gap-2">
+              <CustomButton
+                label="Previous page"
+                onClick={() => {
+                  if (!isPlaceholderData && pageNumber > 1) {
+                    setPageNumber((old) => old - 1);
+                  }
+                }}
+                disabled={isPlaceholderData || pageNumber === 1}
+              />
+              <CustomButton
+                label="Next page"
+                onClick={() => {
+                  if (
+                    !isPlaceholderData &&
+                    stockUsage?.data?.meta?.numberOfPages
+                  ) {
+                    setPageNumber((old) => old + 1);
+                  }
+                }}
+                disabled={
+                  isPlaceholderData ||
+                  stockUsage?.data?.meta?.numberOfPages === pageNumber
                 }
-              }}
-              disabled={isPlaceholderData || pageNumber === 1}
-            />
-            <CustomButton
-              label="Next page"
-              onClick={() => {
-                if (
-                  !isPlaceholderData &&
-                  stockUsage?.data?.meta?.numberOfPages
-                ) {
-                  setPageNumber((old) => old + 1);
-                }
-              }}
-              disabled={
-                isPlaceholderData ||
-                stockUsage?.data?.meta?.numberOfPages === pageNumber
-              }
-            />
+              />
+            </div>
+            <span>
+              page {pageNumber} of {stockUsage?.data?.meta?.numberOfPages}
+            </span>
           </div>
-          <span>
-            page {pageNumber} of {stockUsage?.data?.meta?.numberOfPages}
-          </span>
-        </div>
+        )}
       </div>
     </div>
   );
