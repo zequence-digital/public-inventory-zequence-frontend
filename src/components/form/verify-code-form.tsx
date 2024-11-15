@@ -11,22 +11,22 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { EmailMessageNotice } from "./components/email-message-notice";
-import { Input } from "@/components/ui/input";
-import ResendCodeOrChangeAccount from "./components/resend-code-or-change-account";
-import { Spinner } from "../spinner";
 import SubmitButton from "@/components/form/components/submit-button";
+import { Input } from "@/components/ui/input";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 import { cn } from "@/lib/utils";
-import { useForm } from "react-hook-form";
-import { useSignUpEmail } from "@/store/use-sign-up-email";
-import { useVerifyOTP } from "@/services/auth";
 import { verificationCodeSchema } from "@/schemas/verification-code";
+import { useVerifyOTP } from "@/services/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { Spinner } from "../spinner";
+import { EmailMessageNotice } from "./components/email-message-notice";
+import ResendCodeOrChangeAccount from "./components/resend-code-or-change-account";
 
 type VerificationCode = z.infer<typeof verificationCodeSchema>;
 const VerifyCodeForm = () => {
   const { mutate: verifyOtp, isPending } = useVerifyOTP();
-  const { email } = useSignUpEmail();
+  const [email] = useLocalStorage("email", "");
 
   const form = useForm<VerificationCode>({
     mode: "all",

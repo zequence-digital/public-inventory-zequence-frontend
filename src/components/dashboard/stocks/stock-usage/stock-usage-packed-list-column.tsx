@@ -46,13 +46,19 @@ export const stockUsagePackedListColumns: ColumnDef<StockUsage>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "branch",
+    accessorKey: "stockUsages",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Stock Name" />
+      <DataTableColumnHeader column={column} title="Stock Names" />
     ),
     cell: ({ row }) => {
-      const stock = row.getValue("branch") as StockUsage["branch"];
-      return <div>{stock?.name}</div>;
+      const stocks = row.getValue("stockUsages") as StockUsage["stockUsages"];
+      return (
+        <div>
+          {stocks?.map((stock) => (
+            <div key={stock.guid}>{stock.stock?.name}</div>
+          ))}
+        </div>
+      );
     },
   },
   {
@@ -65,7 +71,38 @@ export const stockUsagePackedListColumns: ColumnDef<StockUsage>[] = [
       return <div>{formatDate(date)}</div>;
     },
   },
-
+  {
+    accessorKey: "stockUsages",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Category" />
+    ),
+    cell: ({ row }) => {
+      const stocks = row.getValue("stockUsages") as StockUsage["stockUsages"];
+      return (
+        <div>
+          {stocks?.map((stock) => (
+            <div key={stock.guid}>{stock.stock?.category?.name}</div>
+          ))}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "stockUsages",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Quantity" />
+    ),
+    cell: ({ row }) => {
+      const quantity = row.getValue("stockUsages") as StockUsage["stockUsages"];
+      return (
+        <div>
+          {quantity?.map((stock) => (
+            <div key={stock.guid}>{stock.quantity}</div>
+          ))}
+        </div>
+      );
+    },
+  },
   {
     id: "actions",
     header: "Actions",

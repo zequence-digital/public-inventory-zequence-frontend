@@ -17,24 +17,23 @@ import {
 } from "@/components/ui/select";
 import { useAddProduct, useProducts } from "@/queries/products";
 
-import { InputField } from "@/components/form/components/input-field";
+import type { AddProduct } from "@/types";
+import { AddProductSchema } from "@/schemas/products/add-product-schema";
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
+import CustomButton from "../../custom-button";
+import { InputField } from "@/components/form/components/input-field";
+import { ProductListOverview } from "../product-list-overview";
 import { Spinner } from "@/components/spinner";
-import { useCurrentBranch } from "@/hooks/use-current-branch";
-import { useCurrentUser } from "@/hooks/use-current-user";
 import { cn } from "@/lib/utils";
 import { useCategories } from "@/queries/categories";
-import { AddProductSchema } from "@/schemas/products/add-product-schema";
-import type { AddProduct } from "@/types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRef } from "react";
+import { useCurrentBranch } from "@/hooks/use-current-branch";
 import { useForm } from "react-hook-form";
-import CustomButton from "../../custom-button";
-import { ProductListOverview } from "../product-list-overview";
+import { useRef } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export function AddProductForm() {
   const ref = useRef<HTMLFormElement | null>(null);
-  const user = useCurrentUser();
+
   const {
     data: prod,
     isPending: pendingProd,

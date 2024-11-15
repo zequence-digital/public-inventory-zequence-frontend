@@ -1,10 +1,14 @@
 import { EditProductForm } from "@/components/dashboard/products/form/edit-product-form";
 
 type Props = {
-  params: {
+  params: Promise<{
     productId: string;
-  };
+  }>;
 };
-export default function EditProductPage({ params: { productId } }: Props) {
+export default async function EditProductPage(props: Props) {
+  const params = await props.params;
+
+  const { productId } = params;
+
   return <EditProductForm productId={productId} />;
 }

@@ -11,18 +11,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { CardWrapper } from "@/components/auth/card-wrapper";
-import { Input } from "@/components/ui/input";
 import { Logo } from "@/assets";
+import { CardWrapper } from "@/components/auth/card-wrapper";
 import OrDivider from "@/components/form/components/or-divider";
-import { SignUpSchema } from "@/schemas/sign-up";
-import { Spinner } from "../spinner";
 import SubmitButton from "@/components/form/components/submit-button";
+import { Input } from "@/components/ui/input";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 import { cn } from "@/lib/utils";
-import { useForm } from "react-hook-form";
+import { SignUpSchema } from "@/schemas/sign-up";
 import { useSignUp } from "@/services/auth";
-import { useSignUpEmail } from "@/store/use-sign-up-email";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { Spinner } from "../spinner";
 
 type SignUp = z.infer<typeof SignUpSchema>;
 
@@ -33,7 +33,7 @@ export const SignUpForm = () => {
   });
 
   const { mutate: signUp, isPending } = useSignUp();
-  const { setEmail } = useSignUpEmail();
+  const [, setEmail] = useLocalStorage("email", "");
 
   return (
     <CardWrapper

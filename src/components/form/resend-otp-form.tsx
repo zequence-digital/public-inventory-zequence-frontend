@@ -11,20 +11,21 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { Input } from "@/components/ui/input";
-import { ResendOtpSchema } from "@/schemas/resend-otp-schema";
-import { Spinner } from "../spinner";
 import SubmitButton from "@/components/form/components/submit-button";
+import { Input } from "@/components/ui/input";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 import { cn } from "@/lib/utils";
-import { useForm } from "react-hook-form";
+import { ResendOtpSchema } from "@/schemas/resend-otp-schema";
 import { useResendOTP } from "@/services/auth";
-import { useSignUpEmail } from "@/store/use-sign-up-email";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { Spinner } from "../spinner";
 
 type ResendCode = z.infer<typeof ResendOtpSchema>;
 const ResendCodeForm = () => {
   const { mutate: resendOtp, isPending } = useResendOTP();
-  const { setEmail } = useSignUpEmail();
+  const [, setEmail] = useLocalStorage("email", "");
+
   const form = useForm<ResendCode>({
     mode: "all",
     resolver: zodResolver(ResendOtpSchema),
