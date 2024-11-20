@@ -4,6 +4,7 @@ import {
   UseMutationOptions,
   useMutation,
   useQuery,
+  useQueryClient,
 } from "@tanstack/react-query";
 import {
   createBranch,
@@ -15,8 +16,8 @@ import {
 
 import { AuthResponse } from "@/types/auth";
 import { AxiosError } from "axios";
-import branchKeys from "./branch-keys";
 import { toast } from "react-toastify";
+import branchKeys from "./branch-keys";
 
 export function useBranches(
   options?: Omit<
@@ -40,13 +41,13 @@ export function useBranches(
 }
 
 export function useBranchById(
-  id: string,
+  id: number,
   options?: Omit<
     UndefinedInitialDataOptions<GetBranchById, Error, GetBranchById, string[]>,
     "queryKey" | "queryFn"
   >,
 ) {
-  const hash = [branchKeys.readOne, id];
+  const hash = [branchKeys.readOne, id.toString()];
   const queryBranch = useQuery({
     queryKey: hash,
     queryFn: () => getBranchById(id),
@@ -57,13 +58,23 @@ export function useBranchById(
 }
 
 export function useCreateBranch(
+  ref: React.MutableRefObject<HTMLFormElement | null>,
+  onClose: (open: boolean) => void,
   options?: UseMutationOptions<AuthResponse, AxiosError, any, unknown>,
 ) {
+  const queryClient = useQueryClient();
   const createBranchMutation = useMutation({
     mutationFn: createBranch,
     onSuccess: (data) => {
       if (data.success) {
         toast.success(data.message);
+        if (ref.current) {
+          ref.current.reset();
+        }
+        onClose(false);
+        queryClient.invalidateQueries({
+          queryKey: [branchKeys.read],
+        });
       }
       if (!data.success) {
         toast.error(data.message);
@@ -76,13 +87,23 @@ export function useCreateBranch(
 }
 
 export function useUpdateBranch(
+  ref: React.MutableRefObject<HTMLFormElement | null>,
+  onClose: (open: boolean) => void,
   options?: UseMutationOptions<AuthResponse, AxiosError, any, unknown>,
 ) {
+  const queryClient = useQueryClient();
   const updateBranchMutation = useMutation({
     mutationFn: updateBranch,
     onSuccess: (data) => {
       if (data.success) {
         toast.success(data.message);
+        if (ref.current) {
+          ref.current.reset();
+        }
+        onClose(false);
+        queryClient.invalidateQueries({
+          queryKey: [branchKeys.read],
+        });
       }
       if (!data.success) {
         toast.error(data.message);
@@ -95,13 +116,20 @@ export function useUpdateBranch(
 }
 
 export function useDeleteBranch(
+  id: number,
+  onClose: (open: boolean) => void,
   options?: UseMutationOptions<AuthResponse, AxiosError, any, unknown>,
 ) {
+  const queryClient = useQueryClient();
   const deleteBranchMutation = useMutation({
-    mutationFn: deleteBranch,
+    mutationFn: () => deleteBranch(id),
     onSuccess: (data) => {
       if (data.success) {
         toast.success(data.message);
+        onClose(false);
+        queryClient.invalidateQueries({
+          queryKey: [branchKeys.read],
+        });
       }
       if (!data.success) {
         toast.error(data.message);

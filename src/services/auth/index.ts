@@ -10,15 +10,16 @@ import type {
   SignUpData,
   VerifyOtp,
 } from "@/types/auth";
-import { setToLocalStorage, tokenKey, user } from "@/utils";
 import { UseMutationOptions, useMutation } from "@tanstack/react-query";
+import { setToLocalStorage, tokenKey, user } from "@/utils";
 
-import type { LoginResponse } from "@/types";
 import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
+import type { LoginResponse } from "@/types";
 import { apiClient } from "../api";
 import authKeys from "./auth-keys";
+import { toast } from "react-toastify";
+import { useLocalStorage } from "@/hooks/use-local-storage";
+import { useRouter } from "next/navigation";
 
 export function useLogin(
   options?: UseMutationOptions<LoginResponse, AxiosError, LoginData, unknown>,
@@ -204,6 +205,7 @@ export function useCompleteRegistration(
   >,
 ) {
   const router = useRouter();
+  const [, , removeEmail] = useLocalStorage("email", "");
   const complete = useMutation({
     mutationFn: async (data: CompleteSignUpData) => {
       const response = await apiClient.post({
@@ -218,6 +220,7 @@ export function useCompleteRegistration(
       if (data.success) {
         toast.success(data.message);
         router.push("/auth/login");
+        removeEmail();
       }
 
       if (!data.success) {

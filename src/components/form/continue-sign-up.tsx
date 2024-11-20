@@ -25,9 +25,9 @@ import SubmitButton from "@/components/form/components/submit-button";
 import { cn } from "@/lib/utils";
 import { useContinueSignUp } from "@/services/auth";
 import { useForm } from "react-hook-form";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 import usePasswordPolicy from "@/hooks/password-policy";
 import { useReducer } from "react";
-import { useSignUpEmail } from "@/store/use-sign-up-email";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 type ContinueSignUp = z.infer<typeof ContinueSignUpSchema>;
@@ -39,7 +39,7 @@ const ContinueSignUpForm = () => {
     false,
   );
 
-  const { email } = useSignUpEmail();
+  const [email] = useLocalStorage("email", "");
 
   const form = useForm<ContinueSignUp>({
     mode: "all",
