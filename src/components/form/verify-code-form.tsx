@@ -10,23 +10,35 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useEffect, useReducer } from "react";
 
-import SubmitButton from "@/components/form/components/submit-button";
-import { Input } from "@/components/ui/input";
-import { useLocalStorage } from "@/hooks/use-local-storage";
-import { cn } from "@/lib/utils";
-import { verificationCodeSchema } from "@/schemas/verification-code";
-import { useVerifyOTP } from "@/services/auth";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Spinner } from "../spinner";
 import { EmailMessageNotice } from "./components/email-message-notice";
+import { Input } from "@/components/ui/input";
 import ResendCodeOrChangeAccount from "./components/resend-code-or-change-account";
+import { Spinner } from "../spinner";
+import SubmitButton from "@/components/form/components/submit-button";
+import { cn } from "@/lib/utils";
+import { useForm } from "react-hook-form";
+import { useLocalStorage } from "@/hooks/use-local-storage";
+import { useVerifyOTP } from "@/services/auth";
+import { verificationCodeSchema } from "@/schemas/verification-code";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type VerificationCode = z.infer<typeof verificationCodeSchema>;
 const VerifyCodeForm = () => {
+  const [countDown, setCountDown] = useReducer((state) => state - 1, 60);
   const { mutate: verifyOtp, isPending } = useVerifyOTP();
   const [email] = useLocalStorage("email", "");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (countDown > 0) {
+        setCountDown();
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [countDown]);
 
   const form = useForm<VerificationCode>({
     mode: "all",
@@ -105,7 +117,15 @@ const VerifyCodeForm = () => {
           )}
         />
 
-        <ResendCodeOrChangeAccount />
+        {countDown <= 0 ? (
+          <ResendCodeOrChangeAccount />
+        ) : (
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-muted-200">
+              Resend code in {countDown} seconds
+            </span>
+          </div>
+        )}
         <SubmitButton
           isPending={isPending}
           loadingLabel={<Spinner className=" border-white" />}

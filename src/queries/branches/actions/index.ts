@@ -32,7 +32,7 @@ export const createBranch = async (branch: CreateOrganizationBranch) => {
 
 // /generic/organization-branch/1
 
-export const getBranchById = async (id: string): Promise<GetBranchById> => {
+export const getBranchById = async (id: number): Promise<GetBranchById> => {
   const response = await apiClient.get({
     url: `/generic/organization-branch/${id}`,
     auth: true,
@@ -54,7 +54,7 @@ export const updateBranch = async (data: UpdateOrganizationBranch) => {
 
 // Delete branch
 
-export const deleteBranch = async (id: string) => {
+export const deleteBranch = async (id: number) => {
   const response = await apiClient.delete({
     url: `/generic/organization-branch/${id}`,
   });

@@ -9,16 +9,16 @@ import {
 } from "@/queries/dashboard-overview";
 import { useMemo, useState } from "react";
 
-import { ProductOverview } from "@/components/dashboard/home/product-overview";
-import { StockOverview } from "@/components/dashboard/home/stock-overview";
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import { allItemsColumn } from "@/components/table/data/all-items-columns";
-import { DataTable } from "@/components/table/ui/data-table";
-import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
-import { useDashboardItemsStore } from "@/store/use-dashboard-items";
 import { CSVLink } from "react-csv";
 import CustomButton from "../../custom-button";
+import { DataTable } from "@/components/table/ui/data-table";
+import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
+import { ProductOverview } from "@/components/dashboard/home/product-overview";
+import { StockOverview } from "@/components/dashboard/home/stock-overview";
+import { allItemsColumn } from "@/components/table/data/all-items-columns";
 import exportIcon from "/public/icons/import.svg";
+import { useDashboardItemsStore } from "@/store/use-dashboard-items";
 
 export function Overview() {
   const { item } = useDashboardItemsStore();
@@ -94,34 +94,36 @@ export function Overview() {
           columns={allItemsColumn}
           data={items?.data?.records ?? []}
         />
-        <div className=" w-full items-center flex justify-between">
-          <div className="flex items-center gap-2">
-            <CustomButton
-              label="Previous page"
-              onClick={() => {
-                if (!isPlaceholderData && pageNumber > 1) {
-                  setPageNumber((old) => old - 1);
+        {(items?.data?.records?.length ?? 0) > 0 && (
+          <div className=" w-full items-center flex justify-between">
+            <div className="flex items-center gap-2">
+              <CustomButton
+                label="Previous page"
+                onClick={() => {
+                  if (!isPlaceholderData && pageNumber > 1) {
+                    setPageNumber((old) => old - 1);
+                  }
+                }}
+                disabled={isPlaceholderData || pageNumber === 1}
+              />
+              <CustomButton
+                label="Next page"
+                onClick={() => {
+                  if (!isPlaceholderData && items?.data?.meta?.numberOfPages) {
+                    setPageNumber((old) => old + 1);
+                  }
+                }}
+                disabled={
+                  isPlaceholderData ||
+                  items?.data?.meta?.numberOfPages === pageNumber
                 }
-              }}
-              disabled={isPlaceholderData || pageNumber === 1}
-            />
-            <CustomButton
-              label="Next page"
-              onClick={() => {
-                if (!isPlaceholderData && items?.data?.meta?.numberOfPages) {
-                  setPageNumber((old) => old + 1);
-                }
-              }}
-              disabled={
-                isPlaceholderData ||
-                items?.data?.meta?.numberOfPages === pageNumber
-              }
-            />
+              />
+            </div>
+            <span>
+              page {pageNumber} of {items?.data?.meta?.numberOfPages}
+            </span>
           </div>
-          <span>
-            page {pageNumber} of {items?.data?.meta?.numberOfPages}
-          </span>
-        </div>
+        )}
       </div>
     </div>
   );
