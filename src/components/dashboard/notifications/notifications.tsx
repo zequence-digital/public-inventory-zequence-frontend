@@ -1,13 +1,13 @@
 "use client";
 
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import { NotificationSkeleton } from "@/components/table/skeleton/notification-skeleton";
-import { formatDateDifference } from "@/lib/utils";
-import { useNotifications } from "@/queries/notifications";
 import CustomButton from "../custom-button";
 import { EmptyNotificationMessage } from "./empty-notification-message";
 import { NotificationDropdown } from "./notification-dropdown";
+import { NotificationSkeleton } from "@/components/table/skeleton/notification-skeleton";
 import { SingleNotification } from "./single-notification";
+import { formatDateDifference } from "@/lib/utils";
+import { useNotifications } from "@/queries/notifications";
 
 export function Notifications() {
   const { data: notifications, isError, isPending, error } = useNotifications();
@@ -30,7 +30,7 @@ export function Notifications() {
             ))}
           </div>
         )}
-        {notifications?.data.length === 0 && <EmptyNotificationMessage />}
+        {notifications?.data?.length === 0 && <EmptyNotificationMessage />}
         <div className="space-y-6 pr-6 pb-10 h-screen overflow-y-scroll">
           {notifications?.data?.map((notification) => {
             return (

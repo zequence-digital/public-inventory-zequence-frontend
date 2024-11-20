@@ -10,11 +10,13 @@ import {
 } from "@/components/ui/alert-dialog";
 
 import { cn } from "@/lib/utils";
+import { Spinner } from "../spinner";
 
 type Props = {
   title: string;
   description: string;
   className?: string;
+  isPending?: boolean;
   handleCancel?: () => void;
   handleContinue?: () => void;
   open: boolean;
@@ -24,6 +26,7 @@ type Props = {
 export function Alert({
   title,
   description,
+  isPending,
   open,
   onOpenChange,
   handleCancel,
@@ -44,7 +47,7 @@ export function Alert({
             className=" bg-primary-100 hover:bg-primary-100/80"
             onClick={handleContinue}
           >
-            Continue
+            {isPending ? <Spinner className="border-white" /> : "Continue"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

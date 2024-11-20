@@ -175,7 +175,7 @@ export default function NavLinks() {
                                   {isPending && (
                                     <span className="animate-pulse bg-slate-300 size-4 rounded-full" />
                                   )}
-                                  {notifications?.data.length ?? 0}
+                                  {notifications?.data?.length ?? 0}
                                 </span>
                               )}
                             </p>
