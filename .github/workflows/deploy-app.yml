@@ -1,11 +1,11 @@
+name: Build and Deploy Inventory sandbox application
 
-
-name: Build and Deploy Node.js App
 on:
   push:
     branches:
       - master
       - staging
+
 env:
   IMAGE_NAME: "sandbox-inventory-frontend"
   VERSION_TAG: "1.0.0"
@@ -18,9 +18,11 @@ jobs:
       port: ${{ steps.set_env.outputs.port }}
       image_tag: ${{ steps.set_env.outputs.image_tag }}
       env_file: ${{ steps.set_env.outputs.env_file }}
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+
     - name: Set environment variables
       id: set_env
       run: |
@@ -29,7 +31,7 @@ jobs:
           {
             echo "container_name=prod-sandbox-inventory-frontend"
             echo "port=3002:3000"
-            echo "image_tag=latest"
+            echo "image_tag=sandbox-prod-latest"
             echo "env_file=${ENV_FILE}"
           } >> $GITHUB_OUTPUT
         else
@@ -37,10 +39,11 @@ jobs:
           {
             echo "container_name=staging-sandbox-inventory-frontend"
             echo "port=3003:3000"
-            echo "image_tag=staging-latest"
+            echo "image_tag=sandbox-staging-latest"
             echo "env_file=${ENV_FILE}"
           } >> $GITHUB_OUTPUT
         fi
+
     - name: Load environment variables
       run: |
         # Export environment variables from file
@@ -57,16 +60,6 @@ jobs:
         
         docker tag ${{ env.IMAGE_NAME }}:${{ github.sha }} ${{ env.IMAGE_NAME }}:${{ steps.set_env.outputs.image_tag }}
 
-    - name: Build Docker image
-      run: |
-          # docker build --no-cache -t ${{ env.IMAGE_NAME }}:${{ github.sha }} .
-          docker build \
-          --build-arg NEXT_PUBLIC_API_BASE_URL="${NEXT_PUBLIC_API_BASE_URL}" \
-          --build-arg NEXT_PUBLIC_CHANNEL_ID="${NEXT_PUBLIC_CHANNEL_ID}" \
-          --build-arg NEXT_PUBLIC_CHANNEL_SECRET="${NEXT_PUBLIC_CHANNEL_SECRET}" \
-          -t ${{ env.IMAGE_NAME }}:${{ github.sha }} .
-          docker tag ${{ env.IMAGE_NAME }}:${{ github.sha }} ${{ env.IMAGE_NAME }}:${{ steps.set_env.outputs.image_tag }}
-          docker images
   deploy:
     needs: build
     runs-on: self-hosted
@@ -105,14 +98,8 @@ jobs:
     needs: deploy
     runs-on: self-hosted
     steps:
-      - name: Cleanup
-        run: |
-          echo "Listing images before cleanup"
-          docker images
-          
-          echo "Cleaning up old images"
-          docker system prune -af
-          docker image prune -af
-          
-          echo "Listing images after cleanup"
-          docker images
+    - name: Cleanup
+      run: |
+        echo "Cleaning up"
+        docker system prune -af
+        docker image prune -af
