@@ -1,5 +1,6 @@
 "use client";
 
+import { AddSalesSchema, customerType } from "@/schemas/sales/add-sales-schema";
 import {
   Form,
   FormControl,
@@ -15,24 +16,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { AddSalesSchema, customerType } from "@/schemas/sales/add-sales-schema";
 import { useRef, useState } from "react";
 
-import { InputField } from "@/components/form/components/input-field";
-import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import { Spinner } from "@/components/spinner";
-import { useCurrentBranch } from "@/hooks/use-current-branch";
-import { cn } from "@/lib/utils";
-import { useDashboardOverview } from "@/queries/dashboard-overview";
-import { useProducts } from "@/queries/products";
-import { useAddSales } from "@/queries/sales";
 import type { AddSales } from "@/types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { ApiErrorMessage } from "@/components/messages/api-error-message";
 import CustomButton from "../../custom-button";
+import { InputField } from "@/components/form/components/input-field";
 import { ProductOverview } from "../../home/product-overview";
+import { Spinner } from "@/components/spinner";
 import { StockOverview } from "../../home/stock-overview";
+import { cn } from "@/lib/utils";
 import plus from "/public/images/plus.svg";
+import { useAddSales } from "@/queries/sales";
+import { useCurrentBranch } from "@/hooks/use-current-branch";
+import { useDashboardOverview } from "@/queries/dashboard-overview";
+import { useForm } from "react-hook-form";
+import { useProducts } from "@/queries/products";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export function AddSalesForm() {
   const ref = useRef<HTMLFormElement | null>(null);
@@ -155,55 +155,67 @@ export function AddSalesForm() {
               <div>
                 {/* Item */}
 
-                <FormField
-                  control={form.control}
-                  name="item"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Product Name</FormLabel>
-                      <FormControl>
-                        <Select
-                          onValueChange={(value) => {
-                            field.onChange(value);
-                            const item = product?.data?.records?.find(
-                              (item) => item?.name === value,
-                            );
+                {product?.data?.records.length ? (
+                  <FormField
+                    control={form.control}
+                    name="item"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Product Name</FormLabel>
+                        <FormControl>
+                          <Select
+                            onValueChange={(value) => {
+                              field.onChange(value);
+                              const item = product?.data?.records?.find(
+                                (item) => item?.name === value,
+                              );
 
-                            if (item) {
-                              setReferenceNumber(item.referenceNumber);
-                            }
-                          }}
-                        >
-                          <SelectTrigger
-                            className={cn(
-                              `w-full h-[48px] px-4  text-sm bg-white border border-muted-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent`,
-                              {
-                                "animate-pulse bg-gray-300": pendingProduct,
-                              },
-                            )}
+                              if (item) {
+                                setReferenceNumber(item.referenceNumber);
+                              }
+                            }}
                           >
-                            <SelectValue placeholder="Select a product" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {product?.data?.records?.map((item) => (
-                              <SelectItem
-                                id={item.guid}
-                                key={item.guid}
-                                value={item?.name}
-                              >
-                                {item?.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      {isErrorProduct && (
-                        <FormMessage>{errorProduct?.message}</FormMessage>
-                      )}
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                            <SelectTrigger
+                              className={cn(
+                                `w-full h-[48px] px-4  text-sm bg-white border border-muted-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent`,
+                                {
+                                  "animate-pulse bg-gray-300": pendingProduct,
+                                },
+                              )}
+                            >
+                              <SelectValue placeholder="Select a product" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {product?.data?.records?.map((item) => (
+                                <SelectItem
+                                  id={item.guid}
+                                  key={item.guid}
+                                  value={item?.name}
+                                >
+                                  {item?.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                        {isErrorProduct && (
+                          <FormMessage>{errorProduct?.message}</FormMessage>
+                        )}
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                ) : (
+                  <InputField
+                    disabled
+                    label="Product Name"
+                    id="ProductName"
+                    name="ProductName"
+                    type="text"
+                    placeholder="No products found, please add a product"
+                    isPending={pendingProduct}
+                  />
+                )}
               </div>
 
               <div>

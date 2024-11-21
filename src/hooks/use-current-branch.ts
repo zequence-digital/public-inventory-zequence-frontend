@@ -1,9 +1,9 @@
 import { useBranches } from "@/queries/stocks";
+import { useLoggedInUser } from "@/crypto";
 import { useMemo } from "react";
-import { useCurrentUser } from "./use-current-user";
 
 export function useCurrentBranch() {
-  const user = useCurrentUser();
+  const user = useLoggedInUser();
   const {
     data: branches,
     isPending: pendingBranch,

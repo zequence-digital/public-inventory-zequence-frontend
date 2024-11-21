@@ -14,6 +14,7 @@ import { CSVLink } from "react-csv";
 import CustomButton from "../../custom-button";
 import { DataTable } from "@/components/table/ui/data-table";
 import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
+import { PaginationComponent } from "@/components/ui/pagination";
 import { ProductOverview } from "@/components/dashboard/home/product-overview";
 import { StockOverview } from "@/components/dashboard/home/stock-overview";
 import { allItemsColumn } from "@/components/table/data/all-items-columns";
@@ -94,36 +95,13 @@ export function Overview() {
           columns={allItemsColumn}
           data={items?.data?.records ?? []}
         />
-        {(items?.data?.records?.length ?? 0) > 0 && (
-          <div className=" w-full items-center flex justify-between">
-            <div className="flex items-center gap-2">
-              <CustomButton
-                label="Previous page"
-                onClick={() => {
-                  if (!isPlaceholderData && pageNumber > 1) {
-                    setPageNumber((old) => old - 1);
-                  }
-                }}
-                disabled={isPlaceholderData || pageNumber === 1}
-              />
-              <CustomButton
-                label="Next page"
-                onClick={() => {
-                  if (!isPlaceholderData && items?.data?.meta?.numberOfPages) {
-                    setPageNumber((old) => old + 1);
-                  }
-                }}
-                disabled={
-                  isPlaceholderData ||
-                  items?.data?.meta?.numberOfPages === pageNumber
-                }
-              />
-            </div>
-            <span>
-              page {pageNumber} of {items?.data?.meta?.numberOfPages}
-            </span>
-          </div>
-        )}
+        <PaginationComponent
+          totalPages={items?.data?.meta?.numberOfPages ?? 0}
+          isPlaceholderData={isPlaceholderData}
+          items={items?.data?.records ?? []}
+          pageNumber={pageNumber}
+          setPageNumber={setPageNumber}
+        />
       </div>
     </div>
   );

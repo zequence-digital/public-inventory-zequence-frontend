@@ -2,8 +2,8 @@
 
 import "react-phone-input-2/lib/style.css";
 
-import { DragAndDrop, FileUpload, UserAvatar } from "@/assets";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { DragAndDrop, FileUpload, UserAvatar } from "@/assets";
 import {
   Form,
   FormControl,
@@ -19,28 +19,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useAllStates, useAllStatesLga, useCountries } from "@/queries/state";
-import { useFileUpload, useFileUploadState } from "@/services/file-upload";
-import { useCallback, useState } from "react";
 import { UserRole, UserType } from "./components/select-field";
+import { useAllStates, useAllStatesLga, useCountries } from "@/queries/state";
+import { useCallback, useState } from "react";
+import { useFileUpload, useFileUploadState } from "@/services/file-upload";
 
-import { Logo } from "@/assets";
+import { ApiErrorMessage } from "../messages/api-error-message";
 import { CardWrapper } from "@/components/auth/card-wrapper";
-import SubmitButton from "@/components/form/components/submit-button";
+import type { CompleteSignUp } from "@/types";
+import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useLocalStorage } from "@/hooks/use-local-storage";
+import { Logo } from "@/assets";
+import PhoneInput from "react-phone-input-2";
+import { Spinner } from "../spinner";
+import SubmitButton from "@/components/form/components/submit-button";
 import { cn } from "@/lib/utils";
 import { completeSignUpSchema } from "@/schemas/complete-registration";
 import { useCompleteRegistration } from "@/services/auth";
-import type { CompleteSignUp } from "@/types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
 import { useDropzone } from "react-dropzone";
 import { useForm } from "react-hook-form";
-import PhoneInput from "react-phone-input-2";
-import { ApiErrorMessage } from "../messages/api-error-message";
-import { Spinner } from "../spinner";
+import { useLocalStorage } from "@/hooks/use-local-storage";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export const CompleteSignUpForm = () => {
   const [selectedImage, setSelectedImage] = useState<File | undefined>();
@@ -111,6 +111,7 @@ export const CompleteSignUpForm = () => {
               mobileNumber: data.mobileNumber,
               countryId: data.countryId,
               state: data.state,
+              headOffice: data.headOffice,
               userType: data.userType,
               lga: data.lga,
               businessProfileRequest: {
@@ -341,6 +342,37 @@ export const CompleteSignUpForm = () => {
                   </FormItem>
                 )}
               />
+
+              {/* Head Office */}
+              <FormField
+                control={form.control}
+                name="headOffice"
+                render={({ field, fieldState }) => (
+                  <FormItem>
+                    <FormLabel
+                      className={cn(`text-muted-200`, {
+                        "text-destructive": fieldState?.invalid,
+                      })}
+                    >
+                      Head Office
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className={cn(
+                          `w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:border-gray-300`,
+                          {
+                            "border-destructive focus-visible:ring-transparent":
+                              fieldState?.invalid,
+                          },
+                        )}
+                        placeholder="Head Office (e.g. Lekki Phase 1)"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
             <div className="space-y-3">
               {/* phoneNumber */}
@@ -563,7 +595,7 @@ export const CompleteSignUpForm = () => {
                 "cursor-not-allowed": pendingComplete || pendingFileUpload,
               },
             )}
-            label="Proceed to Dashboard"
+            label="Complete Registration"
           />
         </form>
       </Form>

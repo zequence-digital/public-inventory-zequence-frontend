@@ -3,15 +3,16 @@
 import { useMemo, useState } from "react";
 
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import { stockRequestColumns } from "@/components/table/data/stocks/stock-request-column";
-import { DataTable } from "@/components/table/ui/data-table";
-import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
-import { formatDate } from "@/lib/utils";
-import { useStockRequest } from "@/queries/stocks";
 import { CSVLink } from "react-csv";
 import CustomButton from "../../custom-button";
+import { DataTable } from "@/components/table/ui/data-table";
+import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
+import { PaginationComponent } from "@/components/ui/pagination";
 import { StockRequestForm } from "./stock-request-form";
 import exportIcon from "/public/icons/import.svg";
+import { formatDate } from "@/lib/utils";
+import { stockRequestColumns } from "@/components/table/data/stocks/stock-request-column";
+import { useStockRequest } from "@/queries/stocks";
 
 export function StockRequest() {
   const [search, setSearch] = useState("");
@@ -65,34 +66,13 @@ export function StockRequest() {
           columns={stockRequestColumns}
           data={stocks?.data?.records ?? []}
         />
-        <div className=" w-full items-center flex justify-between">
-          <div className="flex items-center gap-2">
-            <CustomButton
-              label="Previous page"
-              onClick={() => {
-                if (!isPlaceholderData && pageNumber > 1) {
-                  setPageNumber((old) => old - 1);
-                }
-              }}
-              disabled={isPlaceholderData || pageNumber === 1}
-            />
-            <CustomButton
-              label="Next page"
-              onClick={() => {
-                if (!isPlaceholderData && stocks?.data?.meta?.numberOfPages) {
-                  setPageNumber((old) => old + 1);
-                }
-              }}
-              disabled={
-                isPlaceholderData ||
-                stocks?.data?.meta?.numberOfPages === pageNumber
-              }
-            />
-          </div>
-          <span>
-            page {pageNumber} of {stocks?.data?.meta?.numberOfPages}
-          </span>
-        </div>
+        <PaginationComponent
+          totalPages={stocks?.data?.meta?.numberOfPages ?? 0}
+          isPlaceholderData={isPlaceholderData}
+          items={stocks?.data?.records ?? []}
+          pageNumber={pageNumber}
+          setPageNumber={setPageNumber}
+        />
       </div>
     </div>
   );

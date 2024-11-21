@@ -65,7 +65,7 @@ export function EditBranchModalForm({
       >
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Update Branch({activeBranch?.name})
+            Update Branch({activeBranch?.name.toLocaleUpperCase()})
           </AlertDialogTitle>
           <AlertDialogDescription>Update branch details</AlertDialogDescription>
         </AlertDialogHeader>

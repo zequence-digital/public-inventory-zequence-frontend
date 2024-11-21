@@ -7,6 +7,7 @@ import { CSVLink } from "react-csv";
 import CustomButton from "../custom-button";
 import { DataTable } from "@/components/table/ui/data-table";
 import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
+import { PaginationComponent } from "@/components/ui/pagination";
 import { ProductListOverview } from "./product-list-overview";
 import exportIcon from "/public/icons/import.svg";
 import { formatDate } from "@/lib/utils";
@@ -68,34 +69,13 @@ export function ProductList() {
           columns={productsColumns}
           data={products?.data?.records ?? []}
         />
-        <div className=" w-full items-center flex justify-between">
-          <div className="flex items-center gap-2">
-            <CustomButton
-              label="Previous page"
-              onClick={() => {
-                if (!isPlaceholderData && pageNumber > 1) {
-                  setPageNumber((old) => old - 1);
-                }
-              }}
-              disabled={isPlaceholderData || pageNumber === 1}
-            />
-            <CustomButton
-              label="Next page"
-              onClick={() => {
-                if (!isPlaceholderData && products?.data?.meta?.numberOfPages) {
-                  setPageNumber((old) => old + 1);
-                }
-              }}
-              disabled={
-                isPlaceholderData ||
-                products?.data?.meta?.numberOfPages === pageNumber
-              }
-            />
-          </div>
-          <span>
-            page {pageNumber} of {products?.data?.meta?.numberOfPages}
-          </span>
-        </div>
+        <PaginationComponent
+          totalPages={products?.data?.meta?.numberOfPages ?? 0}
+          isPlaceholderData={isPlaceholderData}
+          items={products?.data?.records ?? []}
+          pageNumber={pageNumber}
+          setPageNumber={setPageNumber}
+        />
       </div>
     </div>
   );
