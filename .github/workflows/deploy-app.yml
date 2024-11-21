@@ -1,6 +1,6 @@
 
 
-name: Build and Deploy Node.js App
+name: Build and Deploy Sandbox inventory version
 on:
   push:
     branches:
@@ -25,7 +25,7 @@ jobs:
       id: set_env
       run: |
         if [[ ${{ github.ref }} == 'refs/heads/master' ]]; then
-          ENV_FILE="/home/ubuntu/envs/frontend/prod/sandbox-prod.env"
+          ENV_FILE="/home/ubuntu/envs/frontend/sandbox/sandbox-prod.env"
           {
             echo "container_name=prod-sandbox-inventory-frontend"
             echo "port=3002:3000"
@@ -33,7 +33,7 @@ jobs:
             echo "env_file=${ENV_FILE}"
           } >> $GITHUB_OUTPUT
         else
-          ENV_FILE="/home/ubuntu/envs/frontend/staging/sandbox-staging.env"
+          ENV_FILE="/home/ubuntu/envs/frontend/sandbox/sandbox-staging.env"
           {
             echo "container_name=staging-sandbox-inventory-frontend"
             echo "port=3003:3000"
