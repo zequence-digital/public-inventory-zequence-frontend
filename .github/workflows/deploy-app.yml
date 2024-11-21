@@ -1,6 +1,6 @@
 
 
-name: Build and Deploy Inventory Sandbox applicaton
+name: Build and Deploy Node.js App
 on:
   push:
     branches:
@@ -21,22 +21,19 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
     - name: Set environment variables
       id: set_env
       run: |
         if [[ ${{ github.ref }} == 'refs/heads/master' ]]; then
-          ENV_FILE="/home/ubuntu/envs/frontend/sandbox/sandbox-staging.env"
-         "
+          ENV_FILE="/home/ubuntu/envs/frontend/prod/sandbox-prod.env"
           {
             echo "container_name=prod-sandbox-inventory-frontend"
             echo "port=3002:3000"
-            echo "image_tag=prod-latest"
+            echo "image_tag=latest"
             echo "env_file=${ENV_FILE}"
           } >> $GITHUB_OUTPUT
         else
-          ENV_FILE="/home/ubuntu/envs/frontend/sandbox/sandbox-prod.env"
-        "
+          ENV_FILE="/home/ubuntu/envs/frontend/staging/sandbox-staging.env"
           {
             echo "container_name=staging-sandbox-inventory-frontend"
             echo "port=3003:3000"
@@ -44,7 +41,6 @@ jobs:
             echo "env_file=${ENV_FILE}"
           } >> $GITHUB_OUTPUT
         fi
-
     - name: Load environment variables
       run: |
         # Export environment variables from file
