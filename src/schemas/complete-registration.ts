@@ -21,6 +21,7 @@ export const completeSignUpSchema = z.object({
     .min(3, { message: "Full Name is required!" })
     .trim()
     .toLowerCase(),
+  headOffice: z.string().min(3, "Head office is required").toLowerCase().trim(),
   countryId: z.coerce.number({ invalid_type_error: "Please select a country" }),
   state: z.string().min(3, "Please select a state").toLowerCase().trim(),
   lga: z.string().min(3, "Please select a LGA").toLowerCase().trim(),

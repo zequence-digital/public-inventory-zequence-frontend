@@ -53,6 +53,7 @@ export type CompleteSignUpData = {
   mobileNumber: string;
   countryId: number;
   state: string;
+  headOffice: string;
   lga: string;
   userType: string;
   businessProfileRequest: {

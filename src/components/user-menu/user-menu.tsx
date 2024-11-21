@@ -12,11 +12,11 @@ import { UserMenuRadioForm } from "./user-menu-radio-input";
 import { formatName } from "@/lib/utils";
 import { logOut } from "@/services/auth";
 import { useBranches } from "@/queries/branches";
-import { useCurrentUser } from "@/hooks/use-current-user";
+import { useLoggedInUser } from "@/crypto";
 import { useState } from "react";
 
 export const UserMenu = () => {
-  const user = useCurrentUser();
+  const user = useLoggedInUser();
   const [open, onOpenChange] = useState(false);
   const { data: branches, isPending, isError, error } = useBranches();
   return (
@@ -35,7 +35,7 @@ export const UserMenu = () => {
               </Avatar>
             </div>
             <p className="text-slate-700 text-base font-semibold">
-              {formatName(user?.data?.fullName ?? "")}
+              {user?.data && formatName(user?.data?.fullName)}
             </p>
             <CaretSortIcon className="size-4 stroke-slate-700" />
           </div>

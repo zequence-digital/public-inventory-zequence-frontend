@@ -4,13 +4,14 @@ import { cn, formatDate } from "@/lib/utils";
 import { useMemo, useState } from "react";
 
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import { DataTable } from "@/components/table/ui/data-table";
-import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
-import { useCategories } from "@/queries/categories";
 import { CSVLink } from "react-csv";
 import CustomButton from "../../custom-button";
+import { DataTable } from "@/components/table/ui/data-table";
+import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
+import { PaginationComponent } from "@/components/ui/pagination";
 import { categoriesColumns } from "./data/categories-column";
 import exportIcon from "/public/icons/import.svg";
+import { useCategories } from "@/queries/categories";
 
 export function CategoryList() {
   const [search, setSearch] = useState("");
@@ -69,37 +70,13 @@ export function CategoryList() {
           columns={categoriesColumns}
           data={categories?.data?.records ?? []}
         />
-        <div className=" w-full items-center flex justify-between">
-          <div className="flex items-center gap-2">
-            <CustomButton
-              label="Previous page"
-              onClick={() => {
-                if (!isPlaceholderData && pageNumber > 1) {
-                  setPageNumber((old) => old - 1);
-                }
-              }}
-              disabled={isPlaceholderData || pageNumber === 1}
-            />
-            <CustomButton
-              label="Next page"
-              onClick={() => {
-                if (
-                  !isPlaceholderData &&
-                  categories?.data?.meta?.numberOfPages
-                ) {
-                  setPageNumber((old) => old + 1);
-                }
-              }}
-              disabled={
-                isPlaceholderData ||
-                categories?.data?.meta?.numberOfPages === pageNumber
-              }
-            />
-          </div>
-          <span>
-            page {pageNumber} of {categories?.data?.meta?.numberOfPages}
-          </span>
-        </div>
+        <PaginationComponent
+          totalPages={categories?.data?.meta?.numberOfPages ?? 0}
+          isPlaceholderData={isPlaceholderData}
+          items={categories?.data?.records ?? []}
+          pageNumber={pageNumber}
+          setPageNumber={setPageNumber}
+        />
       </div>
     </div>
   );

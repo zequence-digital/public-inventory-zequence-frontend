@@ -16,23 +16,25 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useAddProduct, useProducts } from "@/queries/products";
+import { useRef, useState } from "react";
 
-import type { AddProduct } from "@/types";
-import { AddProductSchema } from "@/schemas/products/add-product-schema";
-import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import CustomButton from "../../custom-button";
 import { InputField } from "@/components/form/components/input-field";
-import { ProductListOverview } from "../product-list-overview";
+import SelectField from "@/components/form/components/select-field";
+import { ApiErrorMessage } from "@/components/messages/api-error-message";
 import { Spinner } from "@/components/spinner";
 import { cn } from "@/lib/utils";
+import { useBranches } from "@/queries/branches";
 import { useCategories } from "@/queries/categories";
-import { useCurrentBranch } from "@/hooks/use-current-branch";
-import { useForm } from "react-hook-form";
-import { useRef } from "react";
+import { AddProductSchema } from "@/schemas/products/add-product-schema";
+import type { AddProduct } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import CustomButton from "../../custom-button";
+import { ProductListOverview } from "../product-list-overview";
 
 export function AddProductForm() {
   const ref = useRef<HTMLFormElement | null>(null);
+  const [branchId, setBranchId] = useState<number | null>(null);
 
   const {
     data: prod,
@@ -55,8 +57,12 @@ export function AddProductForm() {
     error,
   } = useCategories();
 
-  const { currentBranch, pendingBranch, isErrorBranch, errorBranch } =
-    useCurrentBranch();
+  const {
+    data: branches,
+    isPending: pendingBranch,
+    isError: isErrorBranch,
+    error: errorBranch,
+  } = useBranches();
 
   const products = categories?.data?.records.filter(
     (item) => item.categoryType === "PRODUCT" && item.status === "ACTIVE",
@@ -75,7 +81,7 @@ export function AddProductForm() {
             onSubmit={form.handleSubmit((data) =>
               createProduct({
                 ...data,
-                branchId: currentBranch?.id as number,
+                branchId: branchId as number,
               }),
             )}
             ref={ref}
@@ -90,16 +96,45 @@ export function AddProductForm() {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <InputField
-                          label="Branch"
-                          id="branch"
-                          name="branch"
-                          type="text"
-                          isPending={pendingBranch}
-                          placeholder="Branch"
-                          value={currentBranch?.name}
-                          disabled
-                        />
+                        {branches?.data?.length ? (
+                          <div>
+                            <FormLabel className="text-sm font-medium text-muted-200">
+                              Branch
+                            </FormLabel>
+                            <SelectField
+                              isPending={pendingBranch}
+                              selectList={
+                                branches?.data?.map((item) =>
+                                  item.name.toLocaleUpperCase(),
+                                ) || []
+                              }
+                              onValueChange={(value) => {
+                                field.onChange(value);
+                                const branch = branches?.data?.find(
+                                  (item) =>
+                                    item.name.toLocaleLowerCase() ===
+                                    value.toLocaleLowerCase(),
+                                );
+                                if (branch) {
+                                  setBranchId(branch.id);
+                                }
+                              }}
+                              placeholder="Select a branch"
+                              className="h-[52px] mt-1"
+                            />
+                          </div>
+                        ) : (
+                          <InputField
+                            disabled
+                            label="Branch"
+                            id="branch"
+                            name="branch"
+                            type="text"
+                            placeholder="No branches available"
+                            isPending={isPending}
+                            onChange={field.onChange}
+                          />
+                        )}
                       </FormControl>
 
                       {isErrorBranch && (
@@ -172,11 +207,12 @@ export function AddProductForm() {
                           </Select>
                         ) : (
                           <InputField
+                            disabled
                             label="Product Category"
                             id="categories"
                             name="categories"
                             type="text"
-                            placeholder="Enter product category here"
+                            placeholder="No categories available"
                             isPending={isPending}
                             onChange={field.onChange}
                           />

@@ -3,18 +3,19 @@
 import { useMemo, useState } from "react";
 
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import { Spinner } from "@/components/spinner";
-import { DataTable } from "@/components/table/ui/data-table";
-import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
-import { formatDate } from "@/lib/utils";
-import { useGroupStockUsage } from "@/queries/stocks";
 import { CSVLink } from "react-csv";
 import CustomButton from "../../custom-button";
+import { DataTable } from "@/components/table/ui/data-table";
+import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
 import { NoStockUsageFound } from "./no-stock-usage-found";
-import { stockUsagePackedListColumns } from "./stock-usage-packed-list-column";
+import { PaginationComponent } from "@/components/ui/pagination";
+import { Spinner } from "@/components/spinner";
 import { ViewAndAddStockUsageModal } from "./view-and-add-stock-usage";
 import exportIcon from "/public/icons/import.svg";
+import { formatDate } from "@/lib/utils";
 import plus from "/public/images/plus.svg";
+import { stockUsagePackedListColumns } from "./stock-usage-packed-list-column";
+import { useGroupStockUsage } from "@/queries/stocks";
 
 export function AllStockUsage() {
   const [search, setSearch] = useState("");
@@ -79,39 +80,13 @@ export function AllStockUsage() {
           columns={stockUsagePackedListColumns ?? []}
           data={stockUsage?.data?.records ?? []}
         />
-        {(stockUsage?.data?.records?.length ?? 0) > 0 && (
-          <div className=" w-full items-center flex justify-between">
-            <div className="flex items-center gap-2">
-              <CustomButton
-                label="Previous page"
-                onClick={() => {
-                  if (!isPlaceholderData && pageNumber > 1) {
-                    setPageNumber((old) => old - 1);
-                  }
-                }}
-                disabled={isPlaceholderData || pageNumber === 1}
-              />
-              <CustomButton
-                label="Next page"
-                onClick={() => {
-                  if (
-                    !isPlaceholderData &&
-                    stockUsage?.data?.meta?.numberOfPages
-                  ) {
-                    setPageNumber((old) => old + 1);
-                  }
-                }}
-                disabled={
-                  isPlaceholderData ||
-                  stockUsage?.data?.meta?.numberOfPages === pageNumber
-                }
-              />
-            </div>
-            <span>
-              page {pageNumber} of {stockUsage?.data?.meta?.numberOfPages}
-            </span>
-          </div>
-        )}
+        <PaginationComponent
+          totalPages={stockUsage?.data?.meta?.numberOfPages ?? 0}
+          isPlaceholderData={isPlaceholderData}
+          items={stockUsage?.data?.records ?? []}
+          pageNumber={pageNumber}
+          setPageNumber={setPageNumber}
+        />
       </div>
     </div>
   );
