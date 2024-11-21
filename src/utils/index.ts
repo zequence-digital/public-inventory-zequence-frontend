@@ -7,20 +7,25 @@ export const tokenKey = "token";
 export const user = "user";
 
 export function getFromLocalStorage(key: string) {
-  if (typeof window !== "undefined") {
+  try {
     return localStorage.getItem(key);
-  }
-  return null;
-}
-
-export function setToLocalStorage(key: string, value: any): void {
-  if (typeof window !== "undefined") {
-    localStorage.setItem(key, value);
+  } catch (error) {
+    return null;
   }
 }
 
-export function removeFromLocalStorage(key: string): void {
-  if (typeof window !== "undefined") {
-    localStorage.removeItem(key);
+export function setToLocalStorage(key: string, value: any) {
+  try {
+    return localStorage.setItem(key, value);
+  } catch (error) {
+    return null;
+  }
+}
+
+export function removeFromLocalStorage(key: string) {
+  try {
+    return localStorage.removeItem(key);
+  } catch (error) {
+    return null;
   }
 }

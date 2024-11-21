@@ -1,8 +1,8 @@
 "use client";
 
-import { useDeleteBranch } from "@/queries/branches";
-import type { GetAllOrganizationBranch } from "@/types";
 import { Alert } from "../dialog/alert-dialog";
+import type { GetAllOrganizationBranch } from "@/types";
+import { useDeleteBranch } from "@/queries/branches";
 
 type Props = {
   open: boolean;
@@ -21,8 +21,8 @@ export function DeleteBranch({ activeBranch, open, onOpenChange }: Props) {
     <div>
       <Alert
         isPending={isPending}
-        title={`Delete ${activeBranch?.name}`}
-        description={`Are you sure you want to delete ${activeBranch?.name} branch?`}
+        title={`Delete ${activeBranch?.name.toUpperCase()}`}
+        description={`Are you sure you want to delete ${activeBranch?.name.toUpperCase()} branch?`}
         open={open}
         onOpenChange={onOpenChange}
         handleContinue={() => {

@@ -3,16 +3,17 @@
 import { useEffect, useMemo, useState } from "react";
 
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import { stocksColumns } from "@/components/table/data/stocks/stocks-columns";
-import { DataTable } from "@/components/table/ui/data-table";
-import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
-import { useCurrentBranch } from "@/hooks/use-current-branch";
-import { formatDate } from "@/lib/utils";
-import { useStocks } from "@/queries/stocks";
 import { CSVLink } from "react-csv";
 import CustomButton from "../custom-button";
+import { DataTable } from "@/components/table/ui/data-table";
+import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
+import { PaginationComponent } from "@/components/ui/pagination";
 import { StockListOverview } from "./stock-list-overview";
 import exportIcon from "/public/icons/import.svg";
+import { formatDate } from "@/lib/utils";
+import { stocksColumns } from "@/components/table/data/stocks/stocks-columns";
+import { useCurrentBranch } from "@/hooks/use-current-branch";
+import { useStocks } from "@/queries/stocks";
 
 export function StockList() {
   const [pageNumber, setPageNumber] = useState(1);
@@ -77,34 +78,13 @@ export function StockList() {
           columns={stocksColumns}
           data={stocks?.data?.records ?? []}
         />
-        <div className=" w-full items-center flex justify-between">
-          <div className="flex items-center gap-2">
-            <CustomButton
-              label="Previous page"
-              onClick={() => {
-                if (!isPlaceholderData && pageNumber > 1) {
-                  setPageNumber((old) => old - 1);
-                }
-              }}
-              disabled={isPlaceholderData || pageNumber === 1}
-            />
-            <CustomButton
-              label="Next page"
-              onClick={() => {
-                if (!isPlaceholderData && stocks?.data?.meta?.numberOfPages) {
-                  setPageNumber((old) => old + 1);
-                }
-              }}
-              disabled={
-                isPlaceholderData ||
-                stocks?.data?.meta?.numberOfPages === pageNumber
-              }
-            />
-          </div>
-          <span>
-            page {pageNumber} of {stocks?.data?.meta?.numberOfPages}
-          </span>
-        </div>
+        <PaginationComponent
+          totalPages={stocks?.data?.meta?.numberOfPages ?? 0}
+          isPlaceholderData={isPlaceholderData}
+          items={stocks?.data?.records ?? []}
+          pageNumber={pageNumber}
+          setPageNumber={setPageNumber}
+        />
       </div>
     </div>
   );

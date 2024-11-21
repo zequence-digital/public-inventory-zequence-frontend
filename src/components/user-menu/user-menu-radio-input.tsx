@@ -1,21 +1,27 @@
 "use client";
 
-import type { GetAllOrganizationBranch } from "@/types";
-import { useState } from "react";
-import { EditBranchModalForm } from "../branches/form/edit-branch-form";
+import { useEffect, useState } from "react";
+
 import { DeleteBranch } from "../delete-table-item/delete-branch";
+import { EditBranchModalForm } from "../branches/form/edit-branch-form";
+import type { GetAllOrganizationBranch } from "@/types";
 import { UserMenuAccountAction } from "./user-menu-account-action";
+import { useLoggedInUser } from "@/crypto";
 
 type Props = {
   branch: GetAllOrganizationBranch["data"][number] | undefined;
 };
 
 export function UserMenuRadioForm({ branch }: Props) {
+  const user = useLoggedInUser();
   const [activeBranch, setActiveBranch] = useState<
     GetAllOrganizationBranch["data"][number] | undefined
   >(branch);
   const [open, onOpenChange] = useState(false);
   const [openDelete, onOpenDeleteChange] = useState(false);
+  useEffect(() => {
+    setActiveBranch(branch);
+  }, [branch]);
   return (
     <div>
       <EditBranchModalForm
@@ -31,7 +37,10 @@ export function UserMenuRadioForm({ branch }: Props) {
       <div>
         <div className="flex items-center whitespace-nowrap">
           <div className="self-stretch text-slate-500 text-xs font-normal">
-            {branch?.name}
+            {branch?.name.toLocaleLowerCase() ===
+            user?.data?.branch?.name.toLocaleLowerCase()
+              ? `${branch?.name.toLocaleUpperCase()} (HEAD OFFICE)`
+              : branch?.name.toLocaleUpperCase()}
           </div>
           <div className="cursor-pointer flex ml-auto text-slate-500">
             <UserMenuAccountAction

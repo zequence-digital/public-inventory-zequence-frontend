@@ -17,6 +17,7 @@ import { AxiosError } from "axios";
 import type { LoginResponse } from "@/types";
 import { apiClient } from "../api";
 import authKeys from "./auth-keys";
+import { encrypt } from "@/crypto";
 import { toast } from "react-toastify";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { useRouter } from "next/navigation";
@@ -39,7 +40,7 @@ export function useLogin(
     onSuccess(data) {
       if (data.success) {
         setToLocalStorage(tokenKey, data.data.credentials.accessToken);
-        setToLocalStorage(user, JSON.stringify(data));
+        setToLocalStorage(user, encrypt(JSON.stringify(data)));
 
         toast.success(data.message);
         window.location.href = "/dashboard/overview";
