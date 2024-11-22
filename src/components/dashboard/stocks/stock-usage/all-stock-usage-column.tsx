@@ -17,7 +17,7 @@ export const allStockUsageColumns: ColumnDef<StockUsage>[] = [
     id: "select",
     header: ({ table }) => (
       <Checkbox
-        className={cn(` border border-muted-400`, {
+        className={cn(`ml-2 border border-muted-400`, {
           "data-[state=checked]:bg-transparent data-[state=checked]:text-muted-400":
             table.getIsAllPageRowsSelected() ||
             (table.getIsSomePageRowsSelected() && "indeterminate"),
