@@ -18,18 +18,18 @@ import {
 import { useAddStock, useStocks } from "@/queries/stocks";
 import { useEffect, useRef, useState } from "react";
 
-import { InputField } from "@/components/form/components/input-field";
+import type { AddStock } from "@/types";
+import { AddStockSchema } from "@/schemas/stocks/add-stock-schema";
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
+import CustomButton from "../../custom-button";
+import { InputField } from "@/components/form/components/input-field";
 import { Spinner } from "@/components/spinner";
-import { useCurrentBranch } from "@/hooks/use-current-branch";
+import { StockListOverview } from "../stock-list-overview";
 import { cn } from "@/lib/utils";
 import { useCategories } from "@/queries/categories";
-import { AddStockSchema } from "@/schemas/stocks/add-stock-schema";
-import type { AddStock } from "@/types";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useCurrentBranch } from "@/hooks/use-current-branch";
 import { useForm } from "react-hook-form";
-import CustomButton from "../../custom-button";
-import { StockListOverview } from "../stock-list-overview";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export function AddStockForm() {
   const ref = useRef<HTMLFormElement | null>(null);
@@ -122,29 +122,6 @@ export function AddStockForm() {
                   )}
                 />
               </div>
-              <div>
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <InputField
-                          label="Stock Name"
-                          id="stockName"
-                          name="stockName"
-                          type="text"
-                          placeholder="Enter stock name here"
-                          isPending={isPending}
-                          onChange={field.onChange}
-                        />
-                      </FormControl>
-
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
 
               <div>
                 {/* If categories exist, show select field, else show input field */}
@@ -201,6 +178,31 @@ export function AddStockForm() {
                 />
               </div>
               <div>
+                {/* Stock Name */}
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <InputField
+                          label="Stock Name"
+                          id="stockName"
+                          name="stockName"
+                          type="text"
+                          placeholder="Enter stock name here"
+                          isPending={isPending}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div>
+                {/* Quantity */}
                 <FormField
                   control={form.control}
                   name="quantity"

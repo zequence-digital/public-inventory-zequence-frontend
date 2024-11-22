@@ -3,13 +3,11 @@
 import { useMemo, useState } from "react";
 
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import { CSVLink } from "react-csv";
-import CustomButton from "../../custom-button";
 import { DataTable } from "@/components/table/ui/data-table";
 import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
+import { ExportToCsv } from "@/components/table/ui/export-to-csv";
 import { PaginationComponent } from "@/components/ui/pagination";
 import { allSalesColumns } from "./table-data/all-sales-column";
-import exportIcon from "/public/icons/import.svg";
 import { formatDate } from "@/lib/utils";
 import { useGroupSales } from "@/queries/sales";
 
@@ -54,9 +52,11 @@ export function AllSales() {
         <div className=" mb-4 flex w-full items-center justify-between gap-1">
           {/* Filters */}
           <div className="flex items-end justify-end w-full gap-2">
-            <CSVLink data={csvData} filename={"sales"}>
-              <CustomButton src={exportIcon} alt="Export Icon" label="Export" />
-            </CSVLink>
+            <ExportToCsv
+              fileName="sales"
+              csvData={csvData}
+              items={sales?.data?.records ?? []}
+            />
             <DataTableSearchInput
               searchText={search}
               setSearchText={setSearch}
