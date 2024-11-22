@@ -16,10 +16,10 @@ import {
 
 import { AuthResponse } from "@/types/auth";
 import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
-import { getCategories } from "./actions";
 import categoryKeys from "./category-keys";
+import { getCategories } from "./actions";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export function useCategories(
   pageNumber: number = 1,

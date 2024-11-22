@@ -10,15 +10,13 @@ import {
 import { useMemo, useState } from "react";
 
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import { CSVLink } from "react-csv";
-import CustomButton from "../../custom-button";
 import { DataTable } from "@/components/table/ui/data-table";
 import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
+import { ExportToCsv } from "@/components/table/ui/export-to-csv";
 import { PaginationComponent } from "@/components/ui/pagination";
 import { ProductOverview } from "@/components/dashboard/home/product-overview";
 import { StockOverview } from "@/components/dashboard/home/stock-overview";
 import { allItemsColumn } from "@/components/table/data/all-items-columns";
-import exportIcon from "/public/icons/import.svg";
 import { useDashboardItemsStore } from "@/store/use-dashboard-items";
 
 export function Overview() {
@@ -79,9 +77,12 @@ export function Overview() {
         <div className=" mb-4 flex w-full items-center justify-between gap-1">
           {/* Filters */}
           <div className="flex items-end justify-end w-full gap-2">
-            <CSVLink filename="overview" data={csvData}>
-              <CustomButton src={exportIcon} alt="Export Icon" label="Export" />
-            </CSVLink>
+            <ExportToCsv
+              fileName="overview"
+              items={items?.data?.records ?? []}
+              csvData={csvData}
+            />
+
             <DataTableSearchInput
               searchText={search}
               setSearchText={setSearch}

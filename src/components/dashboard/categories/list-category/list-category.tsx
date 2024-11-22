@@ -4,13 +4,11 @@ import { cn, formatDate } from "@/lib/utils";
 import { useMemo, useState } from "react";
 
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import { CSVLink } from "react-csv";
-import CustomButton from "../../custom-button";
 import { DataTable } from "@/components/table/ui/data-table";
 import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
+import { ExportToCsv } from "@/components/table/ui/export-to-csv";
 import { PaginationComponent } from "@/components/ui/pagination";
 import { categoriesColumns } from "./data/categories-column";
-import exportIcon from "/public/icons/import.svg";
 import { useCategories } from "@/queries/categories";
 
 export function CategoryList() {
@@ -53,9 +51,11 @@ export function CategoryList() {
         <div className=" mb-4 flex w-full items-center justify-between gap-1">
           {/* Filters */}
           <div className="flex items-end justify-end w-full gap-2">
-            <CSVLink data={csvData} filename={"categories"}>
-              <CustomButton src={exportIcon} alt="Export Icon" label="Export" />
-            </CSVLink>
+            <ExportToCsv
+              fileName="categories"
+              items={categories?.data?.records ?? []}
+              csvData={csvData}
+            />
             <DataTableSearchInput
               searchText={search}
               setSearchText={setSearch}

@@ -32,20 +32,6 @@ const links = [
     ],
   },
   {
-    name: "Products",
-    IconComponent: SvgProducts,
-    subLinks: [
-      {
-        name: "Add product",
-        href: "/dashboard/products/add-product",
-      },
-      {
-        name: "List products",
-        href: "/dashboard/products/list-products",
-      },
-    ],
-  },
-  {
     name: "Categories",
     IconComponent: SvgProducts,
     subLinks: [
@@ -59,6 +45,21 @@ const links = [
       },
     ],
   },
+  {
+    name: "Products",
+    IconComponent: SvgProducts,
+    subLinks: [
+      {
+        name: "Add product",
+        href: "/dashboard/products/add-product",
+      },
+      {
+        name: "List products",
+        href: "/dashboard/products/list-products",
+      },
+    ],
+  },
+
   {
     name: "Stock",
     IconComponent: SvgStocks,
