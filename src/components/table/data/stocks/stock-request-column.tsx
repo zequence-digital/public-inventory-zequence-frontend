@@ -1,15 +1,15 @@
 "use client";
 
-import { cn, formatDate } from "@/lib/utils";
-
 import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "../../ui/data-table-column-header";
+import { DateFormat } from "@/components/ui/date-format";
 import type { GetStockRequest } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import SvgEdit from "@/components/svg/svg-edit";
 import SvgView from "@/components/svg/svg-view";
+import { cn } from "@/lib/utils";
 import completed from "/public/images/completed.svg";
 import pending from "/public/images/pending.svg";
 
@@ -76,7 +76,7 @@ export const stockRequestColumns: ColumnDef<Stock>[] = [
     ),
     cell: ({ row }) => {
       const date = row.getValue("createdAt") as Stock["createdAt"];
-      return <div>{formatDate(date)}</div>;
+      return <DateFormat date={date} />;
     },
   },
   {
