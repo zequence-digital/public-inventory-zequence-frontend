@@ -1,16 +1,17 @@
 "use client";
 
 import { Active, Archived, Inactive } from "@/assets";
-import { cn, formatDate } from "@/lib/utils";
 
 import type { AllCategory } from "@/types";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/table/ui/data-table-column-header";
+import { DateFormat } from "@/components/ui/date-format";
 import { DeleteCategory } from "@/components/delete-table-item/delete-category";
 import Image from "next/image";
 import Link from "next/link";
 import SvgEdit from "@/components/svg/svg-edit";
+import { cn } from "@/lib/utils";
 
 type Category = AllCategory["data"]["records"][number];
 export const categoriesColumns: ColumnDef<Category>[] = [
@@ -80,7 +81,7 @@ export const categoriesColumns: ColumnDef<Category>[] = [
     cell: ({ row }) => {
       const createdAt = row.getValue("createdAt") as Category["createdAt"];
 
-      return <div>{formatDate(createdAt?.toString())}</div>;
+      return <DateFormat date={createdAt} />;
     },
   },
   {
@@ -91,7 +92,7 @@ export const categoriesColumns: ColumnDef<Category>[] = [
     cell: ({ row }) => {
       const updatedBy = row.getValue("updatedAt") as Category["updatedAt"];
 
-      return <div>{formatDate(updatedBy?.toString())}</div>;
+      return <DateFormat date={updatedBy} />;
     },
   },
   {

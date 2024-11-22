@@ -1,14 +1,14 @@
 "use client";
 
-import { cn, formatDate } from "@/lib/utils";
-
-import { DeleteStockUsage } from "@/components/delete-table-item/delete-stock-usage";
-import SvgEdit from "@/components/svg/svg-edit";
-import { DataTableColumnHeader } from "@/components/table/ui/data-table-column-header";
 import { Checkbox } from "@/components/ui/checkbox";
-import type { GetAllStockUsage } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
+import { DataTableColumnHeader } from "@/components/table/ui/data-table-column-header";
+import { DateFormat } from "@/components/ui/date-format";
+import { DeleteStockUsage } from "@/components/delete-table-item/delete-stock-usage";
+import type { GetAllStockUsage } from "@/types";
 import Link from "next/link";
+import SvgEdit from "@/components/svg/svg-edit";
+import { cn } from "@/lib/utils";
 
 type StockUsage = GetAllStockUsage["data"]["records"][number];
 
@@ -83,7 +83,7 @@ export const allStockUsageColumns: ColumnDef<StockUsage>[] = [
     ),
     cell: ({ row }) => {
       const date = row.getValue("createdAt") as StockUsage["createdAt"];
-      return <div>{formatDate(date)}</div>;
+      return <DateFormat date={date} />;
     },
   },
 

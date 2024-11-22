@@ -1,12 +1,12 @@
 "use client";
 
-import { cn, formatDate } from "@/lib/utils";
-
 import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/table/ui/data-table-column-header";
+import { DateFormat } from "@/components/ui/date-format";
 import type { GroupSales } from "@/types";
 import { SalesInvoiceModal } from "../print-sales-modal";
+import { cn } from "@/lib/utils";
 
 type Sales = GroupSales["data"]["records"][number];
 
@@ -57,7 +57,7 @@ export const allSalesColumns: ColumnDef<Sales>[] = [
     ),
     cell: ({ row }) => {
       const date = row.getValue("createdAt") as Sales["createdAt"];
-      return <div>{formatDate(date)}</div>;
+      return <DateFormat date={date} />;
     },
   },
   {
