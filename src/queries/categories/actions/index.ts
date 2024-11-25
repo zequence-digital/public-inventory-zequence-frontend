@@ -10,11 +10,14 @@ import { apiClient } from "@/services/api";
 // /category
 
 export async function getCategories(
+  pageSize?: number,
   pageNumber: number = 1,
   search: string = "",
 ): Promise<AllCategory> {
   const response = await apiClient.get({
-    url: `/category?pageNumber=${pageNumber}${search ? `&search=${search}` : ""}`,
+    url: `/category?pageNumber=${pageNumber}${search ? `&search=${search}` : ""}${
+      pageSize ? `&pageSize=${pageSize}` : ""
+    }`,
     auth: true,
   });
 

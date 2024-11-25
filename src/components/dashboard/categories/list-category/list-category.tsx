@@ -8,8 +8,8 @@ import { DataTable } from "@/components/table/ui/data-table";
 import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
 import { ExportToCsv } from "@/components/table/ui/export-to-csv";
 import { PaginationComponent } from "@/components/ui/pagination";
-import { categoriesColumns } from "./data/categories-column";
 import { useCategories } from "@/queries/categories";
+import { categoriesColumns } from "./data/categories-column";
 
 export function CategoryList() {
   const [search, setSearch] = useState("");
@@ -22,7 +22,7 @@ export function CategoryList() {
     isPlaceholderData,
     isFetching,
     error,
-  } = useCategories(pageNumber, search);
+  } = useCategories(10, pageNumber, search);
 
   const csvData = useMemo(() => {
     if (categories?.data?.records) {
