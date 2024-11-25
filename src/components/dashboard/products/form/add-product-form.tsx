@@ -18,18 +18,18 @@ import {
 import { useAddProduct, useProducts } from "@/queries/products";
 import { useEffect, useRef, useState } from "react";
 
-import type { AddProduct } from "@/types";
-import { AddProductSchema } from "@/schemas/products/add-product-schema";
-import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import CustomButton from "../../custom-button";
 import { InputField } from "@/components/form/components/input-field";
-import { ProductListOverview } from "../product-list-overview";
+import { ApiErrorMessage } from "@/components/messages/api-error-message";
 import { Spinner } from "@/components/spinner";
+import { useCurrentBranch } from "@/hooks/use-current-branch";
 import { cn } from "@/lib/utils";
 import { useCategories } from "@/queries/categories";
-import { useCurrentBranch } from "@/hooks/use-current-branch";
-import { useForm } from "react-hook-form";
+import { AddProductSchema } from "@/schemas/products/add-product-schema";
+import type { AddProduct } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import CustomButton from "../../custom-button";
+import { ProductListOverview } from "../product-list-overview";
 
 export function AddProductForm() {
   const ref = useRef<HTMLFormElement | null>(null);
@@ -63,7 +63,7 @@ export function AddProductForm() {
     isPending: pendingCategory,
     isError,
     error,
-  } = useCategories();
+  } = useCategories(10000000);
 
   const products = categories?.data?.records.filter(
     (item) => item.categoryType === "PRODUCT" && item.status === "ACTIVE",
@@ -106,7 +106,7 @@ export function AddProductForm() {
                           type="text"
                           placeholder="Enter branch name here"
                           isPending={pendingBranch}
-                          value={currentBranch?.name}
+                          value={branchId?.name}
                           disabled
                         />
                       </FormControl>
@@ -128,11 +128,11 @@ export function AddProductForm() {
                   name="categoryGuid"
                   render={({ field }) => (
                     <FormItem>
-                      {products?.length ? (
+                      {products && products?.length > 0 ? (
                         <FormLabel>Product Category</FormLabel>
                       ) : null}
                       <FormControl>
-                        {products?.length ? (
+                        {products && products?.length > 0 ? (
                           <Select onValueChange={field.onChange}>
                             <SelectTrigger
                               className={cn(
@@ -145,7 +145,7 @@ export function AddProductForm() {
                               <SelectValue placeholder="Select a Category" />
                             </SelectTrigger>
                             <SelectContent>
-                              {products?.map((item, index) => (
+                              {products?.map((item) => (
                                 <SelectItem
                                   id={item.guid}
                                   key={item.guid}

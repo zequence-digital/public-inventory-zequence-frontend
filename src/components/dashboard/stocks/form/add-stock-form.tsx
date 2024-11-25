@@ -18,18 +18,18 @@ import {
 import { useAddStock, useStocks } from "@/queries/stocks";
 import { useEffect, useRef, useState } from "react";
 
-import type { AddStock } from "@/types";
-import { AddStockSchema } from "@/schemas/stocks/add-stock-schema";
-import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import CustomButton from "../../custom-button";
 import { InputField } from "@/components/form/components/input-field";
+import { ApiErrorMessage } from "@/components/messages/api-error-message";
 import { Spinner } from "@/components/spinner";
-import { StockListOverview } from "../stock-list-overview";
+import { useCurrentBranch } from "@/hooks/use-current-branch";
 import { cn } from "@/lib/utils";
 import { useCategories } from "@/queries/categories";
-import { useCurrentBranch } from "@/hooks/use-current-branch";
-import { useForm } from "react-hook-form";
+import { AddStockSchema } from "@/schemas/stocks/add-stock-schema";
+import type { AddStock } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import CustomButton from "../../custom-button";
+import { StockListOverview } from "../stock-list-overview";
 
 export function AddStockForm() {
   const ref = useRef<HTMLFormElement | null>(null);
@@ -66,7 +66,7 @@ export function AddStockForm() {
     isPending: pendingCategory,
     isError,
     error,
-  } = useCategories();
+  } = useCategories(10000000);
 
   const stocks = categories?.data?.records.filter(
     (item) => item.categoryType === "STOCK" && item.status === "ACTIVE",
