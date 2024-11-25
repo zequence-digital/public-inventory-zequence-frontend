@@ -1,6 +1,5 @@
 "use client";
 
-import { AddSalesSchema, customerType } from "@/schemas/sales/add-sales-schema";
 import {
   Form,
   FormControl,
@@ -16,23 +15,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useRef, useState } from "react";
+import { AddSalesSchema, customerType } from "@/schemas/sales/add-sales-schema";
+import { useMemo, useRef, useState } from "react";
 
-import type { AddSales } from "@/types";
-import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import CustomButton from "../../custom-button";
 import { InputField } from "@/components/form/components/input-field";
-import { ProductOverview } from "../../home/product-overview";
+import { ApiErrorMessage } from "@/components/messages/api-error-message";
 import { Spinner } from "@/components/spinner";
-import { StockOverview } from "../../home/stock-overview";
-import { cn } from "@/lib/utils";
-import plus from "/public/images/plus.svg";
-import { useAddSales } from "@/queries/sales";
 import { useCurrentBranch } from "@/hooks/use-current-branch";
+import { cn } from "@/lib/utils";
 import { useDashboardOverview } from "@/queries/dashboard-overview";
-import { useForm } from "react-hook-form";
 import { useProducts } from "@/queries/products";
+import { useAddSales } from "@/queries/sales";
+import type { AddSales } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import CustomButton from "../../custom-button";
+import { ProductOverview } from "../../home/product-overview";
+import { StockOverview } from "../../home/stock-overview";
+import plus from "/public/images/plus.svg";
 
 export function AddSalesForm() {
   const ref = useRef<HTMLFormElement | null>(null);
@@ -58,6 +58,12 @@ export function AddSalesForm() {
     isPending: pendingProduct,
     error: errorProduct,
   } = useProducts();
+
+  const activeProducts = useMemo(() => {
+    return product?.data?.records.filter(
+      (product) => product.status !== "OUT_OF_STOCK",
+    );
+  }, [product?.data?.records]);
 
   const { currentBranch, isErrorBranch, pendingBranch, errorBranch } =
     useCurrentBranch();
@@ -155,7 +161,7 @@ export function AddSalesForm() {
               <div>
                 {/* Item */}
 
-                {product?.data?.records.length ? (
+                {activeProducts && activeProducts.length > 0 ? (
                   <FormField
                     control={form.control}
                     name="item"
@@ -166,7 +172,7 @@ export function AddSalesForm() {
                           <Select
                             onValueChange={(value) => {
                               field.onChange(value);
-                              const item = product?.data?.records?.find(
+                              const item = activeProducts?.find(
                                 (item) => item?.name === value,
                               );
 
@@ -186,7 +192,7 @@ export function AddSalesForm() {
                               <SelectValue placeholder="Select a product" />
                             </SelectTrigger>
                             <SelectContent>
-                              {product?.data?.records?.map((item) => (
+                              {activeProducts?.map((item) => (
                                 <SelectItem
                                   id={item.guid}
                                   key={item.guid}
