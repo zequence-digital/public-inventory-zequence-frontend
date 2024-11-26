@@ -1,4 +1,4 @@
-import { useBranches } from "@/queries/stocks";
+import { useBranches } from "@/queries/branches";
 import { useLoggedInUser } from "@/crypto";
 import { useMemo } from "react";
 

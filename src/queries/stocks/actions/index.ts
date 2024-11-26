@@ -5,7 +5,6 @@ import type {
   AllStock,
   GetAllGroupStockUsage,
   GetAllStockUsage,
-  GetBranches,
   GetStockRequest,
   GetStockTransfer,
   SingleGroupStockUsage,
@@ -19,17 +18,6 @@ import type {
 } from "@/types";
 
 import { apiClient } from "@/services/api";
-
-// /generic/branches
-
-export const getBranches = async (): Promise<GetBranches> => {
-  const response = await apiClient.get({
-    url: "/generic/branches",
-    auth: false,
-  });
-
-  return response as GetBranches;
-};
 
 // products/add-product
 
