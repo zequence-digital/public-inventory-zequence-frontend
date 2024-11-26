@@ -178,9 +178,10 @@ export function InviteUserModalForm({ className, ...rest }: Props) {
                       )}
                     />
                   </div>
-                  {/* Branch */}
 
                   <div>
+                    {/* Branch */}
+
                     <FormField
                       control={form.control}
                       name="branchId"
