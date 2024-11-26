@@ -2,8 +2,8 @@
 
 import "react-phone-input-2/lib/style.css";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DragAndDrop, FileUpload, UserAvatar } from "@/assets";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Form,
   FormControl,
@@ -19,28 +19,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { UserRole, UserType } from "./components/select-field";
 import { useAllStates, useAllStatesLga, useCountries } from "@/queries/state";
-import { useCallback, useState } from "react";
 import { useFileUpload, useFileUploadState } from "@/services/file-upload";
+import { useCallback, useState } from "react";
+import { UserRole, UserType } from "./components/select-field";
 
-import { ApiErrorMessage } from "../messages/api-error-message";
+import { Logo } from "@/assets";
 import { CardWrapper } from "@/components/auth/card-wrapper";
-import type { CompleteSignUp } from "@/types";
-import Image from "next/image";
+import SubmitButton from "@/components/form/components/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Logo } from "@/assets";
-import PhoneInput from "react-phone-input-2";
-import { Spinner } from "../spinner";
-import SubmitButton from "@/components/form/components/submit-button";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 import { cn } from "@/lib/utils";
 import { completeSignUpSchema } from "@/schemas/complete-registration";
 import { useCompleteRegistration } from "@/services/auth";
+import type { CompleteSignUp } from "@/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
 import { useDropzone } from "react-dropzone";
 import { useForm } from "react-hook-form";
-import { useLocalStorage } from "@/hooks/use-local-storage";
-import { zodResolver } from "@hookform/resolvers/zod";
+import PhoneInput from "react-phone-input-2";
+import { ApiErrorMessage } from "../messages/api-error-message";
+import { Spinner } from "../spinner";
 
 export const CompleteSignUpForm = () => {
   const [selectedImage, setSelectedImage] = useState<File | undefined>();

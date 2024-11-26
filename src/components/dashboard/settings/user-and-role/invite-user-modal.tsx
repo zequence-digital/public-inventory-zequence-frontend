@@ -23,17 +23,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useRef, useState } from "react";
 
 import { InputField } from "@/components/form/components/input-field";
+import { ApiErrorMessage } from "@/components/messages/api-error-message";
 import { Spinner } from "@/components/spinner";
 import { cn } from "@/lib/utils";
+import { useBranches } from "@/queries/branches";
 import { useInviteUser } from "@/queries/settings/user-and-role";
 import { InviteUserSchema } from "@/schemas/settings/invite-user-schema";
 import { useInviteUserModalAction } from "@/store/use-invite-user-modal";
 import type { InviteUser } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import CustomButton from "../../custom-button";
 
@@ -44,6 +46,16 @@ type Props = { className?: string } & React.HTMLAttributes<HTMLDivElement>;
 export function InviteUserModalForm({ className, ...rest }: Props) {
   const ref = useRef<HTMLFormElement | null>(null);
   const { open, onOpenChange } = useInviteUserModalAction();
+  const [branch, setBranch] = useState<
+    { id: number; name: string } | undefined
+  >(undefined);
+
+  const {
+    data: branches,
+    isError: isErrorBranch,
+    error: errorBranch,
+    isPending: pendingBranch,
+  } = useBranches();
 
   const form = useForm<InviteUser>({
     resolver: zodResolver(InviteUserSchema),
@@ -76,7 +88,12 @@ export function InviteUserModalForm({ className, ...rest }: Props) {
           <div className="mt-8">
             <Form {...form}>
               <form
-                onSubmit={form.handleSubmit((data) => invite(data))}
+                onSubmit={form.handleSubmit((data) =>
+                  invite({
+                    ...data,
+                    branchId: branch?.id as number,
+                  }),
+                )}
                 ref={ref}
               >
                 <div className="grid grid-auto-fit-xl gap-5">
@@ -160,6 +177,59 @@ export function InviteUserModalForm({ className, ...rest }: Props) {
                         </FormItem>
                       )}
                     />
+                  </div>
+                  {/* Branch */}
+
+                  <div>
+                    <FormField
+                      control={form.control}
+                      name="branchId"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Select
+                              onValueChange={(value) => {
+                                field.onChange(value);
+                                const selectedBranch = branches?.data?.find(
+                                  (branch) =>
+                                    branch.name.toLocaleLowerCase() ===
+                                    value.toLocaleLowerCase(),
+                                );
+                                setBranch(selectedBranch);
+                              }}
+                            >
+                              <SelectTrigger
+                                className={cn(
+                                  `w-full h-[48px] px-4  text-sm bg-white border border-muted-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent`,
+                                  {
+                                    "cursor-not-allowed bg-gray-300 animate-pulse":
+                                      pendingBranch,
+                                  },
+                                )}
+                              >
+                                <SelectValue placeholder="Branch" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {branches?.data?.map((branch) => (
+                                  <SelectItem
+                                    id={branch.id.toString()}
+                                    key={branch.id}
+                                    value={branch.name}
+                                  >
+                                    {branch.name.toUpperCase()}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </FormControl>
+
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    {isErrorBranch && (
+                      <ApiErrorMessage message={errorBranch?.message} />
+                    )}
                   </div>
                 </div>
                 <AlertDialogFooter className=" flex justify-between w-full mt-6">
