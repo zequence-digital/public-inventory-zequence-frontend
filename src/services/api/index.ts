@@ -1,6 +1,6 @@
+import { baseUrl } from "@/utils";
 import axios from "axios";
 import axiosInstance from "../axios-config";
-import { baseUrl } from "@/utils";
 
 type Request = {
   url: string;
@@ -14,12 +14,6 @@ type GET_REQ = Partial<Omit<Request, "body">>;
 
 const deleteRequest = async ({ url }: DEL_REQ) =>
   (await axiosInstance.delete(url)).data;
-
-const deleteWithAuth = async ({ url, body, auth = true }: Request) => {
-  return (
-    await (auth ? axiosInstance.delete(url, body) : axios.delete(url, body))
-  ).data;
-};
 
 const get = async ({ url = "", auth = true }: GET_REQ) => {
   return (await (auth ? axiosInstance.get(url) : axios.get(baseUrl + url)))
@@ -46,5 +40,4 @@ export const apiClient = {
   patch,
   post,
   put,
-  deleteWithAuth,
 };

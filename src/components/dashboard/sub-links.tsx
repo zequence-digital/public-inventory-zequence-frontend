@@ -1,22 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import SvgSettings from "../svg/svg-settings";
 import { cn } from "@/lib/utils";
+import { subLinks } from "@/routes";
 import { usePathname } from "next/navigation";
 
-const links = [
-  {
-    name: "Settings",
-    href: "/dashboard/settings",
-    IconComponent: SvgSettings,
-  },
-];
 export function SubLinks() {
   const pathname = usePathname();
   return (
-    <div className="flex flex-row gap-2 md:flex-col md:gap-2 w-full">
-      {links.map((link) => {
+    <div className="flex flex-row gap-2 md:flex-col md:gap-2 w-fit md:w-full">
+      {subLinks.map((link) => {
         const Icon = link.IconComponent;
         const activeLink = pathname === link.href;
         return (

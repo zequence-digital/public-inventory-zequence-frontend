@@ -9,98 +9,10 @@ import {
 
 import { ApiErrorMessage } from "../messages/api-error-message";
 import Link from "next/link";
-import SvgHome from "../svg/svg-home";
-import SvgProducts from "../svg/svg-products";
-import SvgStocks from "../svg/svg-stocks";
 import { cn } from "@/lib/utils";
+import { links } from "@/routes";
 import { useNotifications } from "@/queries/notifications";
 import { usePathname } from "next/navigation";
-
-const links = [
-  {
-    name: "Home",
-    IconComponent: SvgHome,
-    subLinks: [
-      {
-        name: "Overview",
-        href: "/dashboard/overview",
-      },
-      {
-        name: "Notifications",
-        href: "/dashboard/notifications",
-      },
-    ],
-  },
-  {
-    name: "Categories",
-    IconComponent: SvgProducts,
-    subLinks: [
-      {
-        name: "Add new category",
-        href: "/dashboard/categories/add-category",
-      },
-      {
-        name: "List categories",
-        href: "/dashboard/categories/list-categories",
-      },
-    ],
-  },
-  {
-    name: "Products",
-    IconComponent: SvgProducts,
-    subLinks: [
-      {
-        name: "Add product",
-        href: "/dashboard/products/add-product",
-      },
-      {
-        name: "List products",
-        href: "/dashboard/products/list-products",
-      },
-    ],
-  },
-
-  {
-    name: "Stock",
-    IconComponent: SvgStocks,
-    subLinks: [
-      {
-        name: "Add stock",
-        href: "/dashboard/stocks/add-stock",
-      },
-      {
-        name: "List stock",
-        href: "/dashboard/stocks/list-stock",
-      },
-      {
-        name: "Add stock transfer",
-        href: "/dashboard/stocks/add-stock-transfer",
-      },
-      {
-        name: "Stock request",
-        href: "/dashboard/stocks/stock-request",
-      },
-      {
-        name: "Stock usage",
-        href: "/dashboard/stocks/stock-usage",
-      },
-    ],
-  },
-  {
-    name: "Sales",
-    IconComponent: SvgStocks,
-    subLinks: [
-      {
-        name: "All sales",
-        href: "/dashboard/sales/all-sales",
-      },
-      {
-        name: "Add sales",
-        href: "/dashboard/sales/add-sales",
-      },
-    ],
-  },
-];
 
 export default function NavLinks() {
   const pathname = usePathname();
@@ -111,7 +23,7 @@ export default function NavLinks() {
       <Accordion
         type="single"
         collapsible
-        className="flex md:flex-col md:gap-2 flex-row w-full"
+        className="flex md:flex-col md:gap-2 flex-row w-fit md:w-full"
       >
         {links.map((link) => {
           const Icon = link.IconComponent;
@@ -124,7 +36,7 @@ export default function NavLinks() {
             >
               <AccordionTrigger
                 className={cn(
-                  `hover:no-underline flex  items-center group py-2 px-3 rounded-md text-sm font-medium grow  hover:bg-primary-100/80  md:flex-none md:justify-start data-[state=open]:bg-primary-100 hover:text-white [&[data-state=open]>*]:text-white [&>svg]:hover:text-white w-full [&>svg]:ml-auto [&[data-state=open]>div>svg]:stroke-white`,
+                  `hover:no-underline flex  items-center group py-2 px-3 rounded-md text-sm font-medium grow  hover:bg-primary-100/80  md:flex-none md:justify-start data-[state=open]:bg-primary-100 hover:text-white [&[data-state=open]>*]:text-white [&>svg]:hover:text-white md:w-full w-fit [&>svg]:ml-auto [&[data-state=open]>div>svg]:stroke-white`,
                   {},
                 )}
               >
