@@ -28,7 +28,10 @@ export const UserMenu = () => {
             <div className="relative shrink-0 [&_span]:rounded-lg ">
               <Avatar>
                 <AvatarImage
-                  src={user?.data?.businessProfile?.companyLogo}
+                  src={
+                    user?.data?.businessProfile?.companyLogo ||
+                    user?.data?.photoLink
+                  }
                   alt="avatar"
                 />
                 <AvatarFallback></AvatarFallback>
