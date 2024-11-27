@@ -18,17 +18,17 @@ import {
 import { useAddStockTransfer, useStocks } from "@/queries/stocks";
 import { useEffect, useRef, useState } from "react";
 
-import { InputField } from "@/components/form/components/input-field";
-import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import { Spinner } from "@/components/spinner";
-import { useCurrentBranch } from "@/hooks/use-current-branch";
-import { cn } from "@/lib/utils";
-import { AddStockTransferSchema } from "@/schemas/stocks/transfer/add-stock-transfer-schema";
 import type { AddStockTransfer } from "@/types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { AddStockTransferSchema } from "@/schemas/stocks/transfer/add-stock-transfer-schema";
+import { ApiErrorMessage } from "@/components/messages/api-error-message";
 import CustomButton from "../../custom-button";
+import { InputField } from "@/components/form/components/input-field";
+import { Spinner } from "@/components/spinner";
 import { StockListOverview } from "../stock-list-overview";
+import { cn } from "@/lib/utils";
+import { useCurrentBranch } from "@/hooks/use-current-branch";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export function AddStockTransferForm() {
   const ref = useRef<HTMLFormElement | null>(null);
@@ -165,53 +165,66 @@ export function AddStockTransferForm() {
               <div>
                 {/* Item */}
 
-                <FormField
-                  control={form.control}
-                  name="stockReferenceNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Stock</FormLabel>
-                      <FormControl>
-                        <Select
-                          onValueChange={(value) => {
-                            field.onChange(value);
-                            const item = stockList?.data?.records?.find(
-                              (item) => item.name === value,
-                            );
+                {stockList?.data?.records &&
+                stockList?.data?.records.length > 0 ? (
+                  <FormField
+                    control={form.control}
+                    name="stockReferenceNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Stock</FormLabel>
+                        <FormControl>
+                          <Select
+                            onValueChange={(value) => {
+                              field.onChange(value);
+                              const item = stockList?.data?.records?.find(
+                                (item) => item.name === value,
+                              );
 
-                            if (item) {
-                              setReferenceNumber(item.referenceNumber);
-                            }
-                          }}
-                        >
-                          <SelectTrigger
-                            className={cn(
-                              `w-full h-[48px] px-4  text-sm bg-white border border-muted-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent`,
-                              {
-                                "animate-pulse bg-gray-300": pendingStock,
-                              },
-                            )}
+                              if (item) {
+                                setReferenceNumber(item.referenceNumber);
+                              }
+                            }}
                           >
-                            <SelectValue placeholder="Select a stock" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {stockList?.data?.records?.map((item) => (
-                              <SelectItem
-                                id={item.guid}
-                                key={item.guid}
-                                value={item?.name}
-                              >
-                                {item?.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
+                            <SelectTrigger
+                              className={cn(
+                                `w-full h-[48px] px-4  text-sm bg-white border border-muted-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent`,
+                                {
+                                  "animate-pulse bg-gray-300": pendingStock,
+                                },
+                              )}
+                            >
+                              <SelectValue placeholder="Select a stock" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {stockList?.data?.records?.map((item) => (
+                                <SelectItem
+                                  id={item.guid}
+                                  key={item.guid}
+                                  value={item?.name}
+                                >
+                                  {item?.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
 
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                ) : (
+                  <InputField
+                    disabled
+                    label="Stock"
+                    id="stockReferenceNumber"
+                    name="stockReferenceNumber"
+                    type="text"
+                    placeholder="No stock available for transfer."
+                    isPending={pendingStock}
+                  />
+                )}
               </div>
 
               <div>
