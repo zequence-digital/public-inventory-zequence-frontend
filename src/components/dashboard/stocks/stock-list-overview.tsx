@@ -1,7 +1,7 @@
 "use client";
 
-import { SingleDetailCard } from "@/components/table/ui/single-detail-card";
 import type { AllStock } from "@/types";
+import { SingleDetailCard } from "@/components/table/ui/single-detail-card";
 
 type Props = {
   stocks: AllStock | undefined;
@@ -21,7 +21,7 @@ export function StockListOverview({ stocks, isPending }: Props) {
   ).length;
   return (
     <div className="py-2">
-      <div className="flex max-md:flex-col gap-6">
+      <div className="flex max-xl:flex-col gap-6">
         <SingleDetailCard
           isPending={isPending}
           title="In Stock"
