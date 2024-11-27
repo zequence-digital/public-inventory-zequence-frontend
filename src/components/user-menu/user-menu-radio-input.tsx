@@ -14,6 +14,7 @@ type Props = {
 
 export function UserMenuRadioForm({ branch }: Props) {
   const user = useLoggedInUser();
+
   const [activeBranch, setActiveBranch] = useState<
     GetAllOrganizationBranch["data"][number] | undefined
   >(branch);
@@ -22,6 +23,7 @@ export function UserMenuRadioForm({ branch }: Props) {
   useEffect(() => {
     setActiveBranch(branch);
   }, [branch]);
+
   return (
     <div>
       <EditBranchModalForm
@@ -38,9 +40,10 @@ export function UserMenuRadioForm({ branch }: Props) {
         <div className="flex items-center whitespace-nowrap">
           <div className="self-stretch text-slate-500 text-xs font-normal">
             {branch?.name.toLocaleLowerCase() ===
-            user?.data?.branch?.name.toLocaleLowerCase()
-              ? `${branch?.name.toLocaleUpperCase()} (HEAD OFFICE)`
-              : branch?.name.toLocaleUpperCase()}
+              user?.data?.branch?.name.toLocaleLowerCase() &&
+            user?.data?.roleName === "ADMIN"
+              ? `${user?.data?.branch?.name.toLocaleUpperCase()} (HEAD OFFICE)`
+              : `${branch?.name.toUpperCase()}`}
           </div>
           <div className="cursor-pointer flex ml-auto text-slate-500">
             <UserMenuAccountAction
