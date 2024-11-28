@@ -1,5 +1,6 @@
 import type {
   AllStock,
+  ApproveOrDeclineRequestOrTransfer,
   GetAllGroupStockUsage,
   GetAllStockUsage,
   GetStockRequest,
@@ -23,6 +24,7 @@ import {
   addStockRequest,
   addStockTransfer,
   addStockUsage,
+  approveOrDeclineRequestOrTransfer,
   deleteGroupStockUsage,
   deleteStock,
   deleteStockUsage,
@@ -659,4 +661,34 @@ export function useSingleGroupStockUsage(
   });
 
   return querySales;
+}
+
+export function useApproveOrDeclineRequestOrTransfer(
+  type: "stock-request" | "stock-transfer",
+  data: ApproveOrDeclineRequestOrTransfer,
+  options?: UseMutationOptions<AuthResponse, AxiosError, any, unknown>,
+) {
+  const queryClient = useQueryClient();
+
+  const approveOrDecline = useMutation({
+    mutationFn: () => approveOrDeclineRequestOrTransfer(type, data),
+    onSuccess(data) {
+      if (data.success) {
+        toast.success(data.message);
+        queryClient.invalidateQueries({
+          queryKey: [stockKeys.read, "stock-request"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [stockKeys.read, "stock-transfer"],
+        });
+      }
+
+      if (!data.success) {
+        toast.error(data.message);
+      }
+    },
+    ...options,
+  });
+
+  return approveOrDecline;
 }

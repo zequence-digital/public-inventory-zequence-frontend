@@ -1,15 +1,15 @@
 "use client";
 
-import { Checkbox } from "@/components/ui/checkbox";
-import { ColumnDef } from "@tanstack/react-table";
-import { DataTableColumnHeader } from "../../ui/data-table-column-header";
-import { DateFormat } from "@/components/ui/date-format";
-import type { GetStockRequest } from "@/types";
-import Image from "next/image";
-import Link from "next/link";
 import SvgEdit from "@/components/svg/svg-edit";
 import SvgView from "@/components/svg/svg-view";
+import { Checkbox } from "@/components/ui/checkbox";
+import { DateFormat } from "@/components/ui/date-format";
 import { cn } from "@/lib/utils";
+import type { GetStockRequest } from "@/types";
+import { ColumnDef } from "@tanstack/react-table";
+import Image from "next/image";
+import Link from "next/link";
+import { DataTableColumnHeader } from "../../ui/data-table-column-header";
 import completed from "/public/images/completed.svg";
 import pending from "/public/images/pending.svg";
 
@@ -130,7 +130,9 @@ export const stockRequestColumns: ColumnDef<Stock>[] = [
 
       return (
         <div className="flex gap-4 items-center">
-          <Link href={`/dashboard/stocks/add-stock-transfer/${stock.guid}`}>
+          <Link
+            href={`/dashboard/stocks/stock-request/${stock.guid}/stock-request`}
+          >
             <SvgView className=" stroke-muted-400 hover:stroke-secondary-100 cursor-pointer size-5" />
           </Link>
           <Link
