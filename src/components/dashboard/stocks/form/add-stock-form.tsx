@@ -66,7 +66,7 @@ export function AddStockForm() {
     isPending: pendingCategory,
     isError,
     error,
-  } = useCategories();
+  } = useCategories(10000000);
 
   const stocks = categories?.data?.records.filter(
     (item) => item.categoryType === "STOCK" && item.status === "ACTIVE",
@@ -117,29 +117,6 @@ export function AddStockForm() {
                       {isErrorBranch && (
                         <FormMessage>{errorBranch?.message}</FormMessage>
                       )}
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div>
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <InputField
-                          label="Stock Name"
-                          id="stockName"
-                          name="stockName"
-                          type="text"
-                          placeholder="Enter stock name here"
-                          isPending={isPending}
-                          onChange={field.onChange}
-                        />
-                      </FormControl>
-
                       <FormMessage />
                     </FormItem>
                   )}
@@ -201,6 +178,31 @@ export function AddStockForm() {
                 />
               </div>
               <div>
+                {/* Stock Name */}
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <InputField
+                          label="Stock Name"
+                          id="stockName"
+                          name="stockName"
+                          type="text"
+                          placeholder="Enter stock name here"
+                          isPending={isPending}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div>
+                {/* Quantity */}
                 <FormField
                   control={form.control}
                   name="quantity"

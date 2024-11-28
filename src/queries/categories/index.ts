@@ -22,6 +22,7 @@ import { getCategories } from "./actions";
 import categoryKeys from "./category-keys";
 
 export function useCategories(
+  pageSize?: number,
   pageNumber: number = 1,
   search: string = "",
   options?: Omit<
@@ -29,12 +30,15 @@ export function useCategories(
     "queryKey" | "queryFn"
   >,
 ) {
-  const hash = [categoryKeys.read, pageNumber.toString(), search].filter(
-    (key) => key !== undefined,
-  );
+  const hash = [
+    categoryKeys.read,
+    pageNumber.toString(),
+    search,
+    pageSize?.toString(),
+  ].filter((key) => key !== undefined);
   return useQuery({
     queryKey: hash,
-    queryFn: () => getCategories(pageNumber, search),
+    queryFn: () => getCategories(pageSize, pageNumber, search),
     placeholderData: keepPreviousData,
     ...options,
   });

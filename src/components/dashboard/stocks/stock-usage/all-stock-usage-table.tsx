@@ -3,15 +3,14 @@
 import { useMemo, useState } from "react";
 
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import { CSVLink } from "react-csv";
 import CustomButton from "../../custom-button";
 import { DataTable } from "@/components/table/ui/data-table";
 import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
+import { ExportToCsv } from "@/components/table/ui/export-to-csv";
 import { NoStockUsageFound } from "./no-stock-usage-found";
 import { PaginationComponent } from "@/components/ui/pagination";
 import { Spinner } from "@/components/spinner";
 import { ViewAndAddStockUsageModal } from "./view-and-add-stock-usage";
-import exportIcon from "/public/icons/import.svg";
 import { formatDate } from "@/lib/utils";
 import plus from "/public/images/plus.svg";
 import { stockUsagePackedListColumns } from "./stock-usage-packed-list-column";
@@ -55,10 +54,13 @@ export function AllStockUsage() {
         <div className=" mb-4 flex w-full items-center justify-between gap-1">
           {/* Filters */}
           <div className="flex lg:items-center gap-2 justify-between w-full">
-            <CSVLink data={csvData} filename={"stockUsage"}>
-              <CustomButton src={exportIcon} alt="Export Icon" label="Export" />
-            </CSVLink>
-            <div className="flex max-lg:flex-col lg:items-center gap-2">
+            <ExportToCsv
+              fileName="stock-usage"
+              csvData={csvData}
+              items={stockUsage?.data?.records ?? []}
+            />
+
+            <div className="flex max-lg:flex-col items-end ml-auto lg:items-center gap-2">
               <DataTableSearchInput
                 searchText={search}
                 setSearchText={setSearch}

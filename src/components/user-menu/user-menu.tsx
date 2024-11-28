@@ -23,12 +23,15 @@ export const UserMenu = () => {
     <>
       <CreateBranchModalForm open={open} onOpenChange={onOpenChange} />
       <Popover>
-        <PopoverTrigger className="my-6 md:mt-0">
+        <PopoverTrigger className="my-6 pl-4 md:pl-2 md:mt-0">
           <div className="flex items-center gap-2">
             <div className="relative shrink-0 [&_span]:rounded-lg ">
               <Avatar>
                 <AvatarImage
-                  src={user?.data?.businessProfile?.companyLogo}
+                  src={
+                    user?.data?.businessProfile?.companyLogo ||
+                    user?.data?.photoLink
+                  }
                   alt="avatar"
                 />
                 <AvatarFallback></AvatarFallback>

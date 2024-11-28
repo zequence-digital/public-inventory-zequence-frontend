@@ -1,14 +1,15 @@
 "use client";
 
 import { InStock, OutOfStock, RunningOut } from "@/assets";
-import { cn, formatDate } from "@/lib/utils";
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import type { DashboardItems } from "@/types";
 import { DashboardItemsDropdown } from "@/components/dashboard/home/item-dropdown";
 import { DataTableColumnHeader } from "../ui/data-table-column-header";
+import { DateFormat } from "@/components/ui/date-format";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 type AllItems = DashboardItems["data"]["records"][number];
 export const allItemsColumn: ColumnDef<AllItems>[] = [
@@ -145,7 +146,7 @@ export const allItemsColumn: ColumnDef<AllItems>[] = [
     cell: ({ row }) => {
       const createdAt = row.getValue("createdAt") as AllItems["createdAt"];
 
-      return <div>{formatDate(createdAt.toString())}</div>;
+      return <DateFormat date={createdAt} />;
     },
   },
 

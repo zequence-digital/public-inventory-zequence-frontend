@@ -12,10 +12,12 @@ export const LoginResponseSchema = z.object({
     middleName: z.string(),
     lastName: z.string(),
     fullName: z.string(),
+    photoLink: z.string(),
     userType: z.string(),
     branch: z.object({
       id: z.number(),
       name: z.string(),
+      organizationEmail: z.string(),
     }),
     country: z.object({
       id: z.number(),
@@ -28,11 +30,7 @@ export const LoginResponseSchema = z.object({
       companyLogo: z.string(),
       emailAddress: z.string(),
       role: z.string(),
-      country: z.object({
-        id: z.number(),
-        name: z.string(),
-        code: z.string(),
-      }),
+      country: z.string(),
       companyState: z.string(),
       companyLga: z.string(),
       companyCity: z.string(),
@@ -40,10 +38,7 @@ export const LoginResponseSchema = z.object({
       street2: z.string(),
       zip: z.string(),
       phoneNumber: z.string(),
-      baseCurrency: z.object({
-        slug: z.string(),
-        description: z.string(),
-      }),
+      baseCurrency: z.string(),
       fiscalYear: z.string(),
       startDate: z.string(),
       timeZone: z.string(),

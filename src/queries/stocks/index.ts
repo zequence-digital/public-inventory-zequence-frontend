@@ -2,7 +2,6 @@ import type {
   AllStock,
   GetAllGroupStockUsage,
   GetAllStockUsage,
-  GetBranches,
   GetStockRequest,
   GetStockTransfer,
   SingleGroupStockUsage,
@@ -27,7 +26,6 @@ import {
   deleteGroupStockUsage,
   deleteStock,
   deleteStockUsage,
-  getBranches,
   getGroupStockUsage,
   getSingleGroupStockUsage,
   getSingleStockRequest,
@@ -52,22 +50,6 @@ import notificationKeys from "../notifications/notification-keys";
 import stockKeys from "./stock-keys";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-
-export function useBranches(
-  options?: Omit<
-    UndefinedInitialDataOptions<GetBranches, Error, GetBranches, string[]>,
-    "queryKey" | "queryFn"
-  >,
-) {
-  const hash = [stockKeys.read, "branches"];
-  const queryBranches = useQuery({
-    queryKey: hash,
-    queryFn: getBranches,
-    ...options,
-  });
-
-  return queryBranches;
-}
 
 export function useStocks(
   pageNumber: number = 1,

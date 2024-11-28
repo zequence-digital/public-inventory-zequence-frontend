@@ -1,16 +1,17 @@
 "use client";
 
 import { InStock, OutOfStock, RunningOut } from "@/assets";
-import { cn, formatDate } from "@/lib/utils";
 
 import type { AllProduct } from "@/types";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "../../ui/data-table-column-header";
+import { DateFormat } from "@/components/ui/date-format";
 import { DeleteProduct } from "@/components/delete-table-item/delete-product";
 import Image from "next/image";
 import Link from "next/link";
 import SvgEdit from "@/components/svg/svg-edit";
+import { cn } from "@/lib/utils";
 
 type Product = AllProduct["data"]["records"][number];
 export const productsColumns: ColumnDef<Product>[] = [
@@ -119,7 +120,7 @@ export const productsColumns: ColumnDef<Product>[] = [
     cell: ({ row }) => {
       const createdAt = row.getValue("createdAt") as Product["createdAt"];
 
-      return <div>{formatDate(createdAt.toString())}</div>;
+      return <DateFormat date={createdAt} />;
     },
   },
 

@@ -16,14 +16,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useAddProduct, useProducts } from "@/queries/products";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { InputField } from "@/components/form/components/input-field";
-import SelectField from "@/components/form/components/select-field";
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
 import { Spinner } from "@/components/spinner";
+import { useCurrentBranch } from "@/hooks/use-current-branch";
 import { cn } from "@/lib/utils";
-import { useBranches } from "@/queries/branches";
 import { useCategories } from "@/queries/categories";
 import { AddProductSchema } from "@/schemas/products/add-product-schema";
 import type { AddProduct } from "@/types";
@@ -34,7 +33,23 @@ import { ProductListOverview } from "../product-list-overview";
 
 export function AddProductForm() {
   const ref = useRef<HTMLFormElement | null>(null);
-  const [branchId, setBranchId] = useState<number | null>(null);
+  const [branchId, setBranchId] = useState<
+    { id: number; name: string } | undefined
+  >(undefined);
+
+  const { currentBranch, isErrorBranch, pendingBranch, errorBranch } =
+    useCurrentBranch();
+
+  useEffect(() => {
+    if (currentBranch) {
+      setBranchId(currentBranch);
+    }
+  }, [currentBranch]);
+
+  const form = useForm<AddProduct>({
+    resolver: zodResolver(AddProductSchema.omit({ branchId: true })),
+    mode: "all",
+  });
 
   const {
     data: prod,
@@ -43,30 +58,18 @@ export function AddProductForm() {
     error: errorProd,
   } = useProducts();
 
-  const form = useForm<AddProduct>({
-    resolver: zodResolver(AddProductSchema.omit({ branchId: true })),
-    mode: "all",
-  });
-
-  const { mutate: createProduct, isPending } = useAddProduct(ref);
-
   const {
     data: categories,
     isPending: pendingCategory,
     isError,
     error,
-  } = useCategories();
-
-  const {
-    data: branches,
-    isPending: pendingBranch,
-    isError: isErrorBranch,
-    error: errorBranch,
-  } = useBranches();
+  } = useCategories(10000000);
 
   const products = categories?.data?.records.filter(
     (item) => item.categoryType === "PRODUCT" && item.status === "ACTIVE",
   );
+
+  const { mutate: createProduct, isPending } = useAddProduct(ref);
 
   if (isErrorProd) {
     return <ApiErrorMessage message={errorProd.message} />;
@@ -81,7 +84,7 @@ export function AddProductForm() {
             onSubmit={form.handleSubmit((data) =>
               createProduct({
                 ...data,
-                branchId: branchId as number,
+                branchId: currentBranch?.id as number,
               }),
             )}
             ref={ref}
@@ -96,73 +99,21 @@ export function AddProductForm() {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        {branches?.data?.length ? (
-                          <div>
-                            <FormLabel className="text-sm font-medium text-muted-200">
-                              Branch
-                            </FormLabel>
-                            <SelectField
-                              isPending={pendingBranch}
-                              selectList={
-                                branches?.data?.map((item) =>
-                                  item.name.toLocaleUpperCase(),
-                                ) || []
-                              }
-                              onValueChange={(value) => {
-                                field.onChange(value);
-                                const branch = branches?.data?.find(
-                                  (item) =>
-                                    item.name.toLocaleLowerCase() ===
-                                    value.toLocaleLowerCase(),
-                                );
-                                if (branch) {
-                                  setBranchId(branch.id);
-                                }
-                              }}
-                              placeholder="Select a branch"
-                              className="h-[52px] mt-1"
-                            />
-                          </div>
-                        ) : (
-                          <InputField
-                            disabled
-                            label="Branch"
-                            id="branch"
-                            name="branch"
-                            type="text"
-                            placeholder="No branches available"
-                            isPending={isPending}
-                            onChange={field.onChange}
-                          />
-                        )}
+                        <InputField
+                          label="Branch"
+                          id="branch"
+                          name="branch"
+                          type="text"
+                          placeholder="Enter branch name here"
+                          isPending={pendingBranch}
+                          value={branchId?.name}
+                          disabled
+                        />
                       </FormControl>
 
                       {isErrorBranch && (
                         <FormMessage>{errorBranch?.message}</FormMessage>
                       )}
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div>
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <InputField
-                          label="Product Name"
-                          id="productName"
-                          name="ProductName"
-                          type="text"
-                          placeholder="Enter product name here"
-                          isPending={isPending}
-                          onChange={field.onChange}
-                        />
-                      </FormControl>
-
                       <FormMessage />
                     </FormItem>
                   )}
@@ -177,11 +128,11 @@ export function AddProductForm() {
                   name="categoryGuid"
                   render={({ field }) => (
                     <FormItem>
-                      {products?.length ? (
+                      {products && products?.length > 0 ? (
                         <FormLabel>Product Category</FormLabel>
                       ) : null}
                       <FormControl>
-                        {products?.length ? (
+                        {products && products?.length > 0 ? (
                           <Select onValueChange={field.onChange}>
                             <SelectTrigger
                               className={cn(
@@ -194,7 +145,7 @@ export function AddProductForm() {
                               <SelectValue placeholder="Select a Category" />
                             </SelectTrigger>
                             <SelectContent>
-                              {products?.map((item, index) => (
+                              {products?.map((item) => (
                                 <SelectItem
                                   id={item.guid}
                                   key={item.guid}
@@ -224,8 +175,32 @@ export function AddProductForm() {
                   )}
                 />
               </div>
-              {/* Quantity */}
               <div>
+                {/* Product Name */}
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <InputField
+                          label="Product Name"
+                          id="productName"
+                          name="ProductName"
+                          type="text"
+                          placeholder="Enter product name here"
+                          isPending={isPending}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div>
+                {/* Quantity */}
                 <FormField
                   control={form.control}
                   name="quantity"
