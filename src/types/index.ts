@@ -155,5 +155,5 @@ export type GetBranchById = z.infer<typeof GetBranchByIdSchema>;
 
 export type ApproveOrDeclineRequestOrTransfer = {
   stockGuid: string;
-  status: "APPROVE" | "DECLINE";
+  action: "APPROVE" | "DECLINE";
 };
