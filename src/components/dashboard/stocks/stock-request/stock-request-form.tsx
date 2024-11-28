@@ -18,17 +18,17 @@ import {
 import { useAddStockRequest, useStocks } from "@/queries/stocks";
 import { useEffect, useRef, useState } from "react";
 
-import { InputField } from "@/components/form/components/input-field";
-import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import { Spinner } from "@/components/spinner";
-import { useCurrentBranch } from "@/hooks/use-current-branch";
-import { cn } from "@/lib/utils";
-import { AddStockTransferSchema } from "@/schemas/stocks/transfer/add-stock-transfer-schema";
 import type { AddStockTransfer } from "@/types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { AddStockTransferSchema } from "@/schemas/stocks/transfer/add-stock-transfer-schema";
+import { ApiErrorMessage } from "@/components/messages/api-error-message";
 import CustomButton from "../../custom-button";
+import { InputField } from "@/components/form/components/input-field";
+import { Spinner } from "@/components/spinner";
 import { StockListOverview } from "../stock-list-overview";
+import { cn } from "@/lib/utils";
+import { useCurrentBranch } from "@/hooks/use-current-branch";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export function StockRequestForm() {
   const ref = useRef<HTMLFormElement | null>(null);
@@ -80,8 +80,8 @@ export function StockRequestForm() {
             onSubmit={form.handleSubmit((data) =>
               createStock({
                 quantity: Number(data.quantity),
-                toBranchId: branchId?.id as number,
-                fromBranchId: currentBranch?.id as number,
+                toBranchId: currentBranch?.id as number,
+                fromBranchId: branchId?.id as number,
                 stockReferenceNumber: referenceNumber,
               }),
             )}
