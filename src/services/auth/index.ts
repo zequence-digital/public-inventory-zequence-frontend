@@ -42,8 +42,8 @@ export function useLogin(
         setToLocalStorage(tokenKey, data.data.credentials.accessToken);
         setToLocalStorage(user, encrypt(JSON.stringify(data)));
 
-        toast.success(data.message);
-        window.location.href = "/dashboard/overview";
+        // toast.success(data.message);
+        router.push("/dashboard/overview");
       }
 
       if (!data.success) {
