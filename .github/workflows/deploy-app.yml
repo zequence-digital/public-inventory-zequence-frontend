@@ -27,7 +27,7 @@ jobs:
       id: set_env
       run: |
         if [[ ${{ github.ref }} == 'refs/heads/master' ]]; then
-          ENV_FILE="/home/ubuntu/envs/frontend/sandbox/sandbox-prod.env"
+          ENV_FILE="/home/ubuntu/envs/frontend/sandbox-prod/prod.env
           {
             echo "container_name=prod-sandbox-inventory-frontend"
             echo "port=3002:3000"
