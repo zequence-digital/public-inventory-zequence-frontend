@@ -1,9 +1,9 @@
 "use client";
 
 import NavLinks from "@/components/dashboard/nav-links";
-import { useMediaQuery } from "usehooks-ts";
-import { UserMenu } from "../user-menu/user-menu";
 import { SubLinks } from "./sub-links";
+import { UserMenu } from "../user-menu/user-menu";
+import { useMediaQuery } from "usehooks-ts";
 
 export function SideNav() {
   const isMobile = useMediaQuery("(max-width: 768px)");

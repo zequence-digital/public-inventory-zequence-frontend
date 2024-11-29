@@ -13,12 +13,10 @@ export default function DashboardLayout({
         <div className="shadow-lg w-full h-full">
           <SideNav />
         </div>
-        <main className="min-h-screen overflow-auto">
-          <div className="py-12 px-4 md:px-8">
-            <Welcome />
-            <BreadCrumbComponent />
-            {children}
-          </div>
+        <main className="min-h-screen overflow-auto py-12 px-4 md:px-8">
+          <Welcome />
+          <BreadCrumbComponent />
+          <div>{children}</div>
         </main>
       </div>
     </div>
