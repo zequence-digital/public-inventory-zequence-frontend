@@ -6,9 +6,9 @@ import {
 } from "@/queries/stocks";
 
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
+import CustomButton from "../../custom-button";
 import { Spinner } from "@/components/spinner";
 import { useParams } from "next/navigation";
-import CustomButton from "../../custom-button";
 
 export function SingleStockRequest() {
   const params = useParams();
@@ -36,7 +36,11 @@ export function SingleStockRequest() {
   }
 
   if (isPending) {
-    return <Spinner />;
+    return (
+      <div className="flex w-full items-center justify-center h-full">
+        <Spinner />
+      </div>
+    );
   }
 
   return (
@@ -92,7 +96,7 @@ export function SingleStockRequest() {
           <CustomButton
             onClick={() => {
               decline({
-                stockGuid: stockRequestId,
+                stockGuid: stockRequest?.data.guid,
                 action: "DECLINE",
               });
             }}
@@ -104,7 +108,7 @@ export function SingleStockRequest() {
           <CustomButton
             onClick={() => {
               approve({
-                stockGuid: stockRequestId,
+                stockGuid: stockRequest?.data.guid,
                 action: "APPROVE",
               });
             }}
