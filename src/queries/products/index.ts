@@ -25,17 +25,21 @@ import productKeys from "./product-keys";
 export function useProducts(
   pageNumber: number = 1,
   search: string = "",
+  startDate?: Date,
   options?: Omit<
     UndefinedInitialDataOptions<AllProduct, Error, AllProduct, string[]>,
     "queryKey" | "queryFn"
   >,
 ) {
-  const hash = [productKeys.read, pageNumber.toString(), search].filter(
-    (key) => key !== undefined,
-  );
+  const hash = [
+    productKeys.read,
+    pageNumber.toString(),
+    search,
+    startDate?.toISOString(),
+  ].filter((key) => key !== undefined);
   const queryProducts = useQuery({
     queryKey: hash,
-    queryFn: () => getProducts(pageNumber, search),
+    queryFn: () => getProducts(pageNumber, search, startDate),
     placeholderData: keepPreviousData,
     ...options,
   });
