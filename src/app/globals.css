@@ -191,3 +191,32 @@ body,
   background: #ff6600;
   color: #fff;
 }
+
+/* Calender */
+
+.date{
+position: relative;
+}
+.rdp-weekdays{
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: #f7f7f7;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.calendar-nav{
+  position: absolute;
+  top: .3rem;
+  right: .8rem;
+}
+
+.calendar-nav button{
+  background: #f7f7f7;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+}
