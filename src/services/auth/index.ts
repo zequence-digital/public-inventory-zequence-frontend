@@ -25,6 +25,7 @@ import { useRouter } from "next/navigation";
 export function useLogin(
   options?: UseMutationOptions<LoginResponse, AxiosError, LoginData, unknown>,
 ) {
+   const router = useRouter();
   const login = useMutation({
     mutationFn: async (data: LoginData): Promise<LoginResponse> => {
       const response = await apiClient.post({
@@ -43,7 +44,7 @@ export function useLogin(
         setToLocalStorage(user, encrypt(JSON.stringify(data)));
 
         // toast.success(data.message);
-        window.location.href = "/dashboard/overview";
+       router.push("/dashboard/overview")
         console.log('this login is working');
       }
 
