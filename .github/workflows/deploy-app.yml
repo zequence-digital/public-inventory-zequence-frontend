@@ -8,115 +8,71 @@ env:
   IMAGE_NAME: "sandbox-inventory-frontend"
   VERSION_TAG: "1.0.0"
 jobs:
-  build:
+  build-and-deploy:
     runs-on: self-hosted
-    outputs:
-      container_name: ${{ steps.set_env.outputs.container_name }}
-      port: ${{ steps.set_env.outputs.port }}
-      image_tag: ${{ steps.set_env.outputs.image_tag }}
-      NEXT_PUBLIC_API_BASE_URL: ${{ steps.set_env.outputs.NEXT_PUBLIC_API_BASE_URL }}
-      NEXT_PUBLIC_CHANNEL_ID: ${{ steps.set_env.outputs.NEXT_PUBLIC_CHANNEL_ID }}
-      NEXT_PUBLIC_CHANNEL_SECRET: ${{ steps.set_env.outputs.NEXT_PUBLIC_CHANNEL_SECRET }}
-      NEXT_PUBLIC_CRYPTO_KEY: ${{ steps.set_env.outputs.NEXT_PUBLIC_CRYPTO_KEY }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: Debug Secrets Availability
-      run: |
-        echo "Checking if secrets are available:"
-        if [ -n "${{ secrets.PROD_API_BASE_URL }}" ]; then echo "PROD_API_BASE_URL is set"; else echo "PROD_API_BASE_URL is empty"; fi
-        if [ -n "${{ secrets.PROD_CHANNEL_ID }}" ]; then echo "PROD_CHANNEL_ID is set"; else echo "PROD_CHANNEL_ID is empty"; fi
-        if [ -n "${{ secrets.PROD_CHANNEL_SECRET }}" ]; then echo "PROD_CHANNEL_SECRET is set"; else echo "PROD_CHANNEL_SECRET is empty"; fi
-        if [ -n "${{ secrets.PROD_NEXT_PUBLIC_CRYPTO_KEY }}" ]; then echo "PROD_NEXT_PUBLIC_CRYPTO_KEY is set"; else echo "PROD_NEXT_PUBLIC_CRYPTO_KEY is empty"; fi
-        if [ -n "${{ secrets.STAGING_API_BASE_URL }}" ]; then echo "STAGING_API_BASE_URL is set"; else echo "STAGING_API_BASE_URL is empty"; fi
-        if [ -n "${{ secrets.STAGING_CHANNEL_ID }}" ]; then echo "STAGING_CHANNEL_ID is set"; else echo "STAGING_CHANNEL_ID is empty"; fi
-        if [ -n "${{ secrets.STAGING_CHANNEL_SECRET }}" ]; then echo "STAGING_CHANNEL_SECRET is set"; else echo "STAGING_CHANNEL_SECRET is empty"; fi
-        if [ -n "${{ secrets.STAGING_NEXT_PUBLIC_CRYPTO_KEY }}" ]; then echo "STAGING_NEXT_PUBLIC_CRYPTO_KEY is set"; else echo "STAGING_NEXT_PUBLIC_CRYPTO_KEY is empty"; fi
 
     - name: Set environment variables
       id: set_env
       run: |
         if [[ ${{ github.ref }} == 'refs/heads/master' ]]; then
-          echo "Setting PROD environment variables"
-          echo "container_name=prod-sandbox-inventory-frontend" >> $GITHUB_OUTPUT
-          echo "port=3002:3000" >> $GITHUB_OUTPUT
-          echo "image_tag=sandbox-prod-latest" >> $GITHUB_OUTPUT
-          echo "NEXT_PUBLIC_API_BASE_URL=${{ secrets.PROD_API_BASE_URL }}" >> $GITHUB_OUTPUT
-          echo "NEXT_PUBLIC_CHANNEL_ID=${{ secrets.PROD_CHANNEL_ID }}" >> $GITHUB_OUTPUT
-          echo "NEXT_PUBLIC_CHANNEL_SECRET=${{ secrets.PROD_CHANNEL_SECRET }}" >> $GITHUB_OUTPUT
-          echo "NEXT_PUBLIC_CRYPTO_KEY=${{ secrets.PROD_NEXT_PUBLIC_CRYPTO_KEY }}" >> $GITHUB_OUTPUT
+          echo "container_name=prod-sandbox-inventory-frontend" >> $GITHUB_ENV
+          echo "port=3002:3000" >> $GITHUB_ENV
+          echo "image_tag=sandbox-prod-latest" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_API_BASE_URL=${{ secrets.PROD_API_BASE_URL }}" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_CHANNEL_ID=${{ secrets.PROD_CHANNEL_ID }}" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_CHANNEL_SECRET=${{ secrets.PROD_CHANNEL_SECRET }}" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_CRYPTO_KEY=${{ secrets.PROD_NEXT_PUBLIC_CRYPTO_KEY }}" >> $GITHUB_ENV
         else
-          echo "Setting STAGING environment variables"
-          echo "container_name=staging-sandbox-inventory-frontend" >> $GITHUB_OUTPUT
-          echo "port=3003:3000" >> $GITHUB_OUTPUT
-          echo "image_tag=sandbox-staging-latest" >> $GITHUB_OUTPUT
-          echo "NEXT_PUBLIC_API_BASE_URL=${{ secrets.STAGING_API_BASE_URL }}" >> $GITHUB_OUTPUT
-          echo "NEXT_PUBLIC_CHANNEL_ID=${{ secrets.STAGING_CHANNEL_ID }}" >> $GITHUB_OUTPUT
-          echo "NEXT_PUBLIC_CHANNEL_SECRET=${{ secrets.STAGING_CHANNEL_SECRET }}" >> $GITHUB_OUTPUT
-          echo "NEXT_PUBLIC_CRYPTO_KEY=${{ secrets.STAGING_NEXT_PUBLIC_CRYPTO_KEY }}" >> $GITHUB_OUTPUT
+          echo "container_name=staging-sandbox-inventory-frontend" >> $GITHUB_ENV
+          echo "port=3003:3000" >> $GITHUB_ENV
+          echo "image_tag=sandbox-staging-latest" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_API_BASE_URL=${{ secrets.STAGING_API_BASE_URL }}" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_CHANNEL_ID=${{ secrets.STAGING_CHANNEL_ID }}" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_CHANNEL_SECRET=${{ secrets.STAGING_CHANNEL_SECRET }}" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_CRYPTO_KEY=${{ secrets.STAGING_NEXT_PUBLIC_CRYPTO_KEY }}" >> $GITHUB_ENV
         fi
 
-    - name: Debug Output Variables
+    - name: Debug Environment Variables
       run: |
-        echo "Checking output variables:"
-        echo "container_name: ${{ steps.set_env.outputs.container_name }}"
-        echo "port: ${{ steps.set_env.outputs.port }}"
-        echo "image_tag: ${{ steps.set_env.outputs.image_tag }}"
-        echo "NEXT_PUBLIC_API_BASE_URL is set: ${{ steps.set_env.outputs.NEXT_PUBLIC_API_BASE_URL != '' }}"
-        echo "NEXT_PUBLIC_CHANNEL_ID is set: ${{ steps.set_env.outputs.NEXT_PUBLIC_CHANNEL_ID != '' }}"
-        echo "NEXT_PUBLIC_CHANNEL_SECRET is set: ${{ steps.set_env.outputs.NEXT_PUBLIC_CHANNEL_SECRET != '' }}"
-        echo "NEXT_PUBLIC_CRYPTO_KEY is set: ${{ steps.set_env.outputs.NEXT_PUBLIC_CRYPTO_KEY != '' }}"
+        echo "Current environment variables (masked):"
+        echo "NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL:0:5}..."
+        echo "NEXT_PUBLIC_CHANNEL_ID=${NEXT_PUBLIC_CHANNEL_ID:0:5}..."
+        echo "NEXT_PUBLIC_CHANNEL_SECRET=${NEXT_PUBLIC_CHANNEL_SECRET:0:5}..."
+        echo "NEXT_PUBLIC_CRYPTO_KEY=${NEXT_PUBLIC_CRYPTO_KEY:0:5}..."
 
     - name: Build and tag Docker image
       run: |
         docker build \
-          --build-arg NEXT_PUBLIC_API_BASE_URL="${{ steps.set_env.outputs.NEXT_PUBLIC_API_BASE_URL }}" \
-          --build-arg NEXT_PUBLIC_CHANNEL_ID="${{ steps.set_env.outputs.NEXT_PUBLIC_CHANNEL_ID }}" \
-          --build-arg NEXT_PUBLIC_CHANNEL_SECRET="${{ steps.set_env.outputs.NEXT_PUBLIC_CHANNEL_SECRET }}" \
-          --build-arg NEXT_PUBLIC_CRYPTO_KEY="${{ steps.set_env.outputs.NEXT_PUBLIC_CRYPTO_KEY }}" \
+          --build-arg NEXT_PUBLIC_API_BASE_URL="${NEXT_PUBLIC_API_BASE_URL}" \
+          --build-arg NEXT_PUBLIC_CHANNEL_ID="${NEXT_PUBLIC_CHANNEL_ID}" \
+          --build-arg NEXT_PUBLIC_CHANNEL_SECRET="${NEXT_PUBLIC_CHANNEL_SECRET}" \
+          --build-arg NEXT_PUBLIC_CRYPTO_KEY="${NEXT_PUBLIC_CRYPTO_KEY}" \
           -t ${{ env.IMAGE_NAME }}:${{ github.sha }} .
         
-        docker tag ${{ env.IMAGE_NAME }}:${{ github.sha }} ${{ env.IMAGE_NAME }}:${{ steps.set_env.outputs.image_tag }}
-
-  deploy:
-    needs: build
-    runs-on: self-hosted
-    steps:
-    - name: Debug Received Variables
-      run: |
-        echo "Checking received variables from build job:"
-        echo "container_name: ${{ needs.build.outputs.container_name }}"
-        echo "port: ${{ needs.build.outputs.port }}"
-        echo "image_tag: ${{ needs.build.outputs.image_tag }}"
-        echo "NEXT_PUBLIC_API_BASE_URL is set: ${{ needs.build.outputs.NEXT_PUBLIC_API_BASE_URL != '' }}"
-        echo "NEXT_PUBLIC_CHANNEL_ID is set: ${{ needs.build.outputs.NEXT_PUBLIC_CHANNEL_ID != '' }}"
-        echo "NEXT_PUBLIC_CHANNEL_SECRET is set: ${{ needs.build.outputs.NEXT_PUBLIC_CHANNEL_SECRET != '' }}"
-        echo "NEXT_PUBLIC_CRYPTO_KEY is set: ${{ needs.build.outputs.NEXT_PUBLIC_CRYPTO_KEY != '' }}"
+        docker tag ${{ env.IMAGE_NAME }}:${{ github.sha }} ${{ env.IMAGE_NAME }}:${{ env.image_tag }}
 
     - name: Deploy
       run: |
-        if docker ps -a --format "{{.Names}}" | grep -q "${{ needs.build.outputs.container_name }}"; then
-          echo "Container ${{ needs.build.outputs.container_name }} already exists, removing it..."
-          docker rm -f "${{ needs.build.outputs.container_name }}"
+        if docker ps -a --format "{{.Names}}" | grep -q "${container_name}"; then
+          echo "Container ${container_name} already exists, removing it..."
+          docker rm -f "${container_name}"
         fi
         
         docker run -d \
-          --name "${{ needs.build.outputs.container_name }}" \
-          -p ${{ needs.build.outputs.port }} \
-          -e NEXT_PUBLIC_API_BASE_URL="${{ needs.build.outputs.NEXT_PUBLIC_API_BASE_URL }}" \
-          -e NEXT_PUBLIC_CHANNEL_ID="${{ needs.build.outputs.NEXT_PUBLIC_CHANNEL_ID }}" \
-          -e NEXT_PUBLIC_CHANNEL_SECRET="${{ needs.build.outputs.NEXT_PUBLIC_CHANNEL_SECRET }}" \
-          -e NEXT_PUBLIC_CRYPTO_KEY="${{ needs.build.outputs.NEXT_PUBLIC_CRYPTO_KEY }}" \
-          ${{ env.IMAGE_NAME }}:${{ needs.build.outputs.image_tag }}
+          --name "${container_name}" \
+          -p ${port} \
+          -e NEXT_PUBLIC_API_BASE_URL="${NEXT_PUBLIC_API_BASE_URL}" \
+          -e NEXT_PUBLIC_CHANNEL_ID="${NEXT_PUBLIC_CHANNEL_ID}" \
+          -e NEXT_PUBLIC_CHANNEL_SECRET="${NEXT_PUBLIC_CHANNEL_SECRET}" \
+          -e NEXT_PUBLIC_CRYPTO_KEY="${NEXT_PUBLIC_CRYPTO_KEY}" \
+          ${{ env.IMAGE_NAME }}:${image_tag}
         
         echo "Verifying environment variables in container:"
-        docker exec ${{ needs.build.outputs.container_name }} env | grep NEXT_PUBLIC_
+        docker exec ${container_name} env | grep NEXT_PUBLIC_
 
-  cleanup:
-    needs: deploy
-    runs-on: self-hosted
-    steps:
     - name: Cleanup
       run: |
         echo "Cleaning up"
