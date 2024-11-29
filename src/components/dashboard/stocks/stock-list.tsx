@@ -2,19 +2,21 @@
 
 import { useEffect, useMemo, useState } from "react";
 
+import { CalenderFilter } from "@/components/filters/date-filter";
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
+import { stocksColumns } from "@/components/table/data/stocks/stocks-columns";
 import { DataTable } from "@/components/table/ui/data-table";
 import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
 import { ExportToCsv } from "@/components/table/ui/export-to-csv";
 import { PaginationComponent } from "@/components/ui/pagination";
-import { StockListOverview } from "./stock-list-overview";
-import { formatDate } from "@/lib/utils";
-import { stocksColumns } from "@/components/table/data/stocks/stocks-columns";
 import { useCurrentBranch } from "@/hooks/use-current-branch";
+import { formatDate } from "@/lib/utils";
 import { useStocks } from "@/queries/stocks";
+import { StockListOverview } from "./stock-list-overview";
 
 export function StockList() {
   const [pageNumber, setPageNumber] = useState(1);
+  const [date, setDate] = useState<Date | undefined>(undefined);
   const [search, setSearch] = useState("");
   const [branchId, setBranchId] = useState<
     { id: number; name: string } | undefined
@@ -32,7 +34,7 @@ export function StockList() {
     isPlaceholderData,
     isFetching,
     isPending,
-  } = useStocks(pageNumber, search, branchId?.id);
+  } = useStocks(pageNumber, search, branchId?.id, date);
 
   const csvData = useMemo(() => {
     if (stocks?.data?.records) {
@@ -59,6 +61,7 @@ export function StockList() {
       <div className="py-4 w-full space-y-2">
         <div className=" mb-4 flex w-full items-center justify-between gap-1">
           {/* Filters */}
+          <CalenderFilter date={date} setDate={setDate} />
           <div className="flex items-end justify-end w-full gap-2">
             <ExportToCsv
               fileName="stocks"

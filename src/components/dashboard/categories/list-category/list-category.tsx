@@ -3,6 +3,7 @@
 import { cn, formatDate } from "@/lib/utils";
 import { useMemo, useState } from "react";
 
+import { CalenderFilter } from "@/components/filters/date-filter";
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
 import { DataTable } from "@/components/table/ui/data-table";
 import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
@@ -13,6 +14,7 @@ import { categoriesColumns } from "./data/categories-column";
 
 export function CategoryList() {
   const [search, setSearch] = useState("");
+  const [date, setDate] = useState<Date | undefined>(undefined);
   const [pageNumber, setPageNumber] = useState(1);
 
   const {
@@ -22,7 +24,7 @@ export function CategoryList() {
     isPlaceholderData,
     isFetching,
     error,
-  } = useCategories(10, pageNumber, search);
+  } = useCategories(10, pageNumber, search, date);
 
   const csvData = useMemo(() => {
     if (categories?.data?.records) {
@@ -50,6 +52,7 @@ export function CategoryList() {
       <div className="py-4 w-full space-y-2">
         <div className=" mb-4 flex w-full items-center justify-between gap-1">
           {/* Filters */}
+          <CalenderFilter date={date} setDate={setDate} />
           <div className="flex items-end justify-end w-full gap-2">
             <ExportToCsv
               fileName="categories"

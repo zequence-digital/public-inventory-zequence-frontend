@@ -24,9 +24,14 @@ export const addProduct = async (product: AddProduct) => {
 export const getProducts = async (
   pageNumber: number = 1,
   search: string = "",
+  startDate?: Date | undefined,
 ): Promise<AllProduct> => {
   const response = await apiClient.get({
-    url: `/product?pageNumber=${pageNumber}${search ? `&search=${search}` : ""}`,
+    url: `/product?pageNumber=${pageNumber}${search ? `&search=${search}` : ""}${
+      startDate === undefined
+        ? ""
+        : `&startDate=${startDate.toISOString().split("T")[0]}`
+    }`,
     auth: true,
   });
 
