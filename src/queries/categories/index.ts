@@ -25,6 +25,7 @@ export function useCategories(
   pageSize?: number,
   pageNumber: number = 1,
   search: string = "",
+  startDate?: Date,
   options?: Omit<
     UndefinedInitialDataOptions<AllCategory, Error, AllCategory, string[]>,
     "queryKey" | "queryFn"
@@ -35,10 +36,11 @@ export function useCategories(
     pageNumber.toString(),
     search,
     pageSize?.toString(),
+    startDate?.toISOString(),
   ].filter((key) => key !== undefined);
   return useQuery({
     queryKey: hash,
-    queryFn: () => getCategories(pageSize, pageNumber, search),
+    queryFn: () => getCategories(pageSize, pageNumber, search, startDate),
     placeholderData: keepPreviousData,
     ...options,
   });

@@ -9,14 +9,21 @@ import { apiClient } from "@/services/api";
 
 // /category
 
+// 2024-09-12
+
 export async function getCategories(
   pageSize?: number,
   pageNumber: number = 1,
   search: string = "",
+  startDate?: Date | undefined,
 ): Promise<AllCategory> {
   const response = await apiClient.get({
     url: `/category?pageNumber=${pageNumber}${search ? `&search=${search}` : ""}${
       pageSize ? `&pageSize=${pageSize}` : ""
+    }${
+      startDate === undefined
+        ? ""
+        : `&startDate=${startDate.toISOString().split("T")[0]}`
     }`,
     auth: true,
   });

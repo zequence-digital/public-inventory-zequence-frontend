@@ -185,3 +185,9 @@ body,
 }
 
 /* Not Found */
+
+/* Date */
+.date button[name="day"]:focus {
+  background: #ff6600;
+  color: #fff;
+}

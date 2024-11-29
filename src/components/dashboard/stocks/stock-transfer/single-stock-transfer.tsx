@@ -96,7 +96,7 @@ export function SingleStockTransfer() {
           <CustomButton
             onClick={() => {
               decline({
-                stockGuid: stockTransfer?.data.guid,
+                stockGuid: stockTransfer?.data?.stockRefNumber,
                 action: "DECLINE",
               });
             }}
@@ -108,7 +108,7 @@ export function SingleStockTransfer() {
           <CustomButton
             onClick={() => {
               approve({
-                stockGuid: stockTransfer?.data.guid,
+                stockGuid: stockTransfer?.data?.stockRefNumber,
                 action: "APPROVE",
               });
             }}
