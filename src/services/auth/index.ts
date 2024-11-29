@@ -44,6 +44,7 @@ export function useLogin(
 
         // toast.success(data.message);
         window.location.href = "/dashboard/overview";
+        console.log('this login is working');
       }
 
       if (!data.success) {
