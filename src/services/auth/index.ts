@@ -26,7 +26,6 @@ export function useLogin(
   options?: UseMutationOptions<LoginResponse, AxiosError, LoginData, unknown>,
 ) {
   const login = useMutation({
-  const router = useRouter();
     mutationFn: async (data: LoginData): Promise<LoginResponse> => {
       const response = await apiClient.post({
         url: `/user/login`,
@@ -44,7 +43,7 @@ export function useLogin(
         setToLocalStorage(user, encrypt(JSON.stringify(data)));
 
         // toast.success(data.message);
-        router.push("/dashboard/overview");
+        window.location.href = "/dashboard/overview";
       }
 
       if (!data.success) {
