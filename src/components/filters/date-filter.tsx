@@ -27,7 +27,6 @@ export function CalenderFilter({ date, setDate }: Props) {
         <PopoverContent className="w-auto p-0" align="start">
           <div className="date">
             <Calendar
-              selectedDayBg="bg-primary-100"
               selected={date}
               onSelect={(date) => setDate(date)}
               mode="single"
