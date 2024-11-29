@@ -43,7 +43,10 @@ export function UserMenuRadioForm({ branch }: Props) {
               user?.data?.branch?.name.toLocaleLowerCase() &&
             user?.data?.roleName === "ADMIN"
               ? `${user?.data?.branch?.name.toLocaleUpperCase()} (HEAD OFFICE)`
-              : `${branch?.name.toUpperCase()}`}
+              : branch?.name.toLocaleLowerCase() ===
+                  user?.data?.branch?.name.toLocaleLowerCase()
+                ? `${branch?.name.toUpperCase()} (MY BRANCH)`
+                : branch?.name.toUpperCase()}
           </div>
           <div className="cursor-pointer flex ml-auto text-slate-500">
             <UserMenuAccountAction
