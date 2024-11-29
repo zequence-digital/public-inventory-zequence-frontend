@@ -3,6 +3,7 @@ import type {
   AddStockTransfer,
   AddStockUsage,
   AllStock,
+  ApproveOrDeclineRequestOrTransfer,
   GetAllGroupStockUsage,
   GetAllStockUsage,
   GetStockRequest,
@@ -279,4 +280,20 @@ export const getSingleGroupStockUsage = async (
   });
 
   return response as SingleGroupStockUsage;
+};
+
+// APPROVE STOCK REQUEST  // REJECT STOCK REQUEST// APPROVE STOCK TRANSFER// REJECT STOCK TRANSFER//
+// /stock/stock-transfer/approve-decline
+// /stock/stock-request/approve-decline
+export const approveOrDeclineRequestOrTransfer = async (
+  type: "stock-request" | "stock-transfer",
+  data: ApproveOrDeclineRequestOrTransfer,
+) => {
+  const response = await apiClient.post({
+    url: `/stock/${type}/approve-decline`,
+    body: data,
+    auth: true,
+  });
+
+  return response;
 };

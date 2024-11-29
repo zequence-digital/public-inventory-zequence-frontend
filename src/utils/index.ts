@@ -1,4 +1,7 @@
-export const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+export const baseUrl =
+  process.env.NODE_ENV === "production"
+    ? process.env.NEXT_PUBLIC_PROD_API_BASE_URL
+    : process.env.NEXT_PUBLIC_API_BASE_URL;
 export const channelId = process.env.NEXT_PUBLIC_CHANNEL_ID;
 export const channelSecret = process.env.NEXT_PUBLIC_CHANNEL_SECRET;
 
