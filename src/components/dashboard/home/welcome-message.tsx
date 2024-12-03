@@ -1,9 +1,9 @@
 "use client";
 
-import { useLoggedInUser } from "@/crypto";
+import { useActiveUser } from "@/crypto";
 
 const WelcomeMessage = () => {
-  const user = useLoggedInUser();
+  const user = useActiveUser();
 
   return (
     <div className="flex-col justify-start items-start gap-1 inline-flex mb-6">

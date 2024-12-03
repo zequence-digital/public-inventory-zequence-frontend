@@ -6,14 +6,14 @@ import { DeleteBranch } from "../delete-table-item/delete-branch";
 import { EditBranchModalForm } from "../branches/form/edit-branch-form";
 import type { GetAllOrganizationBranch } from "@/types";
 import { UserMenuAccountAction } from "./user-menu-account-action";
-import { useLoggedInUser } from "@/crypto";
+import { useActiveUser } from "@/crypto";
 
 type Props = {
   branch: GetAllOrganizationBranch["data"][number] | undefined;
 };
 
 export function UserMenuRadioForm({ branch }: Props) {
-  const user = useLoggedInUser();
+  const user = useActiveUser();
 
   const [activeBranch, setActiveBranch] = useState<
     GetAllOrganizationBranch["data"][number] | undefined
