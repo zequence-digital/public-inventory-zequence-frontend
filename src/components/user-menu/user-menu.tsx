@@ -11,12 +11,12 @@ import SvgAdd from "../svg/svg-add";
 import { UserMenuRadioForm } from "./user-menu-radio-input";
 import { formatName } from "@/lib/utils";
 import { logOut } from "@/services/auth";
+import { useActiveUser } from "@/crypto";
 import { useBranches } from "@/queries/branches";
-import { useLoggedInUser } from "@/crypto";
 import { useState } from "react";
 
 export const UserMenu = () => {
-  const user = useLoggedInUser();
+  const user = useActiveUser();
   const [open, onOpenChange] = useState(false);
   const { data: branches, isPending, isError, error } = useBranches();
   return (
