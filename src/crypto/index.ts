@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import CryptoJs from "crypto-js";
 import type { LoginResponse } from "@/types";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 
 export const encrypt = (data: string) => {
   return CryptoJs.AES.encrypt(
@@ -33,4 +34,19 @@ export const useLoggedInUser = () => {
   }, [currentUser]);
 
   return loggedInUser;
+};
+
+export const useActiveUser = () => {
+  const [activeUser, setActiveUser] = useState<LoginResponse | null>(null);
+
+  const [currentUser] = useLocalStorage(user, "");
+
+  useEffect(() => {
+    if (!currentUser) return;
+    setActiveUser(
+      currentUser ? (JSON.parse(currentUser) as LoginResponse) : null,
+    );
+  }, [currentUser]);
+
+  return activeUser;
 };
