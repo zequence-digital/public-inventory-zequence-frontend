@@ -16,6 +16,7 @@ export async function getCategories(
   pageNumber: number = 1,
   search: string = "",
   startDate?: Date | undefined,
+  endDate?: Date | undefined,
 ): Promise<AllCategory> {
   const response = await apiClient.get({
     url: `/category?pageNumber=${pageNumber}${search ? `&search=${search}` : ""}${
@@ -24,6 +25,10 @@ export async function getCategories(
       startDate === undefined
         ? ""
         : `&startDate=${startDate.toISOString().split("T")[0]}`
+    }${
+      endDate === undefined
+        ? ""
+        : `&endDate=${endDate.toISOString().split("T")[0]}`
     }`,
     auth: true,
   });

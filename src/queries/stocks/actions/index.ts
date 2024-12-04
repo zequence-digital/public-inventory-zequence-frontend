@@ -39,12 +39,17 @@ export const getStocks = async (
   search: string = "",
   branchId: number | undefined,
   startDate?: Date | undefined,
+  endDate?: Date | undefined,
 ): Promise<AllStock> => {
   const response = await apiClient.get({
     url: `/stock?branchId=${branchId}&pageNumber=${pageNumber}${search ? `&search=${search}` : ""}${
       startDate === undefined
         ? ""
         : `&startDate=${startDate.toISOString().split("T")[0]}`
+    }${
+      endDate === undefined
+        ? ""
+        : `&endDate=${endDate.toISOString().split("T")[0]}`
     }`,
     auth: true,
   });
