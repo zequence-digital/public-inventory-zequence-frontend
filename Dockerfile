@@ -8,7 +8,7 @@ WORKDIR /src
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # Set build arguments
 ARG NEXT_PUBLIC_API_BASE_URL
