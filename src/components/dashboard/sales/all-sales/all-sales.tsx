@@ -2,19 +2,20 @@
 
 import { useMemo, useState } from "react";
 
-import { CalenderFilter } from "@/components/filters/date-filter";
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
 import { DataTable } from "@/components/table/ui/data-table";
 import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
+import { DateFilter } from "@/components/filters/date-filter";
 import { ExportToCsv } from "@/components/table/ui/export-to-csv";
 import { PaginationComponent } from "@/components/ui/pagination";
+import { allSalesColumns } from "./table-data/all-sales-column";
 import { formatDate } from "@/lib/utils";
 import { useGroupSales } from "@/queries/sales";
-import { allSalesColumns } from "./table-data/all-sales-column";
 
 export function AllSales() {
   const [search, setSearch] = useState("");
-  const [date, setDate] = useState<Date | undefined>(undefined);
+  const [startDate, setStartDate] = useState<Date | undefined>(undefined);
+  const [endDate, setEndDate] = useState<Date | undefined>(undefined);
   const [pageNumber, setPageNumber] = useState(1);
   const {
     data: sales,
@@ -53,7 +54,12 @@ export function AllSales() {
       <div className="py-4 w-full space-y-2">
         <div className=" mb-4 flex w-full items-center justify-between gap-1">
           {/* Filters */}
-          <CalenderFilter date={date} setDate={setDate} />
+          <DateFilter
+            setEndDate={setEndDate}
+            setStartDate={setStartDate}
+            startDate={startDate}
+            endDate={endDate}
+          />
           <div className="flex items-end justify-end w-full gap-2">
             <ExportToCsv
               fileName="sales"

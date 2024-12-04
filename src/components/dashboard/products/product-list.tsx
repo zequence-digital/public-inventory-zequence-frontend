@@ -2,21 +2,22 @@
 
 import { useMemo, useState } from "react";
 
-import { CalenderFilter } from "@/components/filters/date-filter";
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import { productsColumns } from "@/components/table/data/products/products-columns";
 import { DataTable } from "@/components/table/ui/data-table";
 import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
+import { DateFilter } from "@/components/filters/date-filter";
 import { ExportToCsv } from "@/components/table/ui/export-to-csv";
 import { PaginationComponent } from "@/components/ui/pagination";
-import { formatDate } from "@/lib/utils";
-import { useProducts } from "@/queries/products";
 import { ProductListOverview } from "./product-list-overview";
+import { formatDate } from "@/lib/utils";
+import { productsColumns } from "@/components/table/data/products/products-columns";
+import { useProducts } from "@/queries/products";
 
 export function ProductList() {
   const [search, setSearch] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
-  const [date, setDate] = useState<Date | undefined>(undefined);
+  const [startDate, setStartDate] = useState<Date | undefined>(undefined);
+  const [endDate, setEndDate] = useState<Date | undefined>(undefined);
   const {
     data: products,
     isPending,
@@ -24,7 +25,7 @@ export function ProductList() {
     isFetching,
     isError,
     error,
-  } = useProducts(pageNumber, search, date);
+  } = useProducts(pageNumber, search, startDate, endDate);
 
   const csvData = useMemo(() => {
     if (products?.data?.records) {
@@ -36,7 +37,7 @@ export function ProductList() {
         category: product.category.name,
         quantity: product.quantity,
         branch: product.branch,
-        date: formatDate(product.createdAt),
+        startDate: formatDate(product.createdAt),
       }));
     }
     return [];
@@ -52,7 +53,12 @@ export function ProductList() {
       <div className="py-4 w-full space-y-2">
         <div className=" mb-4 flex w-full items-center justify-between gap-1">
           {/* Filters */}
-          <CalenderFilter date={date} setDate={setDate} />
+          <DateFilter
+            setEndDate={setEndDate}
+            setStartDate={setStartDate}
+            startDate={startDate}
+            endDate={endDate}
+          />
           <div className="flex items-end justify-end w-full gap-2">
             <ExportToCsv
               fileName="products"

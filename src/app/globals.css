@@ -186,37 +186,12 @@ body,
 
 /* Not Found */
 
-/* Date */
-.date button[name="day"]:focus {
-  background: #ff6600;
-  color: #fff;
+/* DATE PICKER */
+
+.rdp-caption_start table tfoot tr td div button {
+  display: none;
 }
 
-/* Calender */
-
-.date{
-position: relative;
-}
-.rdp-weekdays{
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 0.5rem;
-  padding: 0.5rem;
-  background: #f7f7f7;
-  border-radius: 0.5rem;
-  font-size: 0.8rem;
-}
-
-.calendar-nav{
-  position: absolute;
-  top: .3rem;
-  right: .8rem;
-}
-
-.calendar-nav button{
-  background: #f7f7f7;
-  border: none;
-  border-radius: 0.5rem;
-  padding: 0.5rem;
-  font-size: 0.8rem;
+button[name="day"]:focus {
+  background-color: #ff6600;
 }
