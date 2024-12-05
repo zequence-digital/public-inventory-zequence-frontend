@@ -6,9 +6,9 @@ import {
 } from "@/queries/stocks";
 
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import CustomButton from "../../custom-button";
 import { Spinner } from "@/components/spinner";
 import { useParams } from "next/navigation";
+import CustomButton from "../../custom-button";
 
 export function SingleStockTransfer() {
   const params = useParams();
@@ -96,7 +96,7 @@ export function SingleStockTransfer() {
           <CustomButton
             onClick={() => {
               decline({
-                stockGuid: stockTransfer?.data?.stockRefNumber,
+                stockGuid: stockTransfer?.data?.guid,
                 action: "DECLINE",
               });
             }}
@@ -108,7 +108,7 @@ export function SingleStockTransfer() {
           <CustomButton
             onClick={() => {
               approve({
-                stockGuid: stockTransfer?.data?.stockRefNumber,
+                stockGuid: stockTransfer?.data?.guid,
                 action: "APPROVE",
               });
             }}
