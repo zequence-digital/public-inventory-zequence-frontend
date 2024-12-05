@@ -12,7 +12,7 @@ import { cn, formatDate } from "@/lib/utils";
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
 import { Cross1Icon } from "@radix-ui/react-icons";
 import CustomButton from "../../custom-button";
-import { ViewInvoice } from "./view-invoice";
+import { EditInvoicePack } from "./edit-invoice-pack";
 import { useReducer } from "react";
 import { useSingleGroupSales } from "@/queries/sales";
 
@@ -21,7 +21,7 @@ type Props = {
   id: string;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-export function SalesInvoiceModal({ className, id, ...rest }: Props) {
+export function EditSalesInvoiceModal({ className, id, ...rest }: Props) {
   const [open, onOpenChange] = useReducer((open) => !open, false);
   const { data: invoice, isPending, isError, error } = useSingleGroupSales(id);
 
@@ -35,12 +35,12 @@ export function SalesInvoiceModal({ className, id, ...rest }: Props) {
 
   return (
     <div>
-      <ViewInvoice onOpenChange={onOpenChange} />
+      <EditInvoicePack onOpenChange={onOpenChange} />
       <AlertDialog open={open} onOpenChange={onOpenChange}>
         <AlertDialogContent
           {...rest}
           className={cn(
-            `max-w-[573px] w-full min-h-screen shadow-none border-none`,
+            `max-w-[573px] w-full min-h-[650px] shadow-none border-none`,
             className,
           )}
         >
@@ -120,13 +120,13 @@ export function SalesInvoiceModal({ className, id, ...rest }: Props) {
           <div className="flex items-center justify-between h-full mt-auto">
             <CustomButton
               onClick={() => window.print()}
-              className={cn(`bg-primary-100 h-fit text-white`)}
+              className="bg-primary-100 h-fit text-white"
               label="Download"
             />
 
             <CustomButton
               onClick={onOpenChange}
-              className={cn(`bg-muted-650`)}
+              className=" bg-muted-650"
               label="Cancel"
             />
           </div>

@@ -87,10 +87,10 @@ export function DateFilter({
             footer={
               <div className="flex justify-end p-2">
                 <span
-                  className="bg-primary-100 absolute bottom-[0.1rem] px-2 cursor-pointer text-white rounded left-[14rem] hover:bg-primary-100/80"
+                  className=" bg-muted-150 absolute bottom-[0.1rem] px-2 cursor-pointer text-muted-200 rounded left-[14rem] hover:bg-muted-150/80"
                   onClick={clearDatePicker}
                 >
-                  Clear dates
+                  Reset
                 </span>
               </div>
             }

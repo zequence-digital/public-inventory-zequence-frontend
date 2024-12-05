@@ -27,8 +27,8 @@ export function AllSales() {
   } = useGroupSales();
 
   const csvData = useMemo(() => {
-    const invoiceData = sales?.data.records
-      .map((sale) => sale.invoiceLogData)
+    const invoiceData = sales?.data?.records
+      ?.map((sale) => sale.invoiceLogData)
       .flatMap((invoice) => invoice);
     if (invoiceData) {
       return invoiceData.map((invoice) => ({

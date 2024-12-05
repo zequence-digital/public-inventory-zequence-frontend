@@ -193,8 +193,14 @@ body,
 
 .rdp-selected.rdp-range_start,
 .rdp-selected.rdp-range_end {
-  color: #ff6600;
+  color: #000;
+  border: 2px solid #b8d5f4;
+  outline: 2px solid #b8d5f4;
+  outline-offset: -1px;
   background-color: inherit;
-  transform: scale(1.1);
-  font-weight: bolder;
+}
+
+.rdp-selected.rdp-range_middle {
+  color: #000;
+  background-color: #b8d5f4;
 }
