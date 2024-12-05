@@ -96,7 +96,7 @@ export function SingleStockRequest() {
           <CustomButton
             onClick={() => {
               decline({
-                stockGuid: stockRequest?.data?.stockRefNumber,
+                stockGuid: stockRequest?.data?.guid,
                 action: "DECLINE",
               });
             }}
@@ -108,7 +108,7 @@ export function SingleStockRequest() {
           <CustomButton
             onClick={() => {
               approve({
-                stockGuid: stockRequest?.data?.stockRefNumber,
+                stockGuid: stockRequest?.data?.guid,
                 action: "APPROVE",
               });
             }}
