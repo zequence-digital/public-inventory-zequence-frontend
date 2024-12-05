@@ -1,15 +1,13 @@
 name: Build and Deploy Inventory sandbox application
-
 on:
   push:
     branches:
       - master
       - staging
-
+      - development
 env:
   IMAGE_NAME: "sandbox-inventory-frontend"
   VERSION_TAG: "1.0.0"
-
 jobs:
   build:
     runs-on: self-hosted
@@ -18,11 +16,9 @@ jobs:
       port: ${{ steps.set_env.outputs.port }}
       image_tag: ${{ steps.set_env.outputs.image_tag }}
       env_file: ${{ steps.set_env.outputs.env_file }}
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
     - name: Set environment variables
       id: set_env
       run: |
@@ -34,12 +30,20 @@ jobs:
             echo "image_tag=sandbox-prod-latest"
             echo "env_file=${ENV_FILE}"
           } >> $GITHUB_OUTPUT
-        else
+        elif [[ ${{ github.ref }} == 'refs/heads/staging' ]]; then
           ENV_FILE="/home/ubuntu/envs/frontend/sandbox/sandbox-staging.env"
           {
             echo "container_name=staging-sandbox-inventory-frontend"
             echo "port=3003:3000"
             echo "image_tag=sandbox-staging-latest"
+            echo "env_file=${ENV_FILE}"
+          } >> $GITHUB_OUTPUT
+        elif [[ ${{ github.ref }} == 'refs/heads/development' ]]; then
+          ENV_FILE="/home/ubuntu/envs/frontend/sandbox/sandbox-development.env"
+          {
+            echo "container_name=development-sandbox-inventory-frontend"
+            echo "port=3004:3000"
+            echo "image_tag=sandbox-development-latest"
             echo "env_file=${ENV_FILE}"
           } >> $GITHUB_OUTPUT
         fi
@@ -55,7 +59,7 @@ jobs:
           --build-arg NEXT_PUBLIC_API_BASE_URL="${NEXT_PUBLIC_API_BASE_URL}" \
           --build-arg NEXT_PUBLIC_CHANNEL_ID="${NEXT_PUBLIC_CHANNEL_ID}" \
           --build-arg NEXT_PUBLIC_CHANNEL_SECRET="${NEXT_PUBLIC_CHANNEL_SECRET}" \
-           --build-arg NEXT_PUBLIC_CRYPTO_KEY="${NEXT_PUBLIC_CRYPTO_KEY}" \
+          --build-arg NEXT_PUBLIC_CRYPTO_KEY="${NEXT_PUBLIC_CRYPTO_KEY}" \
           -t ${{ env.IMAGE_NAME }}:${{ github.sha }} .
         
         docker tag ${{ env.IMAGE_NAME }}:${{ github.sha }} ${{ env.IMAGE_NAME }}:${{ steps.set_env.outputs.image_tag }}
