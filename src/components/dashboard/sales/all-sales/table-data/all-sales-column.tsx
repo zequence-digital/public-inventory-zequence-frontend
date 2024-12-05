@@ -4,6 +4,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/table/ui/data-table-column-header";
 import { DateFormat } from "@/components/ui/date-format";
+import { DeleteSalesPack } from "@/components/delete-table-item/delete-sales-pack";
+import { EditSalesInvoiceModal } from "../edit-sales-modal";
 import type { GroupSales } from "@/types";
 import { SalesInvoiceModal } from "../print-sales-modal";
 import { cn } from "@/lib/utils";
@@ -89,7 +91,13 @@ export const allSalesColumns: ColumnDef<Sales>[] = [
     cell: ({ row }) => {
       const sales = row.original;
 
-      return <SalesInvoiceModal id={sales.guid} />;
+      return (
+        <div className="flex items-center gap-2">
+          <SalesInvoiceModal id={sales.guid} />
+          <EditSalesInvoiceModal id={sales.guid} />
+          <DeleteSalesPack id={sales.guid} />
+        </div>
+      );
     },
   },
 ];
