@@ -10,6 +10,7 @@ import { addDays, format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "lucide-react";
+import { ChevronRightIcon } from "@radix-ui/react-icons";
 import { DateRange } from "react-day-picker";
 import { cn } from "@/lib/utils";
 import { useClearDatePicker } from "@/hooks/use-clear-date-picker";
@@ -70,6 +71,7 @@ export function DateFilter({
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
           <Calendar
+            showOutsideDays={false}
             fixedWeeks
             mode="range"
             defaultMonth={date?.from}
@@ -85,13 +87,38 @@ export function DateFilter({
             footer={
               <div className="flex justify-end p-2">
                 <span
-                  className="bg-primary-100 absolute bottom-1 px-2 cursor-pointer text-white rounded left-[12.25rem] hover:bg-primary-100/80"
+                  className="bg-primary-100 absolute bottom-[0.1rem] px-2 cursor-pointer text-white rounded left-[14rem] hover:bg-primary-100/80"
                   onClick={clearDatePicker}
                 >
                   Clear dates
                 </span>
               </div>
             }
+            components={{
+              NextMonthButton(props) {
+                return (
+                  <Button
+                    variant="ghost"
+                    className="h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
+                    {...props}
+                  >
+                    <ChevronRightIcon />
+                  </Button>
+                );
+              },
+
+              PreviousMonthButton(props) {
+                return (
+                  <Button
+                    variant="ghost"
+                    className="h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
+                    {...props}
+                  >
+                    <ChevronRightIcon style={{ transform: "rotate(180deg)" }} />
+                  </Button>
+                );
+              },
+            }}
           />
         </PopoverContent>
       </Popover>

@@ -187,11 +187,14 @@ body,
 /* Not Found */
 
 /* DATE PICKER */
+/* rdp-selected rdp-range_end */
+/* rdp-selected rdp-range_start */
+/* rdp-selected rdp-range_middle */
 
-.rdp-caption_start table tfoot tr td div button {
-  display: none;
-}
-
-button[name="day"]:focus {
-  background-color: #ff6600;
+.rdp-selected.rdp-range_start,
+.rdp-selected.rdp-range_end {
+  color: #ff6600;
+  background-color: inherit;
+  transform: scale(1.1);
+  font-weight: bolder;
 }
