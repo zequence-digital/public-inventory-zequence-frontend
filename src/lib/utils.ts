@@ -15,26 +15,26 @@ function formatDateDifference(inputDate: string): string {
 
   const minutes = Math.floor(diff / (1000 * 60));
   if (minutes < 60) {
-    return `${minutes} minutes ago`;
+    return `${minutes === 0 ? "Just now" : `${minutes} minutes ago`}`;
   }
 
   const hours = Math.floor(diff / (1000 * 60 * 60));
   if (hours < 24) {
-    return `${hours} hours ago`;
+    return `${hours === 1 ? "An hour ago" : `${hours} hours ago`}`;
   }
 
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
   if (days < 30) {
-    return `${days} days ago`;
+    return `${days === 1 ? "Yesterday" : `${days} days ago`}`;
   }
 
   const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30));
   if (months < 12) {
-    return `${months} months ago`;
+    return `${months === 1 ? "A month ago" : `${months} months ago`}`;
   }
 
   const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 30 * 12));
-  return `${years} years ago`;
+  return `${years === 1 ? "A year ago" : `${years} years ago`}`;
 }
 
 const formatNumberInput = (value: string): string => {

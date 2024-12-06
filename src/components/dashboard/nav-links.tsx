@@ -11,12 +11,19 @@ import { ApiErrorMessage } from "../messages/api-error-message";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { links } from "@/routes";
+import { useNotificationStatus } from "@/hooks/use-notifications";
 import { useNotifications } from "@/queries/notifications";
 import { usePathname } from "next/navigation";
 
 export default function NavLinks() {
   const pathname = usePathname();
-  const { data: notifications, isError, isPending, error } = useNotifications();
+  const { readStatus } = useNotificationStatus();
+  const {
+    data: notifications,
+    isError,
+    isPending,
+    error,
+  } = useNotifications(readStatus);
 
   return (
     <>
@@ -88,7 +95,10 @@ export default function NavLinks() {
                                   {isPending && (
                                     <span className="animate-pulse bg-slate-300 size-4 rounded-full" />
                                   )}
-                                  {notifications?.data?.length ?? 0}
+                                  {notifications?.data &&
+                                  notifications?.data?.length > 99
+                                    ? "99+"
+                                    : notifications?.data?.length}
                                 </span>
                               )}
                             </p>

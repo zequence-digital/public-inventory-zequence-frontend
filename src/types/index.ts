@@ -138,6 +138,10 @@ export type SingleGroupStockUsage = z.infer<typeof SingleGroupStockUsageSchema>;
 
 // NOTIFICATIONS
 export type GetAllNotifications = z.infer<typeof GetAllNotificationSchema>;
+export type MarkNotificationAsReadOrUnread = {
+  guid: string;
+  readStatus: "READ" | "UNREAD" | "ALL";
+};
 
 // BRANCH
 export type GetAllOrganizationBranch = z.infer<
