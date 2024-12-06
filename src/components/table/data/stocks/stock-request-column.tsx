@@ -1,15 +1,15 @@
 "use client";
 
-import SvgEdit from "@/components/svg/svg-edit";
-import SvgView from "@/components/svg/svg-view";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DateFormat } from "@/components/ui/date-format";
-import { cn } from "@/lib/utils";
-import type { GetStockRequest } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
+import { DataTableColumnHeader } from "../../ui/data-table-column-header";
+import { DateFormat } from "@/components/ui/date-format";
+import type { GetStockRequest } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import { DataTableColumnHeader } from "../../ui/data-table-column-header";
+import SvgEdit from "@/components/svg/svg-edit";
+import { ViewStockRequest } from "@/components/dashboard/stocks/stock-request/view-stock-request";
+import { cn } from "@/lib/utils";
 import completed from "/public/images/completed.svg";
 import pending from "/public/images/pending.svg";
 
@@ -82,7 +82,7 @@ export const stockRequestColumns: ColumnDef<Stock>[] = [
   {
     accessorKey: "fromBranch",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="From" />
+      <DataTableColumnHeader column={column} title="To" />
     ),
     cell: ({ row }) => {
       const branchFrom = row.getValue("fromBranch") as Stock["fromBranch"];
@@ -93,7 +93,7 @@ export const stockRequestColumns: ColumnDef<Stock>[] = [
   {
     accessorKey: "toBranch",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="To" />
+      <DataTableColumnHeader column={column} title="From" />
     ),
     cell: ({ row }) => {
       const branchFrom = row.getValue("toBranch") as Stock["toBranch"];
@@ -130,11 +130,7 @@ export const stockRequestColumns: ColumnDef<Stock>[] = [
 
       return (
         <div className="flex gap-4 items-center">
-          <Link
-            href={`/dashboard/stocks/stock-request/${stock.guid}/stock-request`}
-          >
-            <SvgView className=" stroke-muted-400 hover:stroke-secondary-100 cursor-pointer size-5" />
-          </Link>
+          <ViewStockRequest stock={stock} />
           <Link
             href={`/dashboard/stocks/stock-request/${stock.guid}/edit-stock`}
           >

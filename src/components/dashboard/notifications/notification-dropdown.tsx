@@ -1,28 +1,28 @@
 "use client";
 
+import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 
 import { cn } from "@/lib/utils";
-import { useState } from "react";
 
-export function NotificationDropdown() {
-  const [notification, setNotification] = useState<"UNREAD" | "READ" | "ALL">(
-    "ALL",
-  );
+type Props = {
+  readStatus: "READ" | "UNREAD" | "ALL";
+  setReadStatus: (readStatus: "READ" | "UNREAD" | "ALL") => void;
+};
 
+export function NotificationDropdown({ readStatus, setReadStatus }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center gap-3  rounded-full text-2xl px-2 py-1 ">
         <span>
-          {notification === "UNREAD"
+          {readStatus === "UNREAD"
             ? "Unread"
-            : notification === "READ"
+            : readStatus === "READ"
               ? "Read"
               : "All"}
         </span>
@@ -30,39 +30,42 @@ export function NotificationDropdown() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className=" py-4">
         <DropdownMenuItem
-          className={cn(`flex items-center gap-2 py-3 justify-between`, {
-            "bg-gray-100": notification === "ALL",
-          })}
-          onClick={() => setNotification("ALL")}
+          className={cn(
+            `flex items-center cursor-pointer gap-2 py-3 justify-between`,
+            {
+              "bg-gray-100": readStatus === "ALL",
+            },
+          )}
+          onClick={() => setReadStatus("ALL")}
         >
           <span className="text-slate-700 text-sm font-medium  leading-[15px]">
             Show all notifications
           </span>
-          {notification === "ALL" && (
+          {readStatus === "ALL" && (
             <CheckIcon className="text-blue-600 size-6" />
           )}
         </DropdownMenuItem>
         {/* Show unread notifications */}
         <DropdownMenuItem
-          onClick={() => setNotification("UNREAD")}
-          className="flex items-center gap-2 py-3 justify-between"
+          onClick={() => setReadStatus("UNREAD")}
+          className="flex items-center cursor-pointer gap-2 py-3 justify-between"
         >
           <span className="text-slate-700 text-sm font-medium  leading-[15px]">
             Show unread notifications
           </span>
-          {notification === "UNREAD" && (
+          {readStatus === "UNREAD" && (
             <CheckIcon className="text-blue-600 size-6" />
           )}
         </DropdownMenuItem>
         {/* Show read notifications */}
         <DropdownMenuItem
-          onClick={() => setNotification("READ")}
-          className="flex items-center gap-2 py-3 justify-between"
+          onClick={() => setReadStatus("READ")}
+          className="flex items-center cursor-pointer gap-2 py-3 justify-between"
         >
           <span className="text-slate-700 text-sm font-medium  leading-[15px]">
             Show read notifications
           </span>
-          {notification === "READ" && (
+          {readStatus === "READ" && (
             <CheckIcon className="text-blue-600 size-6" />
           )}
         </DropdownMenuItem>
