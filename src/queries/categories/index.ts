@@ -16,16 +16,17 @@ import {
 
 import { AuthResponse } from "@/types/auth";
 import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
-import { getCategories } from "./actions";
 import categoryKeys from "./category-keys";
+import { getCategories } from "./actions";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export function useCategories(
   pageSize?: number,
   pageNumber: number = 1,
   search: string = "",
   startDate?: Date,
+  endDate?: Date,
   options?: Omit<
     UndefinedInitialDataOptions<AllCategory, Error, AllCategory, string[]>,
     "queryKey" | "queryFn"
@@ -37,10 +38,12 @@ export function useCategories(
     search,
     pageSize?.toString(),
     startDate?.toISOString(),
+    endDate?.toISOString(),
   ].filter((key) => key !== undefined);
   return useQuery({
     queryKey: hash,
-    queryFn: () => getCategories(pageSize, pageNumber, search, startDate),
+    queryFn: () =>
+      getCategories(pageSize, pageNumber, search, startDate, endDate),
     placeholderData: keepPreviousData,
     ...options,
   });

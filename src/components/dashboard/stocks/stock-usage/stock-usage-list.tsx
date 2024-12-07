@@ -23,7 +23,7 @@ export function StockUsageList({ setOpen }: Props) {
     return <ApiErrorMessage message={error?.message} />;
   }
   return (
-    <div className="py-8 w-full">
+    <div className="py-8 space-y-4 w-full">
       <DataTable
         message={`No stock usage found`}
         isPending={isPending}
@@ -32,18 +32,22 @@ export function StockUsageList({ setOpen }: Props) {
       />
       <div className="flex items-end justify-between w-full">
         <div className="flex gap-2 items-end">
-          <CustomButton
-            onClick={() => {
-              if (allSalesGuid) {
-                submitGroupUsage(allSalesGuid);
-              }
-            }}
-            type="submit"
-            className="bg-primary-100 text-white border-primary-100 hover:bg-primary-100/90 w-fit mt-8"
-            label="Save"
-            pendingLabel={<Spinner className=" border-white" />}
-            isPending={pendingSubmitSales}
-          />
+          {stockUsage?.data?.records &&
+            stockUsage?.data?.records.length > 0 && (
+              <CustomButton
+                onClick={() => {
+                  if (allSalesGuid) {
+                    submitGroupUsage(allSalesGuid);
+                  }
+                }}
+                type="submit"
+                className="bg-primary-100 text-white border-primary-100 hover:bg-primary-100/90 w-fit mt-8"
+                label="Save"
+                pendingLabel={<Spinner className=" border-white" />}
+                isPending={pendingSubmitSales}
+              />
+            )}
+
           <CustomButton
             onClick={() => setOpen(false)}
             className="bg-slate-50"

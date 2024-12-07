@@ -18,17 +18,17 @@ import {
 import { useAddStockUsage, useStocks } from "@/queries/stocks";
 import { useEffect, useRef, useState } from "react";
 
-import type { AddStockUsage } from "@/types";
-import { AddStockUsageSchema } from "@/schemas/stocks/stock-usage/add-stock-usage-schema";
-import { ApiErrorMessage } from "@/components/messages/api-error-message";
 import CustomButton from "@/components/dashboard/custom-button";
 import { InputField } from "@/components/form/components/input-field";
+import { ApiErrorMessage } from "@/components/messages/api-error-message";
 import { Spinner } from "@/components/spinner";
-import { cn } from "@/lib/utils";
-import plus from "/public/images/plus.svg";
 import { useCurrentBranch } from "@/hooks/use-current-branch";
-import { useForm } from "react-hook-form";
+import { cn } from "@/lib/utils";
+import { AddStockUsageSchema } from "@/schemas/stocks/stock-usage/add-stock-usage-schema";
+import type { AddStockUsage } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import plus from "/public/images/plus.svg";
 
 export function AddStockUsageForm() {
   const ref = useRef<HTMLFormElement | null>(null);
@@ -122,53 +122,67 @@ export function AddStockUsageForm() {
               <div>
                 {/* Item */}
 
-                <FormField
-                  control={form.control}
-                  name="stockRefNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Stock category</FormLabel>
-                      <FormControl>
-                        <Select
-                          onValueChange={(value) => {
-                            field.onChange(value);
-                            const item = stockList?.data?.records?.find(
-                              (item) => item.name === value,
-                            );
+                {stockList?.data?.records &&
+                stockList?.data?.records.length > 0 ? (
+                  <FormField
+                    control={form.control}
+                    name="stockRefNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Stock category</FormLabel>
+                        <FormControl>
+                          <Select
+                            onValueChange={(value) => {
+                              field.onChange(value);
+                              const item = stockList?.data?.records?.find(
+                                (item) => item.name === value,
+                              );
 
-                            if (item) {
-                              setReferenceNumber(item.referenceNumber);
-                            }
-                          }}
-                        >
-                          <SelectTrigger
-                            className={cn(
-                              `w-full h-[48px] px-4  text-sm bg-white border border-muted-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent`,
-                              {
-                                "animate-pulse bg-gray-300": pendingStock,
-                              },
-                            )}
+                              if (item) {
+                                setReferenceNumber(item.referenceNumber);
+                              }
+                            }}
                           >
-                            <SelectValue placeholder="Select a stock" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {stockList?.data?.records?.map((item) => (
-                              <SelectItem
-                                id={item.guid}
-                                key={item.guid}
-                                value={item?.name}
-                              >
-                                {item?.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
+                            <SelectTrigger
+                              className={cn(
+                                `w-full h-[48px] px-4  text-sm bg-white border border-muted-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent`,
+                                {
+                                  "animate-pulse bg-gray-300": pendingStock,
+                                },
+                              )}
+                            >
+                              <SelectValue placeholder="Select a stock" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {stockList?.data?.records?.map((item) => (
+                                <SelectItem
+                                  id={item.guid}
+                                  key={item.guid}
+                                  value={item?.name}
+                                >
+                                  {item?.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
 
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                ) : (
+                  <InputField
+                    disabled
+                    label="Stock category"
+                    id="stockRefNumber"
+                    name="stockRefNumber"
+                    type="text"
+                    placeholder="#"
+                    isPending={pendingStock}
+                    value="No stock available"
+                  />
+                )}
               </div>
 
               <div>

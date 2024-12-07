@@ -17,15 +17,16 @@ import {
 
 import { AuthResponse } from "@/types/auth";
 import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
 import dashboardOverviewKeys from "../dashboard-overview/dashboard-overview-keys";
 import productKeys from "./product-keys";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export function useProducts(
   pageNumber: number = 1,
   search: string = "",
   startDate?: Date,
+  endDate?: Date,
   options?: Omit<
     UndefinedInitialDataOptions<AllProduct, Error, AllProduct, string[]>,
     "queryKey" | "queryFn"
@@ -36,10 +37,11 @@ export function useProducts(
     pageNumber.toString(),
     search,
     startDate?.toISOString(),
+    endDate?.toISOString(),
   ].filter((key) => key !== undefined);
   const queryProducts = useQuery({
     queryKey: hash,
-    queryFn: () => getProducts(pageNumber, search, startDate),
+    queryFn: () => getProducts(pageNumber, search, startDate, endDate),
     placeholderData: keepPreviousData,
     ...options,
   });

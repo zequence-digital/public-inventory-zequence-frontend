@@ -16,12 +16,12 @@ export function SingleStockRequest() {
 
   const { mutate: approve, isPending: pendingApprove } =
     useApproveOrDeclineRequestOrTransfer("stock-request", {
-      stockGuid: stockRequestId,
+      guid: stockRequestId,
       action: "APPROVE",
     });
   const { mutate: decline, isPending: pendingDecline } =
     useApproveOrDeclineRequestOrTransfer("stock-request", {
-      stockGuid: stockRequestId,
+      guid: stockRequestId,
       action: "DECLINE",
     });
   const {
@@ -96,7 +96,7 @@ export function SingleStockRequest() {
           <CustomButton
             onClick={() => {
               decline({
-                stockGuid: stockRequest?.data?.stockRefNumber,
+                guid: stockRequest?.data?.guid,
                 action: "DECLINE",
               });
             }}
@@ -108,7 +108,7 @@ export function SingleStockRequest() {
           <CustomButton
             onClick={() => {
               approve({
-                stockGuid: stockRequest?.data?.stockRefNumber,
+                guid: stockRequest?.data?.guid,
                 action: "APPROVE",
               });
             }}

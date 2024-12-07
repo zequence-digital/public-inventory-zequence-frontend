@@ -5,12 +5,17 @@ export const GetAllNotificationSchema = z.object({
   message: z.string(),
   data: z.array(
     z.object({
-      messageUtil: z.object({}),
+      guid: z.string(),
       type: z.string(),
       description: z.string(),
       message: z.string(),
       requireAction: z.boolean(),
       createdAt: z.string(),
+      branchData: z.object({
+        id: z.number(),
+        name: z.string(),
+        organizationEmail: z.string(),
+      }),
     }),
   ),
 });

@@ -1,7 +1,7 @@
 "use client";
 
+import { ViewStockRequest } from "@/components/dashboard/stocks/stock-request/view-stock-request";
 import SvgEdit from "@/components/svg/svg-edit";
-import SvgView from "@/components/svg/svg-view";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DateFormat } from "@/components/ui/date-format";
 import { cn } from "@/lib/utils";
@@ -130,11 +130,7 @@ export const stockRequestColumns: ColumnDef<Stock>[] = [
 
       return (
         <div className="flex gap-4 items-center">
-          <Link
-            href={`/dashboard/stocks/stock-request/${stock.guid}/stock-request`}
-          >
-            <SvgView className=" stroke-muted-400 hover:stroke-secondary-100 cursor-pointer size-5" />
-          </Link>
+          <ViewStockRequest stock={stock} />
           <Link
             href={`/dashboard/stocks/stock-request/${stock.guid}/edit-stock`}
           >
