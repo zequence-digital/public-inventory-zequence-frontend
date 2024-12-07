@@ -1,7 +1,7 @@
-import type { GetStockRequest } from "@/types";
-import Link from "next/link";
 import SvgView from "@/components/svg/svg-view";
 import { useActiveUser } from "@/crypto";
+import type { GetStockRequest } from "@/types";
+import Link from "next/link";
 
 type Props = {
   stock: GetStockRequest["data"]["records"][number];
@@ -13,7 +13,7 @@ export function ViewStockRequest({ stock }: Props) {
   return (
     <>
       {user?.data?.branch?.name.toLocaleLowerCase() ===
-      stock?.fromBranch?.name.toLocaleLowerCase() ? null : (
+      stock?.toBranch?.name.toLocaleLowerCase() ? null : (
         <Link
           href={`/dashboard/stocks/stock-request/${stock.guid}/stock-request`}
         >
