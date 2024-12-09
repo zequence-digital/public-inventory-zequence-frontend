@@ -64,6 +64,20 @@ export const updateSales = async (sales: Omit<UpdateSale, "item">) => {
   return response;
 };
 
+export const updateSingleSalePack = async (
+  sales: Omit<
+    UpdateSale,
+    "item" | "customerType" | "branchId" | "productRefNumber"
+  >,
+) => {
+  const response = await apiClient.put({
+    url: `/sale-invoice/step/sales-invoice`,
+    body: sales,
+  });
+
+  return response;
+};
+
 // GROUP SALES
 
 // /sale-invoice/step/sales-invoice/group/submit

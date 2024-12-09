@@ -2,6 +2,7 @@
 
 import { Alert } from "../dialog/alert-dialog";
 import SvgTrash from "../svg/svg-trash";
+import { cn } from "@/lib/utils";
 import { useDeleteSales } from "@/queries/sales";
 import { useState } from "react";
 
@@ -23,9 +24,16 @@ export function DeleteSales({ id }: { id: string }) {
         }}
         handleCancel={() => setOpen(false)}
       />
-      <button disabled={isPending} onClick={() => setOpen(true)}>
-        <SvgTrash className="size-4 stroke-muted-400 hover:stroke-destructive cursor-pointer" />
-      </button>
+      <div onClick={() => setOpen(true)}>
+        <SvgTrash
+          className={cn(
+            `size-4 stroke-muted-400 hover:stroke-destructive cursor-pointer`,
+            {
+              "animate-spin": isPending,
+            },
+          )}
+        />
+      </div>
     </div>
   );
 }

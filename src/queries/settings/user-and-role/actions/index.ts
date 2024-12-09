@@ -22,9 +22,7 @@ export async function getAllInvitedUsers(
 
 // /user/invitee/role-assignment
 
-export async function assignInvitedUserRole(
-  data: AssignInvitedUserRole,
-): Promise<any> {
+export async function assignInvitedUserRole(data: AssignInvitedUserRole) {
   const response = await apiClient.post({
     url: `/user/invitee/role-assignment`,
     body: data,
@@ -45,4 +43,14 @@ export async function getActiveInvitedUser(
   });
 
   return response as ActiveInvitedUser;
+}
+
+// /user/invitation/remove
+
+export async function removeInvitedUser(emailAddress: string) {
+  const response = await apiClient.delete({
+    url: `/user/invitation/remove?emailAddress=${emailAddress}`,
+  });
+
+  return response;
 }
