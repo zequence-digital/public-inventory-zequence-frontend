@@ -3,38 +3,46 @@
 import { Alert } from "../dialog/alert-dialog";
 import SvgTrash from "../svg/svg-trash";
 import { cn } from "@/lib/utils";
-import { useDeleteSales } from "@/queries/sales";
 import { useState } from "react";
 
-export function DeleteSales({ id }: { id: string }) {
-  const [open, setOpen] = useState(false);
+type Props = {
+  isPending?: boolean;
+  fn: () => void;
+  title: string;
+  description: string;
+  className?: string;
+};
 
-  const { mutate: deleteSales, isPending } = useDeleteSales(id, () =>
-    setOpen(false),
-  );
+export function DeleteModal({
+  isPending,
+  fn,
+  title,
+  description,
+  className,
+}: Props) {
+  const [open, setOpen] = useState(false);
 
   return (
     <div>
       <Alert
-        title="Delete Sales"
-        description="Are you sure you want to delete this sale?"
+        title={title}
+        description={description}
         open={open}
         onOpenChange={setOpen}
         handleContinue={() => {
-          deleteSales(id);
+          fn();
+          setOpen(false);
         }}
         handleCancel={() => setOpen(false)}
       />
-      <div onClick={() => setOpen(true)}>
+      <button disabled={isPending} onClick={() => setOpen(true)}>
         <SvgTrash
           className={cn(
             `size-4 stroke-muted-400 hover:stroke-destructive cursor-pointer`,
-            {
-              "animate-spin": isPending,
-            },
+            className,
           )}
         />
-      </div>
+      </button>
     </div>
   );
 }

@@ -10,11 +10,12 @@ import {
 import { cn, formatDate } from "@/lib/utils";
 
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
+import { Spinner } from "@/components/spinner";
+import { useSingleGroupSales } from "@/queries/sales";
 import { Cross1Icon } from "@radix-ui/react-icons";
+import { useReducer } from "react";
 import CustomButton from "../../custom-button";
 import { ViewInvoice } from "./view-invoice";
-import { useReducer } from "react";
-import { useSingleGroupSales } from "@/queries/sales";
 
 type Props = {
   className?: string;
@@ -30,7 +31,7 @@ export function SalesInvoiceModal({ className, id, ...rest }: Props) {
   }
 
   if (isPending) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   return (

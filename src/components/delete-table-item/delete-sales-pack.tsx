@@ -1,14 +1,22 @@
 "use client";
 
 import { Alert } from "../dialog/alert-dialog";
+import type { GroupSales } from "@/types";
 import SvgTrash from "../svg/svg-trash";
+import { useActiveUser } from "@/crypto";
 import { useDeleteSales } from "@/queries/sales";
 import { useState } from "react";
 
-export function DeleteSalesPack({ id }: { id: string }) {
+type Props = {
+  sales: GroupSales["data"]["records"][number];
+};
+export function DeleteSalesPack({ sales }: Props) {
   const [open, setOpen] = useState(false);
+  const user = useActiveUser();
 
-  const { mutate: deleteSales, isPending } = useDeleteSales(id);
+  console.log(sales);
+
+  const { mutate: deleteSales, isPending } = useDeleteSales(sales.guid);
 
   return (
     <div>
@@ -18,14 +26,18 @@ export function DeleteSalesPack({ id }: { id: string }) {
         open={open}
         onOpenChange={setOpen}
         handleContinue={() => {
-          deleteSales(id);
+          deleteSales(sales.guid);
           setOpen(false);
         }}
         handleCancel={() => setOpen(false)}
       />
-      <button disabled={isPending} onClick={() => setOpen(true)}>
-        <SvgTrash className="size-4 stroke-muted-400 hover:stroke-destructive cursor-pointer" />
-      </button>
+      {sales?.invoiceLogData &&
+        sales?.invoiceLogData?.length === 0 &&
+        user?.data?.roleName === "ADMIN" && (
+          <button disabled={isPending} onClick={() => setOpen(true)}>
+            <SvgTrash className="size-4 stroke-muted-400 hover:stroke-destructive cursor-pointer" />
+          </button>
+        )}
     </div>
   );
 }
