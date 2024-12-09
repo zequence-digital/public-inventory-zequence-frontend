@@ -3,10 +3,10 @@ import { SalesList } from "@/components/dashboard/sales/table/sales-list";
 
 const AddSalesPage = () => {
   return (
-    <div>
+    <>
       <AddSalesForm />
       <SalesList />
-    </div>
+    </>
   );
 };
 

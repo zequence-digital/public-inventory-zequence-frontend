@@ -20,13 +20,14 @@ import {
   getSingleGroupSales,
   submitSales,
   updateSales,
+  updateSingleSalePack,
 } from "./actions";
 
 import { AuthResponse } from "@/types/auth";
 import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
 import salesKeys from "./sales-keys";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export function useSales(
   options?: Omit<
@@ -100,6 +101,37 @@ export function useEditSales(
   const router = useRouter();
   const editStock = useMutation({
     mutationFn: updateSales,
+
+    onSuccess(data) {
+      if (data.success) {
+        toast.success(data.message);
+        if (ref.current) {
+          ref.current.reset();
+        }
+        queryClient.invalidateQueries({
+          queryKey: [salesKeys.read],
+        });
+        router.push("/dashboard/sales/add-sales");
+      }
+
+      if (!data.success) {
+        toast.error(data.message);
+      }
+    },
+    ...options,
+  });
+
+  return editStock;
+}
+
+export function useEditSingleSalePack(
+  ref: React.MutableRefObject<HTMLFormElement | null>,
+  options?: UseMutationOptions<AuthResponse, AxiosError, any, unknown>,
+) {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const editStock = useMutation({
+    mutationFn: updateSingleSalePack,
 
     onSuccess(data) {
       if (data.success) {
