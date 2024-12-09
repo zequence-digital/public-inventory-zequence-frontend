@@ -125,6 +125,7 @@ export function useEditSales(
 }
 
 export function useEditSingleSalePack(
+  onClose: () => void,
   ref: React.MutableRefObject<HTMLFormElement | null>,
   options?: UseMutationOptions<AuthResponse, AxiosError, any, unknown>,
 ) {
@@ -142,7 +143,11 @@ export function useEditSingleSalePack(
         queryClient.invalidateQueries({
           queryKey: [salesKeys.read],
         });
-        router.push("/dashboard/sales/add-sales");
+        queryClient.invalidateQueries({
+          queryKey: [salesKeys.readOne],
+        });
+        onClose();
+        router.refresh();
       }
 
       if (!data.success) {
@@ -157,6 +162,7 @@ export function useEditSingleSalePack(
 
 export function useDeleteSales(
   id: string,
+  onOpenChange?: (open: boolean) => void,
   options?: UseMutationOptions<AuthResponse, AxiosError, any, unknown>,
 ) {
   const queryClient = useQueryClient();
@@ -169,6 +175,12 @@ export function useDeleteSales(
         queryClient.invalidateQueries({
           queryKey: [salesKeys.read],
         });
+        queryClient.invalidateQueries({
+          queryKey: [salesKeys.readOne],
+        });
+        if (onOpenChange) {
+          onOpenChange(false);
+        }
       }
 
       if (!data.success) {

@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
+import { format } from "date-fns";
 import { twMerge } from "tailwind-merge";
 
 function cn(...inputs: ClassValue[]) {
@@ -51,16 +52,7 @@ const formatName = (name: string): string => {
 // format date like this 12 Dec 2023, 9:30AM or PM
 
 function formatDate(date: string) {
-  return new Intl.DateTimeFormat("en-NG", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    hour12: true,
-  })
-    ?.format(new Date(date))
-    ?.toLocaleUpperCase();
+  return format(new Date(date), "dd MMM yyyy, hh:mma");
 }
 
 function formatCurrency(amount: number) {

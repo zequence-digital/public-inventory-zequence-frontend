@@ -3,11 +3,12 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/table/ui/data-table-column-header";
-import { DateFormat } from "@/components/ui/date-format";
+import { DeleteSalesPack } from "@/components/delete-table-item/delete-sales-pack";
 import { EditSalesInvoiceModal } from "../edit-sales-modal";
 import type { GroupSales } from "@/types";
 import { SalesInvoiceModal } from "../print-sales-modal";
 import { cn } from "@/lib/utils";
+import { formatDate } from "date-fns";
 
 type Sales = GroupSales["data"]["records"][number];
 
@@ -58,7 +59,11 @@ export const allSalesColumns: ColumnDef<Sales>[] = [
     ),
     cell: ({ row }) => {
       const date = row.getValue("createdAt") as Sales["createdAt"];
-      return <DateFormat date={date} />;
+      return (
+        <span className="text-xs whitespace-nowrap">
+          {formatDate(new Date(date), "dd MMM yyyy, hh:mma")}
+        </span>
+      );
     },
   },
   {
@@ -80,7 +85,7 @@ export const allSalesColumns: ColumnDef<Sales>[] = [
     cell: ({ row }) => {
       const data = row.getValue("totalAmount") as Sales["totalAmount"];
 
-      return <div>NGN {data.toLocaleString()}</div>;
+      return <div>NGN {data?.toLocaleString()}</div>;
     },
   },
 
@@ -94,6 +99,7 @@ export const allSalesColumns: ColumnDef<Sales>[] = [
         <div className="flex items-center gap-2">
           <SalesInvoiceModal id={sales.guid} />
           <EditSalesInvoiceModal id={sales.guid} />
+          <DeleteSalesPack sales={sales} />
         </div>
       );
     },

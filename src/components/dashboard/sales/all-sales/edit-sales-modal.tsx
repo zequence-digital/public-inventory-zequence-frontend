@@ -42,9 +42,7 @@ export function EditSalesInvoiceModal({ className, id, ...rest }: Props) {
   const [open, onOpenChange] = useReducer((open) => !open, false);
   const { data: invoice, isPending, isError, error } = useSingleGroupSales(id);
   const { mutate: updateSales, isPending: pendingUpdateSales } =
-    useEditSingleSalePack(ref);
-
-  console.log(user);
+    useEditSingleSalePack(onOpenChange, ref);
 
   const form = useForm<
     Omit<UpdateSale, "productRefNumber" | "branchId" | "customerType" | "item">
@@ -65,7 +63,7 @@ export function EditSalesInvoiceModal({ className, id, ...rest }: Props) {
   }
 
   if (isPending) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   return (
@@ -113,13 +111,13 @@ export function EditSalesInvoiceModal({ className, id, ...rest }: Props) {
                   </AlertDialogTitle>
                   <AlertDialogDescription className="border border-slate-700 p-4 rounded-lg space-y-3">
                     <div className="flex flex-col  gap-6">
-                      {invoice?.data?.invoiceLogData.map((item) => (
+                      {invoice?.data?.invoiceLogData?.map((item) => (
                         <Form key={item.productData.guid} {...form}>
                           <form
                             onSubmit={form.handleSubmit((data) =>
                               updateSales({
                                 quantityRequested: data?.quantityRequested,
-                                guid: item.productData.guid,
+                                guid: item?.guid,
                               }),
                             )}
                             ref={ref}
@@ -164,7 +162,7 @@ export function EditSalesInvoiceModal({ className, id, ...rest }: Props) {
                                   <Spinner className=" border-white" />
                                 }
                               />
-                              <DeleteSales id={item?.productData?.guid} />
+                              <DeleteSales id={item?.guid} />
                             </div>
                           </form>
                         </Form>

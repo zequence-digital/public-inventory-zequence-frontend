@@ -8,13 +8,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  useAssignInvitedUserRole,
-  useRemoveInvitedUser,
-} from "@/queries/settings/user-and-role";
 
-import { Spinner } from "@/components/spinner";
+import { DeleteInvitedUser } from "@/components/delete-table-item/delete-invited-user";
 import { cn } from "@/lib/utils";
+import { useAssignInvitedUserRole } from "@/queries/settings/user-and-role";
 
 type Props = {
   roleName: string;
@@ -23,8 +20,7 @@ type Props = {
 
 export function InvitedUserDropdown({ roleName, emailAddress }: Props) {
   const { mutate: changeRole, isPending } = useAssignInvitedUserRole();
-  const { mutate: removeInvitedUser, isPending: pendingInvitedUser } =
-    useRemoveInvitedUser();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center gap-1 bg-muted-950 rounded-full text-xs px-2 py-1 ">
@@ -94,12 +90,7 @@ export function InvitedUserDropdown({ roleName, emailAddress }: Props) {
           </span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <button
-          onClick={() => removeInvitedUser(emailAddress)}
-          className="text-slate-700 text-sm ml-10 pt-3 cursor-pointer  font-medium leading-[15px]"
-        >
-          {pendingInvitedUser ? <Spinner /> : " Remove user"}
-        </button>
+        <DeleteInvitedUser emailAddress={emailAddress} />
       </DropdownMenuContent>
     </DropdownMenu>
   );
