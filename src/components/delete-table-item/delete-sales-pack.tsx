@@ -14,8 +14,6 @@ export function DeleteSalesPack({ sales }: Props) {
   const [open, setOpen] = useState(false);
   const user = useActiveUser();
 
-  console.log(sales);
-
   const { mutate: deleteSales, isPending } = useDeleteSales(sales.guid);
 
   return (

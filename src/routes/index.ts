@@ -78,12 +78,12 @@ export const links = [
     IconComponent: SvgStocks,
     subLinks: [
       {
-        name: "All sales",
-        href: "/dashboard/sales/all-sales",
-      },
-      {
         name: "Add sales",
         href: "/dashboard/sales/add-sales",
+      },
+      {
+        name: "All sales",
+        href: "/dashboard/sales/all-sales",
       },
     ],
   },
