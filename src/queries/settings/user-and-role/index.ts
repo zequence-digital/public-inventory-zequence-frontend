@@ -11,6 +11,7 @@ import {
   assignInvitedUserRole,
   getActiveInvitedUser,
   getAllInvitedUsers,
+  removeInvitedUser,
 } from "./actions";
 
 import { AuthResponse } from "@/types/auth";
@@ -133,4 +134,28 @@ export function useActiveInvitedUser(
   });
 
   return queryActiveInvitedUser;
+}
+
+export function useRemoveInvitedUser(
+  options?: UseMutationOptions<AuthResponse, AxiosError, string, unknown>,
+) {
+  const queryClient = useQueryClient();
+  const removeUser = useMutation({
+    mutationFn: removeInvitedUser,
+    onSuccess(data) {
+      if (data.success) {
+        toast.success(data.message);
+        queryClient.invalidateQueries({
+          queryKey: [invitedUsersKey.read],
+        });
+      }
+
+      if (!data.success) {
+        toast.error(data.message);
+      }
+    },
+    ...options,
+  });
+
+  return removeUser;
 }

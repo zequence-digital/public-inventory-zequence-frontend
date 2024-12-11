@@ -16,6 +16,7 @@ export const GetAllNotificationSchema = z.object({
         name: z.string(),
         organizationEmail: z.string(),
       }),
+      readStatus: z.string(),
     }),
   ),
 });

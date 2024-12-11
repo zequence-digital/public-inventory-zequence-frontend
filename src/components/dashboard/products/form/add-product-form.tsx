@@ -22,8 +22,8 @@ import { InputField } from "@/components/form/components/input-field";
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
 import { Spinner } from "@/components/spinner";
 import { useCurrentBranch } from "@/hooks/use-current-branch";
+import { useUnpaginatedData } from "@/hooks/use-unpaginated-data";
 import { cn } from "@/lib/utils";
-import { useCategories } from "@/queries/categories";
 import { AddProductSchema } from "@/schemas/products/add-product-schema";
 import type { AddProduct } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -59,13 +59,13 @@ export function AddProductForm() {
   } = useProducts();
 
   const {
-    data: categories,
-    isPending: pendingCategory,
-    isError,
-    error,
-  } = useCategories(10000000);
+    entireCategory,
+    pendingEntireCategory,
+    errorEntireCategory,
+    isErrorEntireCategory,
+  } = useUnpaginatedData();
 
-  const products = categories?.data?.records.filter(
+  const products = entireCategory?.filter(
     (item) => item.categoryType === "PRODUCT" && item.status === "ACTIVE",
   );
 
@@ -138,7 +138,8 @@ export function AddProductForm() {
                               className={cn(
                                 `w-full h-[48px] px-4  text-sm bg-white border border-muted-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent`,
                                 {
-                                  "animate-pulse bg-gray-300": pendingCategory,
+                                  "animate-pulse bg-gray-300":
+                                    pendingEntireCategory,
                                 },
                               )}
                             >
@@ -169,7 +170,11 @@ export function AddProductForm() {
                           />
                         )}
                       </FormControl>
-                      {isError && <FormMessage>{error?.message}</FormMessage>}
+                      {isErrorEntireCategory && (
+                        <FormMessage>
+                          {errorEntireCategory?.message}
+                        </FormMessage>
+                      )}
                       <FormMessage />
                     </FormItem>
                   )}

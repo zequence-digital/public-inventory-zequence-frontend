@@ -1,7 +1,10 @@
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 import { LandingPageButton } from "../buttons/landing-page-button";
 
 type Props = {
+  linkTarget?: string;
+  link?: string;
   title: string;
   description: string;
   price: number;
@@ -12,6 +15,8 @@ type Props = {
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export function PricingCard({
+  link,
+  linkTarget,
   title,
   description,
   price,
@@ -53,11 +58,17 @@ export function PricingCard({
               ${billedYearly.toLocaleString()} billed yearly
             </div>
           </div>
-          <LandingPageButton
-            label={btnLabel}
-            hasNoBg={btnBorder}
+          <Link
+            target={linkTarget ? linkTarget : "_self"}
             className="w-full"
-          />
+            href={link ? link : ""}
+          >
+            <LandingPageButton
+              label={btnLabel}
+              hasNoBg={btnBorder}
+              className="w-full"
+            />
+          </Link>
         </div>
       </div>
     </div>

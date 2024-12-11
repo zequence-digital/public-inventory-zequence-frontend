@@ -13,6 +13,7 @@ import {
 } from "@tanstack/react-query";
 import {
   addSales,
+  deleteGroupSales,
   deleteSales,
   getGroupSales,
   getSale,
@@ -20,6 +21,7 @@ import {
   getSingleGroupSales,
   submitSales,
   updateSales,
+  updateSingleSalePack,
 } from "./actions";
 
 import { AuthResponse } from "@/types/auth";
@@ -123,8 +125,47 @@ export function useEditSales(
   return editStock;
 }
 
+// GROUP SALES
+
+export function useEditSingleSalePack(
+  onClose: () => void,
+  ref: React.MutableRefObject<HTMLFormElement | null>,
+  options?: UseMutationOptions<AuthResponse, AxiosError, any, unknown>,
+) {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const editStock = useMutation({
+    mutationFn: updateSingleSalePack,
+
+    onSuccess(data) {
+      if (data.success) {
+        toast.success(data.message);
+        if (ref.current) {
+          ref.current.reset();
+        }
+        queryClient.invalidateQueries({
+          queryKey: [salesKeys.read],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [salesKeys.readOne],
+        });
+        onClose();
+        router.refresh();
+      }
+
+      if (!data.success) {
+        toast.error(data.message);
+      }
+    },
+    ...options,
+  });
+
+  return editStock;
+}
+
 export function useDeleteSales(
   id: string,
+  onOpenChange?: (open: boolean) => void,
   options?: UseMutationOptions<AuthResponse, AxiosError, any, unknown>,
 ) {
   const queryClient = useQueryClient();
@@ -137,6 +178,12 @@ export function useDeleteSales(
         queryClient.invalidateQueries({
           queryKey: [salesKeys.read],
         });
+        queryClient.invalidateQueries({
+          queryKey: [salesKeys.readOne],
+        });
+        if (onOpenChange) {
+          onOpenChange(false);
+        }
       }
 
       if (!data.success) {
@@ -149,7 +196,34 @@ export function useDeleteSales(
   return deleteStockMutation;
 }
 
-// GROUP SALES
+export function useDeleteGroupSales(
+  id: string,
+  options?: UseMutationOptions<AuthResponse, AxiosError, any, unknown>,
+) {
+  const queryClient = useQueryClient();
+
+  const deleteStockMutation = useMutation({
+    mutationFn: () => deleteGroupSales(id),
+    onSuccess(data) {
+      if (data.success) {
+        toast.success(data.message);
+        queryClient.invalidateQueries({
+          queryKey: [salesKeys.read],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [salesKeys.readOne],
+        });
+      }
+
+      if (!data.success) {
+        toast.error(data.message);
+      }
+    },
+    ...options,
+  });
+
+  return deleteStockMutation;
+}
 
 export function useSalesGroupSubmit(
   options?: UseMutationOptions<AuthResponse, AxiosError, any, unknown>,

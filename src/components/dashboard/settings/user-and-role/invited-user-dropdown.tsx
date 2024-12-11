@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { DeleteInvitedUser } from "@/components/delete-table-item/delete-invited-user";
 import { cn } from "@/lib/utils";
 import { useAssignInvitedUserRole } from "@/queries/settings/user-and-role";
 
@@ -19,6 +20,7 @@ type Props = {
 
 export function InvitedUserDropdown({ roleName, emailAddress }: Props) {
   const { mutate: changeRole, isPending } = useAssignInvitedUserRole();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center gap-1 bg-muted-950 rounded-full text-xs px-2 py-1 ">
@@ -27,7 +29,7 @@ export function InvitedUserDropdown({ roleName, emailAddress }: Props) {
       </DropdownMenuTrigger>
       <DropdownMenuContent className=" py-4">
         <DropdownMenuItem
-          className={cn(`flex items-start justify-between`, {
+          className={cn(`flex items-start cursor-pointer justify-between`, {
             "bg-gray-100": roleName === "ADMIN",
           })}
           onClick={() => changeRole({ emailAddress, roleName: "ADMIN" })}
@@ -49,7 +51,7 @@ export function InvitedUserDropdown({ roleName, emailAddress }: Props) {
 
         <DropdownMenuItem
           onClick={() => changeRole({ emailAddress, roleName: "STAFF" })}
-          className={cn(`flex items-start justify-between`, {
+          className={cn(`flex items-start cursor-pointer justify-between`, {
             "bg-gray-100": roleName === "STAFF",
           })}
         >
@@ -69,7 +71,7 @@ export function InvitedUserDropdown({ roleName, emailAddress }: Props) {
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => changeRole({ emailAddress, roleName: "CASHIER" })}
-          className={cn(`flex items-start justify-between`, {
+          className={cn(`flex items-start cursor-pointer justify-between`, {
             "bg-gray-100": roleName === "CASHIER",
           })}
         >
@@ -88,9 +90,7 @@ export function InvitedUserDropdown({ roleName, emailAddress }: Props) {
           </span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <button className="text-slate-700 text-sm ml-10 pt-3  font-medium leading-[15px]">
-          Remove user
-        </button>
+        <DeleteInvitedUser emailAddress={emailAddress} />
       </DropdownMenuContent>
     </DropdownMenu>
   );

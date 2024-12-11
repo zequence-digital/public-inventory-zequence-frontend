@@ -1,4 +1,4 @@
-import type { AllProduct, SingleProduct } from "@/types";
+import type { AllProduct, GetEntireProduct, SingleProduct } from "@/types";
 import {
   UndefinedInitialDataOptions,
   UseMutationOptions,
@@ -10,6 +10,7 @@ import {
 import {
   addProduct,
   deleteProduct,
+  getEntireProduct,
   getProduct,
   getProducts,
   updateProduct,
@@ -17,10 +18,29 @@ import {
 
 import { AuthResponse } from "@/types/auth";
 import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import dashboardOverviewKeys from "../dashboard-overview/dashboard-overview-keys";
 import productKeys from "./product-keys";
-import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+
+export function useEntireProducts(
+  options?: Omit<
+    UndefinedInitialDataOptions<
+      GetEntireProduct,
+      Error,
+      GetEntireProduct,
+      string[]
+    >,
+    "queryKey" | "queryFn"
+  >,
+) {
+  const hash = [productKeys.read, "entire"].filter((key) => key !== undefined);
+  return useQuery({
+    queryKey: hash,
+    queryFn: getEntireProduct,
+    ...options,
+  });
+}
 
 export function useProducts(
   pageNumber: number = 1,

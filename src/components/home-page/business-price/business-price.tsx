@@ -22,6 +22,8 @@ export function BusinessPrice() {
       </div>
       <div className=" grid grid-auto-fit-xl w-full gap-6">
         <PricingCard
+          linkTarget="_blank"
+          link="https://demo-inventory.zequencedigital.com"
           btnLabel="Try for free"
           btnBorder
           title="Standard plan"

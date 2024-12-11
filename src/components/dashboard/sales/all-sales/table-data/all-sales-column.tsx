@@ -81,7 +81,7 @@ export const allSalesColumns: ColumnDef<Sales>[] = [
     cell: ({ row }) => {
       const data = row.getValue("totalAmount") as Sales["totalAmount"];
 
-      return <div>NGN {data.toLocaleString()}</div>;
+      return <div>NGN {data?.toLocaleString()}</div>;
     },
   },
 
@@ -95,7 +95,7 @@ export const allSalesColumns: ColumnDef<Sales>[] = [
         <div className="flex items-center gap-2">
           <SalesInvoiceModal id={sales.guid} />
           <EditSalesInvoiceModal id={sales.guid} />
-          <DeleteSalesPack id={sales.guid} />
+          <DeleteSalesPack sales={sales} />
         </div>
       );
     },
