@@ -22,8 +22,8 @@ import { InputField } from "@/components/form/components/input-field";
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
 import { Spinner } from "@/components/spinner";
 import { useCurrentBranch } from "@/hooks/use-current-branch";
+import { useUnpaginatedData } from "@/hooks/use-unpaginated-data";
 import { cn } from "@/lib/utils";
-import { useCategories } from "@/queries/categories";
 import { AddStockSchema } from "@/schemas/stocks/add-stock-schema";
 import type { AddStock } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -62,13 +62,13 @@ export function AddStockForm() {
     isPending: pendingStock,
   } = useStocks(pageNumber, search, branchId?.id);
   const {
-    data: categories,
-    isPending: pendingCategory,
-    isError,
-    error,
-  } = useCategories(10000000);
+    entireCategory,
+    pendingEntireCategory,
+    errorEntireCategory,
+    isErrorEntireCategory,
+  } = useUnpaginatedData();
 
-  const stocks = categories?.data?.records.filter(
+  const stocks = entireCategory?.filter(
     (item) => item.categoryType === "STOCK" && item.status === "ACTIVE",
   );
 
@@ -141,7 +141,8 @@ export function AddStockForm() {
                               className={cn(
                                 `w-full h-[48px] px-4  text-sm bg-white border border-muted-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent`,
                                 {
-                                  "animate-pulse bg-gray-300": pendingCategory,
+                                  "animate-pulse bg-gray-300":
+                                    pendingEntireCategory,
                                 },
                               )}
                             >
@@ -171,7 +172,11 @@ export function AddStockForm() {
                           />
                         )}
                       </FormControl>
-                      {isError && <FormMessage>{error?.message}</FormMessage>}
+                      {isErrorEntireCategory && (
+                        <FormMessage>
+                          {errorEntireCategory?.message}
+                        </FormMessage>
+                      )}
                       <FormMessage />
                     </FormItem>
                   )}

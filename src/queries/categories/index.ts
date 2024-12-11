@@ -1,4 +1,4 @@
-import type { AllCategory, SingleCategory } from "@/types";
+import type { AllCategory, EntireCategory, SingleCategory } from "@/types";
 import {
   UndefinedInitialDataOptions,
   UseMutationOptions,
@@ -10,16 +10,17 @@ import {
 import {
   addCategory,
   deleteCategory,
+  getCategories,
   getCategory,
+  getEntireCategories,
   updateCategory,
 } from "./actions";
 
 import { AuthResponse } from "@/types/auth";
 import { AxiosError } from "axios";
-import categoryKeys from "./category-keys";
-import { getCategories } from "./actions";
-import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import categoryKeys from "./category-keys";
 
 export function useCategories(
   pageSize?: number,
@@ -45,6 +46,25 @@ export function useCategories(
     queryFn: () =>
       getCategories(pageSize, pageNumber, search, startDate, endDate),
     placeholderData: keepPreviousData,
+    ...options,
+  });
+}
+
+export function useEntireCategories(
+  options?: Omit<
+    UndefinedInitialDataOptions<
+      EntireCategory,
+      Error,
+      EntireCategory,
+      string[]
+    >,
+    "queryKey" | "queryFn"
+  >,
+) {
+  const hash = [categoryKeys.read, "all"];
+  return useQuery({
+    queryKey: hash,
+    queryFn: getEntireCategories,
     ...options,
   });
 }

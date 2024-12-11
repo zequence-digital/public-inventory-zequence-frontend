@@ -55,6 +55,15 @@ export const deleteSales = async (id: string) => {
   return response;
 };
 
+// /sale-invoice/group/{guid}
+export const deleteGroupSales = async (guid: string) => {
+  const response = await apiClient.delete({
+    url: `/sale-invoice/group/${guid}`,
+  });
+
+  return response;
+};
+
 export const updateSales = async (sales: Omit<UpdateSale, "item">) => {
   const response = await apiClient.put({
     url: `/sale-invoice/step/sales-invoice`,
@@ -64,6 +73,7 @@ export const updateSales = async (sales: Omit<UpdateSale, "item">) => {
   return response;
 };
 
+// GROUP SALES
 export const updateSingleSalePack = async (
   sales: Omit<
     UpdateSale,
@@ -77,8 +87,6 @@ export const updateSingleSalePack = async (
 
   return response;
 };
-
-// GROUP SALES
 
 // /sale-invoice/step/sales-invoice/group/submit
 

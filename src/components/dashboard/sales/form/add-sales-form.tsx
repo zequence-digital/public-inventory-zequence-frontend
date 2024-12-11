@@ -22,9 +22,9 @@ import { InputField } from "@/components/form/components/input-field";
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
 import { Spinner } from "@/components/spinner";
 import { useCurrentBranch } from "@/hooks/use-current-branch";
+import { useUnpaginatedData } from "@/hooks/use-unpaginated-data";
 import { cn } from "@/lib/utils";
 import { useDashboardOverview } from "@/queries/dashboard-overview";
-import { useProducts } from "@/queries/products";
 import { useAddSales } from "@/queries/sales";
 import type { AddSales } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -53,17 +53,17 @@ export function AddSalesForm() {
   } = useDashboardOverview();
 
   const {
-    data: product,
-    isError: isErrorProduct,
-    isPending: pendingProduct,
-    error: errorProduct,
-  } = useProducts();
+    entireProduct,
+    pendingEntireProduct,
+    isErrorEntireProduct,
+    errorEntireProduct,
+  } = useUnpaginatedData();
 
   const activeProducts = useMemo(() => {
-    return product?.data?.records.filter(
+    return entireProduct?.filter(
       (product) => product.status !== "OUT_OF_STOCK",
     );
-  }, [product?.data?.records]);
+  }, [entireProduct]);
 
   const { currentBranch, isErrorBranch, pendingBranch, errorBranch } =
     useCurrentBranch();
@@ -185,7 +185,8 @@ export function AddSalesForm() {
                               className={cn(
                                 `w-full h-[48px] px-4  text-sm bg-white border border-muted-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent`,
                                 {
-                                  "animate-pulse bg-gray-300": pendingProduct,
+                                  "animate-pulse bg-gray-300":
+                                    pendingEntireProduct,
                                 },
                               )}
                             >
@@ -204,8 +205,10 @@ export function AddSalesForm() {
                             </SelectContent>
                           </Select>
                         </FormControl>
-                        {isErrorProduct && (
-                          <FormMessage>{errorProduct?.message}</FormMessage>
+                        {isErrorEntireProduct && (
+                          <FormMessage>
+                            {errorEntireProduct?.message}
+                          </FormMessage>
                         )}
                         <FormMessage />
                       </FormItem>
@@ -219,7 +222,7 @@ export function AddSalesForm() {
                     name="ProductName"
                     type="text"
                     placeholder="No products found, please add a product"
-                    isPending={pendingProduct}
+                    isPending={pendingEntireProduct}
                   />
                 )}
               </div>

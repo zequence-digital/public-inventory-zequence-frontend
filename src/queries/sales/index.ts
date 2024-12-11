@@ -13,6 +13,7 @@ import {
 } from "@tanstack/react-query";
 import {
   addSales,
+  deleteGroupSales,
   deleteSales,
   getGroupSales,
   getSale,
@@ -25,9 +26,9 @@ import {
 
 import { AuthResponse } from "@/types/auth";
 import { AxiosError } from "axios";
-import salesKeys from "./sales-keys";
-import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import salesKeys from "./sales-keys";
 
 export function useSales(
   options?: Omit<
@@ -124,6 +125,8 @@ export function useEditSales(
   return editStock;
 }
 
+// GROUP SALES
+
 export function useEditSingleSalePack(
   onClose: () => void,
   ref: React.MutableRefObject<HTMLFormElement | null>,
@@ -193,7 +196,34 @@ export function useDeleteSales(
   return deleteStockMutation;
 }
 
-// GROUP SALES
+export function useDeleteGroupSales(
+  id: string,
+  options?: UseMutationOptions<AuthResponse, AxiosError, any, unknown>,
+) {
+  const queryClient = useQueryClient();
+
+  const deleteStockMutation = useMutation({
+    mutationFn: () => deleteGroupSales(id),
+    onSuccess(data) {
+      if (data.success) {
+        toast.success(data.message);
+        queryClient.invalidateQueries({
+          queryKey: [salesKeys.read],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [salesKeys.readOne],
+        });
+      }
+
+      if (!data.success) {
+        toast.error(data.message);
+      }
+    },
+    ...options,
+  });
+
+  return deleteStockMutation;
+}
 
 export function useSalesGroupSubmit(
   options?: UseMutationOptions<AuthResponse, AxiosError, any, unknown>,

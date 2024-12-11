@@ -1,12 +1,13 @@
 "use client";
 
 import NavLinks from "@/components/dashboard/nav-links";
-import { SubLinks } from "./sub-links";
-import { UserMenu } from "../user-menu/user-menu";
+import theme from "tailwindcss/defaultTheme";
 import { useMediaQuery } from "usehooks-ts";
+import { UserMenu } from "../user-menu/user-menu";
+import { SubLinks } from "./sub-links";
 
 export function SideNav() {
-  const isMobile = useMediaQuery("(max-width: 768px)");
+  const isMobile = useMediaQuery(`(max-width: ${theme.screens.md})`);
   return (
     <>
       {isMobile ? (
