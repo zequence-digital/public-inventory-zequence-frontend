@@ -1,7 +1,7 @@
 "use client";
 
+import { ViewStockTransfer } from "@/components/dashboard/stocks/stock-transfer/view-stock-transfer";
 import SvgEdit from "@/components/svg/svg-edit";
-import SvgView from "@/components/svg/svg-view";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DateFormat } from "@/components/ui/date-format";
 import { cn } from "@/lib/utils";
@@ -130,11 +130,7 @@ export const stockTransferColumns: ColumnDef<Stock>[] = [
 
       return (
         <div className="flex gap-4 items-center">
-          <Link
-            href={`/dashboard/stocks/add-stock-transfer/${stock.guid}/stock-transfer`}
-          >
-            <SvgView className=" stroke-muted-400 hover:stroke-secondary-100 cursor-pointer size-5" />
-          </Link>
+          <ViewStockTransfer stock={stock} />
           <Link
             href={`/dashboard/stocks/add-stock-transfer/${stock.guid}/edit-stock-transfer`}
           >

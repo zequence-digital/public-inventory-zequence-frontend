@@ -1,6 +1,7 @@
 import { useEntireCategories } from "@/queries/categories";
 import { useEntireProducts } from "@/queries/products";
 import { useEntireStock } from "@/queries/stocks";
+import { useMemo } from "react";
 
 export const useUnpaginatedData = () => {
   const {
@@ -21,8 +22,14 @@ export const useUnpaginatedData = () => {
     isError: isErrorEntireStock,
     error: errorEntireStock,
   } = useEntireStock();
+  const activeProducts = useMemo(() => {
+    return entireProduct?.filter(
+      (product) => product.status !== "OUT_OF_STOCK",
+    );
+  }, [entireProduct]);
 
   return {
+    activeProducts,
     entireCategory,
     pendingEntireCategory,
     isErrorEntireCategory,
