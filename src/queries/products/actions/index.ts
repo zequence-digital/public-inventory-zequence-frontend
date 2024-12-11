@@ -1,11 +1,23 @@
 import type {
   AddProduct,
   AllProduct,
+  GetEntireProduct,
   SingleProduct,
   UpdateProduct,
 } from "@/types";
 
 import { apiClient } from "@/services/api";
+
+// /product/all
+
+export const getEntireProduct = async (): Promise<GetEntireProduct> => {
+  const response = await apiClient.get({
+    url: "/product/all",
+    auth: true,
+  });
+
+  return response as GetEntireProduct;
+};
 
 // products/add-product
 

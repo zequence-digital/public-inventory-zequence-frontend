@@ -1,6 +1,7 @@
 import type {
   AddCategory,
   AllCategory,
+  EntireCategory,
   SingleCategory,
   UpdateCategory,
 } from "@/types";
@@ -8,8 +9,6 @@ import type {
 import { apiClient } from "@/services/api";
 
 // /category
-
-// 2024-09-12
 
 export async function getCategories(
   pageSize?: number,
@@ -34,6 +33,17 @@ export async function getCategories(
   });
 
   return response as AllCategory;
+}
+
+// /category/all
+
+export async function getEntireCategories(): Promise<EntireCategory> {
+  const response = await apiClient.get({
+    url: "/category/all",
+    auth: true,
+  });
+
+  return response as EntireCategory;
 }
 
 export const addCategory = async (category: AddCategory) => {

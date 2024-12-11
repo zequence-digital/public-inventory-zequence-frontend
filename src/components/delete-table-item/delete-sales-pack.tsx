@@ -1,11 +1,12 @@
 "use client";
 
-import { Alert } from "../dialog/alert-dialog";
-import type { GroupSales } from "@/types";
-import SvgTrash from "../svg/svg-trash";
+import { useDeleteGroupSales } from "@/queries/sales";
+
 import { useActiveUser } from "@/crypto";
-import { useDeleteSales } from "@/queries/sales";
+import type { GroupSales } from "@/types";
 import { useState } from "react";
+import { Alert } from "../dialog/alert-dialog";
+import SvgTrash from "../svg/svg-trash";
 
 type Props = {
   sales: GroupSales["data"]["records"][number];
@@ -14,7 +15,7 @@ export function DeleteSalesPack({ sales }: Props) {
   const [open, setOpen] = useState(false);
   const user = useActiveUser();
 
-  const { mutate: deleteSales, isPending } = useDeleteSales(sales.guid);
+  const { mutate: deleteSales, isPending } = useDeleteGroupSales(sales.guid);
 
   return (
     <div>

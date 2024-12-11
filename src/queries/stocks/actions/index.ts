@@ -6,6 +6,7 @@ import type {
   ApproveOrDeclineRequestOrTransfer,
   GetAllGroupStockUsage,
   GetAllStockUsage,
+  GetEntireStock,
   GetStockRequest,
   GetStockTransfer,
   SingleGroupStockUsage,
@@ -19,6 +20,16 @@ import type {
 } from "@/types";
 
 import { apiClient } from "@/services/api";
+
+// /stock/all
+export const getEntireStock = async (): Promise<GetEntireStock> => {
+  const response = await apiClient.get({
+    url: "/stock/all",
+    auth: true,
+  });
+
+  return response as GetEntireStock;
+};
 
 // products/add-product
 
