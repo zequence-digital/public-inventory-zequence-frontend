@@ -8,7 +8,7 @@ export default function Error({
   reset: () => void;
 }) {
   return (
-    <section className="flex items-center justify-center min-h-screen w-full mx-auto">
+    <section className="flex items-center justify-center min-h-screen w-full text-center">
       <div>
         <h2>
           {error.message} {error.digest}
