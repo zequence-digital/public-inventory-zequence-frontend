@@ -21,6 +21,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0 # Recommended for SonarQube scan relevancy
+      
       - name: Set environment variables
         id: set_env
         run: |
@@ -49,6 +50,7 @@ jobs:
               echo "env_file=${ENV_FILE}"
             } >> $GITHUB_OUTPUT
           fi
+      
       - name: Load environment variables
         run: |
           set -a
@@ -61,17 +63,32 @@ jobs:
             --build-arg NEXT_PUBLIC_CRYPTO_KEY="${NEXT_PUBLIC_CRYPTO_KEY}" \
             -t ${{ env.IMAGE_NAME }}:${{ github.sha }} .
           docker tag ${{ env.IMAGE_NAME }}:${{ github.sha }} ${{ env.IMAGE_NAME }}:${{ steps.set_env.outputs.image_tag }}
-
+      
       - name: Install required tools
         run: |
           sudo apt update
           sudo apt install unzip -y
-
+      
+      - name: Run tests and generate coverage
+        run: |
+          npm install
+          npm run test:coverage
+      
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        with:
+          projectBaseDir: .
+          args: >
+            -Dsonar.projectKey=sandbox-inventory-frontend
+            -Dsonar.sources=src
+            -Dsonar.exclusions=**/*.test.js,**/*.test.jsx,**/*.spec.js,**/*.spec.jsx,**/node_modules/**,**/.next/**
+            -Dsonar.tests=src
+            -Dsonar.test.exclusions=**/*.test.js,**/*.test.jsx,**/*.spec.js,**/*.spec.jsx
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.sourceEncoding=UTF-8
 
   deploy:
     needs: build
