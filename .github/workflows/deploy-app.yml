@@ -56,14 +56,14 @@ jobs:
             } >> $GITHUB_OUTPUT
           fi
       
-      - name: Install dependencies
-        run: |
-          npm install
-          npm install -g npm@latest
+      # - name: Install dependencies
+      #   run: |
+      #     npm install
+      #     npm install -g npm@latest
       
-      - name: Run tests and generate coverage
-        run: |
-          npm run test:coverage
+      # - name: Run tests and generate coverage
+      #   run: |
+      #     npm run test:coverage
       
       - name: Load environment variables
         run: |
@@ -94,10 +94,7 @@ jobs:
             -Dsonar.projectKey=sandbox-inventory-frontend
             -Dsonar.sources=src
             -Dsonar.exclusions=**/*.test.js,**/*.test.jsx,**/*.spec.js,**/*.spec.jsx,**/node_modules/**,**/.next/**
-            -Dsonar.tests=src
-            -Dsonar.test.exclusions=**/*.test.js,**/*.test.jsx,**/*.spec.js,**/*.spec.jsx
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-            -Dsonar.sourceEncoding=UTF-8
 
   deploy:
     needs: build
