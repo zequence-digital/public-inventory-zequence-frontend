@@ -95,7 +95,14 @@ jobs:
               -Dsonar.sources=src
               -Dsonar.exclusions=**/node_modules/**,**/.next/**,**/*.test.js,**/*.test.jsx,**/*.spec.js,**/*.spec.jsx
               -Dsonar.sourceEncoding=UTF-8
-              -Dsonar.inclusions=**/*.js,**/*.jsx,**/*.ts,**/*.tsx
+              -Dsonar.inclusions=src/app/**/*,src/components/**/*,src/crypto/**/*,src/helpers/**/*,src/hooks/**/*,src/lib/**/*,src/providers/**/*,src/queries/**/*,src/routes/**/*,src/schemas/**/*,src/services/**/*,src/store/**/*,src/types/**/*,src/utils/**/*
+              -Dsonar.cpd.exclusions=src/types/**/*
+              -Dsonar.scm.exclusions.disabled=true
+              # -Dsonar.projectKey=sandbox-inventory-frontend
+              # -Dsonar.sources=src
+              # -Dsonar.exclusions=**/node_modules/**,**/.next/**,**/*.test.js,**/*.test.jsx,**/*.spec.js,**/*.spec.jsx
+              # -Dsonar.sourceEncoding=UTF-8
+              # -Dsonar.inclusions=**/*.js,**/*.jsx,**/*.ts,**/*.tsx
 
 
   deploy:
