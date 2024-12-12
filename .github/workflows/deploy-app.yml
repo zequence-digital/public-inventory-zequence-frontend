@@ -22,6 +22,11 @@ jobs:
         with:
           fetch-depth: 0 # Recommended for SonarQube scan relevancy
       
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Choose the Node.js version that matches your project
+      
       - name: Set environment variables
         id: set_env
         run: |
@@ -51,6 +56,15 @@ jobs:
             } >> $GITHUB_OUTPUT
           fi
       
+      - name: Install dependencies
+        run: |
+          npm install
+          npm install -g npm@latest
+      
+      - name: Run tests and generate coverage
+        run: |
+          npm run test:coverage
+      
       - name: Load environment variables
         run: |
           set -a
@@ -68,11 +82,6 @@ jobs:
         run: |
           sudo apt update
           sudo apt install unzip -y
-      
-      - name: Run tests and generate coverage
-        run: |
-          npm install
-          npm run test:coverage
       
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
