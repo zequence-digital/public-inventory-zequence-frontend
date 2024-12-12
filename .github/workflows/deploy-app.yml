@@ -91,10 +91,11 @@ jobs:
         with:
           projectBaseDir: .
           args: >
-            -Dsonar.projectKey=sandbox-inventory-frontend
-            -Dsonar.sources=src
-            -Dsonar.exclusions=**/*.test.js,**/*.test.jsx,**/*.spec.js,**/*.spec.jsx,**/node_modules/**,**/.next/**
-            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+              -Dsonar.projectKey=sandbox-inventory-frontend
+              -Dsonar.sources=src,pages,components
+              -Dsonar.exclusions=**/*.test.js,**/*.test.jsx,**/*.spec.js,**/*.spec.jsx,**/node_modules/**,**/.next/**,**/public/**,**/styles/**
+              -Dsonar.sourceEncoding=UTF-8
+
 
   deploy:
     needs: build
