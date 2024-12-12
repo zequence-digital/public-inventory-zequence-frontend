@@ -92,9 +92,10 @@ jobs:
           projectBaseDir: .
           args: >
               -Dsonar.projectKey=sandbox-inventory-frontend
-              -Dsonar.sources=src,pages,components
-              -Dsonar.exclusions=**/*.test.js,**/*.test.jsx,**/*.spec.js,**/*.spec.jsx,**/node_modules/**,**/.next/**,**/public/**,**/styles/**
+              -Dsonar.sources=src
+              -Dsonar.exclusions=**/node_modules/**,**/.next/**,**/*.test.js,**/*.test.jsx,**/*.spec.js,**/*.spec.jsx
               -Dsonar.sourceEncoding=UTF-8
+              -Dsonar.inclusions=**/*.js,**/*.jsx,**/*.ts,**/*.tsx
 
 
   deploy:
