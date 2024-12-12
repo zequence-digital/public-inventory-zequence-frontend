@@ -6,7 +6,7 @@ const WelcomeMessage = () => {
   const user = useActiveUser();
 
   return (
-    <div className="flex-col justify-start items-start gap-1 inline-flex mb-6">
+    <div className="flex-col justify-start items-start gap-1 inline-flex mb-6 mt-24 md:mt-0">
       <p className="self-stretch text-slate-900 text-3xl font-semibold leading-[38px]">
         <span>{`Welcome back, ${user?.data?.username.at(0)}${user?.data.username.slice(1).toLocaleLowerCase()} `}</span>
       </p>
