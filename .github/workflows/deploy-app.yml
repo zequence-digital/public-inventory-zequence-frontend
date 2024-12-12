@@ -1,4 +1,4 @@
-name: Build and Deploy Inventory sandbox application
+name: Build, Scan, and Deploy Inventory Sandbox Application
 on:
   push:
     branches:
@@ -8,42 +8,9 @@ on:
 env:
   IMAGE_NAME: "sandbox-inventory-frontend"
   VERSION_TAG: "1.0.0"
+
 jobs:
-  sonarqube:
-    runs-on: self-hosted
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0  # Disable shallow clone to get full history for analysis
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-
-    - name: Install dependencies
-      run: npm ci
-
-    - name: Run tests with coverage
-      run: npm run test:coverage  # Ensure you have this script in package.json
-
-    - name: SonarQube Scan
-      uses: docker://sonarsource/sonar-scanner-cli:latest
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        SONAR_SCANNER_OPTS: >
-          -Dsonar.projectKey=sandbox-inventory-frontend
-          -Dsonar.sources=src
-          -Dsonar.exclusions=**/*.test.js,**/*.test.jsx,**/*.spec.js,**/*.spec.jsx,**/node_modules/**,**/.next/**
-          -Dsonar.tests=src
-          -Dsonar.test.exclusions=**/*.test.js,**/*.test.jsx,**/*.spec.js,**/*.spec.jsx
-          -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-          -Dsonar.sourceEncoding=UTF-8
-
   build:
-    needs: sonarqube
     runs-on: self-hosted
     outputs:
       container_name: ${{ steps.set_env.outputs.container_name }}
@@ -53,7 +20,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-    
+      with:
+        fetch-depth: 0 # Ensures full commit history is fetched for accurate scanning
+
     - name: Set environment variables
       id: set_env
       run: |
@@ -82,15 +51,9 @@ jobs:
             echo "env_file=${ENV_FILE}"
           } >> $GITHUB_OUTPUT
         fi
-
-    - name: Load environment variables
-      run: |
-        # Export environment variables from file
-        set -a
-        source "${{ steps.set_env.outputs.env_file }}"
-        set +a
         
-        # Build with environment variables
+    - name: Build Docker Image
+      run: |
         docker build \
           --build-arg NEXT_PUBLIC_API_BASE_URL="${NEXT_PUBLIC_API_BASE_URL}" \
           --build-arg NEXT_PUBLIC_CHANNEL_ID="${NEXT_PUBLIC_CHANNEL_ID}" \
@@ -100,8 +63,23 @@ jobs:
         
         docker tag ${{ env.IMAGE_NAME }}:${{ github.sha }} ${{ env.IMAGE_NAME }}:${{ steps.set_env.outputs.image_tag }}
 
-  deploy:
+  scan:
     needs: build
+    runs-on: self-hosted
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0 # Recommended for SonarQube analysis
+      
+    - name: SonarQube Scan
+      uses: sonarsource/sonarqube-scan-action@master
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # SonarQube token
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} # Example: https://sq.bswlog.co.in/
+        
+  deploy:
+    needs: scan
     runs-on: self-hosted
     steps:
     - name: Deploy
@@ -119,19 +97,11 @@ jobs:
           exit 1
         fi
         
-        # Display env file contents (excluding secrets)
-        echo "Environment file contents (excluding secrets):"
-        grep -v SECRET "${{ needs.build.outputs.env_file }}" || true
-        
         docker run -d \
           --name "${{ needs.build.outputs.container_name }}" \
           -p ${{ needs.build.outputs.port }} \
           --env-file "${{ needs.build.outputs.env_file }}" \
           ${{ env.IMAGE_NAME }}:${{ needs.build.outputs.image_tag }}
-        
-        # Verify the environment variables
-        echo "Verifying environment variables in container:"
-        docker exec ${{ needs.build.outputs.container_name }} env | grep NEXT_PUBLIC_
 
   cleanup:
     needs: deploy
@@ -139,6 +109,6 @@ jobs:
     steps:
     - name: Cleanup
       run: |
-        echo "Cleaning up"
+        echo "Cleaning up unused Docker resources..."
         docker system prune -af
         docker image prune -af
