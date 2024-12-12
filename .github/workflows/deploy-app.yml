@@ -1,4 +1,4 @@
-name: Build, Scan, and Deploy Inventory Sandbox Application
+name: Build and Deploy Inventory sandbox application
 on:
   push:
     branches:
@@ -8,7 +8,6 @@ on:
 env:
   IMAGE_NAME: "sandbox-inventory-frontend"
   VERSION_TAG: "1.0.0"
-
 jobs:
   build:
     runs-on: self-hosted
@@ -21,8 +20,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
       with:
-        fetch-depth: 0 # Ensures full commit history is fetched for accurate scanning
-
+        fetch-depth: 0 # Recommended for SonarQube scan relevancy
     - name: Set environment variables
       id: set_env
       run: |
@@ -51,35 +49,27 @@ jobs:
             echo "env_file=${ENV_FILE}"
           } >> $GITHUB_OUTPUT
         fi
-        
-    - name: Build Docker Image
+    - name: Load environment variables
       run: |
+        set -a
+        source "${{ steps.set_env.outputs.env_file }}"
+        set +a
         docker build \
           --build-arg NEXT_PUBLIC_API_BASE_URL="${NEXT_PUBLIC_API_BASE_URL}" \
           --build-arg NEXT_PUBLIC_CHANNEL_ID="${NEXT_PUBLIC_CHANNEL_ID}" \
           --build-arg NEXT_PUBLIC_CHANNEL_SECRET="${NEXT_PUBLIC_CHANNEL_SECRET}" \
           --build-arg NEXT_PUBLIC_CRYPTO_KEY="${NEXT_PUBLIC_CRYPTO_KEY}" \
           -t ${{ env.IMAGE_NAME }}:${{ github.sha }} .
-        
         docker tag ${{ env.IMAGE_NAME }}:${{ github.sha }} ${{ env.IMAGE_NAME }}:${{ steps.set_env.outputs.image_tag }}
 
-  scan:
-    needs: build
-    runs-on: self-hosted
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0 # Recommended for SonarQube analysis
-      
     - name: SonarQube Scan
       uses: sonarsource/sonarqube-scan-action@master
       env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # SonarQube token
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} # Example: https://sq.bswlog.co.in/
-        
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
   deploy:
-    needs: scan
+    needs: build
     runs-on: self-hosted
     steps:
     - name: Deploy
@@ -90,25 +80,25 @@ jobs:
         fi
         echo "Starting new container: ${{ needs.build.outputs.container_name }}"
         echo "Using env file: ${{ needs.build.outputs.env_file }}"
-        
-        # Verify env file exists
         if [ ! -f "${{ needs.build.outputs.env_file }}" ]; then
           echo "Error: Environment file ${{ needs.build.outputs.env_file }} not found!"
           exit 1
         fi
-        
+        echo "Environment file contents (excluding secrets):"
+        grep -v SECRET "${{ needs.build.outputs.env_file }}" || true
         docker run -d \
           --name "${{ needs.build.outputs.container_name }}" \
           -p ${{ needs.build.outputs.port }} \
           --env-file "${{ needs.build.outputs.env_file }}" \
           ${{ env.IMAGE_NAME }}:${{ needs.build.outputs.image_tag }}
-
+        echo "Verifying environment variables in container:"
+        docker exec ${{ needs.build.outputs.container_name }} env | grep NEXT_PUBLIC_
   cleanup:
     needs: deploy
     runs-on: self-hosted
     steps:
     - name: Cleanup
       run: |
-        echo "Cleaning up unused Docker resources..."
+        echo "Cleaning up"
         docker system prune -af
         docker image prune -af
