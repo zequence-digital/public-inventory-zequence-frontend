@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
+import { formatDistance } from "date-fns";
 import { twMerge } from "tailwind-merge";
 
 function cn(...inputs: ClassValue[]) {
@@ -10,31 +11,12 @@ function formatNumber(number: number) {
 }
 
 function formatDateDifference(inputDate: string): string {
-  const currentDate = new Date();
-  const diff = currentDate.getTime() - new Date(inputDate).getTime();
-
-  const minutes = Math.floor(diff / (1000 * 60));
-  if (minutes < 60) {
-    return `${minutes === 0 ? "Just now" : `${minutes} minutes ago`}`;
-  }
-
-  const hours = Math.floor(diff / (1000 * 60 * 60));
-  if (hours < 24) {
-    return `${hours === 1 ? "An hour ago" : `${hours} hours ago`}`;
-  }
-
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  if (days < 30) {
-    return `${days === 1 ? "Yesterday" : `${days} days ago`}`;
-  }
-
-  const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30));
-  if (months < 12) {
-    return `${months === 1 ? "A month ago" : `${months} months ago`}`;
-  }
-
-  const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 30 * 12));
-  return `${years === 1 ? "A year ago" : `${years} years ago`}`;
+  if (!inputDate) return "";
+  const date = new Date(inputDate);
+  return formatDistance(date, new Date(), {
+    addSuffix: true,
+    includeSeconds: true,
+  });
 }
 
 const formatNumberInput = (value: string): string => {

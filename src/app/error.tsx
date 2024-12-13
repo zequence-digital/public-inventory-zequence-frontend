@@ -8,12 +8,14 @@ export default function Error({
   reset: () => void;
 }) {
   return (
-    <section className="flex items-center justify-center min-h-screen w-full">
+    <section className="flex items-center justify-center min-h-screen w-full text-center">
       <div>
         <h2>
           {error.message} {error.digest}
         </h2>
-        <button onClick={() => reset()}>Try again</button>
+        <button className="text-primary-100 " onClick={() => reset()}>
+          Try again
+        </button>
       </div>
     </section>
   );

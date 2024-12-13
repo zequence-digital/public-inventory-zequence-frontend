@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { AddSalesSchema, customerType } from "@/schemas/sales/add-sales-schema";
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import { InputField } from "@/components/form/components/input-field";
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
@@ -53,17 +53,11 @@ export function AddSalesForm() {
   } = useDashboardOverview();
 
   const {
-    entireProduct,
+    activeProducts,
     pendingEntireProduct,
     isErrorEntireProduct,
     errorEntireProduct,
   } = useUnpaginatedData();
-
-  const activeProducts = useMemo(() => {
-    return entireProduct?.filter(
-      (product) => product.status !== "OUT_OF_STOCK",
-    );
-  }, [entireProduct]);
 
   const { currentBranch, isErrorBranch, pendingBranch, errorBranch } =
     useCurrentBranch();
