@@ -1,15 +1,15 @@
 "use client";
 
-import { ViewStockTransfer } from "@/components/dashboard/stocks/stock-transfer/view-stock-transfer";
-import SvgEdit from "@/components/svg/svg-edit";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DateFormat } from "@/components/ui/date-format";
-import { cn } from "@/lib/utils";
-import type { GetStockTransfer } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
+import { DataTableColumnHeader } from "../../ui/data-table-column-header";
+import { DateFormat } from "@/components/ui/date-format";
+import type { GetStockTransfer } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import { DataTableColumnHeader } from "../../ui/data-table-column-header";
+import SvgEdit from "@/components/svg/svg-edit";
+import { ViewStockTransfer } from "@/components/dashboard/stocks/stock-transfer/view-stock-transfer";
+import { cn } from "@/lib/utils";
 import completed from "/public/images/completed.svg";
 import pending from "/public/images/pending.svg";
 
@@ -116,6 +116,11 @@ export const stockTransferColumns: ColumnDef<Stock>[] = [
           )}
           {status === "COMPLETED" && (
             <Image src={completed} alt="COMPLETED" width={87} height={24} />
+          )}
+          {status === "DECLINED" && (
+            <div className="bg-gray-50 text-destructive text-xs font-semibold px-2 py-px rounded-full">
+              {status}
+            </div>
           )}
         </div>
       );

@@ -60,7 +60,7 @@ export function AddCategoryForm() {
                   <FormControl className="w-full">
                     <RadioField
                       className="justify-between w-full radio-category"
-                      onValueChange={field.onChange}
+                      onValueChange={(value) => field.onChange(value)}
                       values={values}
                     />
                   </FormControl>

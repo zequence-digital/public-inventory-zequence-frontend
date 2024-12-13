@@ -14,7 +14,7 @@ export const AddCategorySchema = z.object({
     }),
 
   categoryType: z.enum(["PRODUCT", "STOCK"], {
-    required_error: "You need to select on item.",
+    required_error: "You need to select one item.",
   }),
   status: z.string({
     required_error: "Please select a status to display.",

@@ -8,7 +8,7 @@ type Props = {
   isPending?: boolean;
   defaultValue?: string;
   className?: string;
-  values: { label: string; value: string | number }[];
+  values?: { label: string; value: string | number }[];
 };
 
 export function RadioField({
@@ -28,7 +28,7 @@ export function RadioField({
       onValueChange={onValueChange}
       className={cn(`flex`, className)}
     >
-      {values.map((value) => (
+      {values?.map((value) => (
         <Label
           key={value.value}
           className="font-normal flex items-center space-x-2 space-y-0 cursor-pointer"

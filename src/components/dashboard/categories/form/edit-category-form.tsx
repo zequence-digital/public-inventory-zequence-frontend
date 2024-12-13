@@ -12,19 +12,19 @@ import {
 import { useCategory, useEditCategory } from "@/queries/categories";
 import { useRef, useState } from "react";
 
+import type { AddCategory } from "@/types";
+import { AddCategorySchema } from "@/schemas/categories/add-category-schema";
+import { ApiErrorMessage } from "@/components/messages/api-error-message";
+import CustomButton from "../../custom-button";
 import { InputField } from "@/components/form/components/input-field";
 import { RadioField } from "@/components/form/components/radio-field";
 import SelectField from "@/components/form/components/select-field";
-import { values } from "@/components/form/form-data/category-values";
-import { ApiErrorMessage } from "@/components/messages/api-error-message";
 import { Spinner } from "@/components/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { AddCategorySchema } from "@/schemas/categories/add-category-schema";
-import type { AddCategory } from "@/types";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import CustomButton from "../../custom-button";
+import { values } from "@/components/form/form-data/category-values";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type Props = {
   categoryId: string;
@@ -55,7 +55,7 @@ export function EditCategoryForm({ categoryId }: Props) {
     <div className="mt-8">
       <Form {...form}>
         <div className="text-slate-700 text-lg mb-8 font-semibold leading-7">
-          Edit Category: {category?.data?.name}
+          Edit Category: {category?.data?.name}[{category?.data?.categoryType}]
         </div>
         <form
           onSubmit={form.handleSubmit((data) =>
@@ -75,10 +75,10 @@ export function EditCategoryForm({ categoryId }: Props) {
                 <FormItem className=" max-w-[15rem] w-full">
                   <FormControl className="w-full">
                     <RadioField
+                      values={values}
                       defaultValue={category?.data?.categoryType}
                       className="justify-between w-full radio-category"
                       onValueChange={field.onChange}
-                      values={values}
                     />
                   </FormControl>
                   <FormMessage />
