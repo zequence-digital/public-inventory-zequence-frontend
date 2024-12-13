@@ -5,7 +5,10 @@ type Props = {
     categoryId: string;
   }>;
 };
-export default async function EditProductPage(props: Props) {
+
+export const dynamic = "force-static";
+
+export default async function EditCategoryPage(props: Props) {
   const params = await props.params;
 
   const { categoryId } = params;
