@@ -40,16 +40,13 @@ export function Notifications() {
         )}
         {notifications?.data?.length === 0 && <EmptyNotificationMessage />}
         <div className="space-y-6 pr-6 pb-10 h-screen overflow-y-scroll">
-          {notifications?.data
-            ?.sort((a, b) => a.createdAt.localeCompare(b.createdAt))
-            ?.reverse()
-            ?.map((notification) => {
-              return (
-                <div key={notification.guid}>
-                  <SingleNotification notification={notification} />
-                </div>
-              );
-            })}
+          {notifications?.data?.map((notification) => {
+            return (
+              <div key={notification.guid}>
+                <SingleNotification notification={notification} />
+              </div>
+            );
+          })}
         </div>
       </div>
       {/* <div className="mt-6 max-w-[530px] w-full flex items-center gap-6 border-t border-muted-150 pt-6">
