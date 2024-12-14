@@ -1,12 +1,12 @@
 "use client";
 
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import { NotificationSkeleton } from "@/components/table/skeleton/notification-skeleton";
-import { useNotificationStatus } from "@/hooks/use-notifications";
-import { useNotifications } from "@/queries/notifications";
 import { EmptyNotificationMessage } from "./empty-notification-message";
 import { NotificationDropdown } from "./notification-dropdown";
+import { NotificationSkeleton } from "@/components/table/skeleton/notification-skeleton";
 import { SingleNotification } from "./single-notification";
+import { useNotificationStatus } from "@/hooks/use-notifications";
+import { useNotifications } from "@/queries/notifications";
 
 export function Notifications() {
   const { readStatus, setReadStatus } = useNotificationStatus();
@@ -40,13 +40,16 @@ export function Notifications() {
         )}
         {notifications?.data?.length === 0 && <EmptyNotificationMessage />}
         <div className="space-y-6 pr-6 pb-10 h-screen overflow-y-scroll">
-          {notifications?.data?.map((notification) => {
-            return (
-              <div key={notification.guid}>
-                <SingleNotification notification={notification} />
-              </div>
-            );
-          })}
+          {notifications?.data
+            ?.sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+            ?.reverse()
+            ?.map((notification) => {
+              return (
+                <div key={notification.guid}>
+                  <SingleNotification notification={notification} />
+                </div>
+              );
+            })}
         </div>
       </div>
       {/* <div className="mt-6 max-w-[530px] w-full flex items-center gap-6 border-t border-muted-150 pt-6">
