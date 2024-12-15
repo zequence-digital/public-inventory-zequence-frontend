@@ -20,29 +20,40 @@ export function BusinessPrice() {
           />
         </div>
       </div>
-      <div className=" grid grid-auto-fit-xl w-full gap-6">
+      <div className=" grid grid-auto-fit-xl w-full gap-8">
         <PricingCard
-          linkTarget="_blank"
-          link="https://demo-inventory.zequencedigital.com"
+          priced
+          link="https://demo-inventory.zequencedigital.com/auth/sign-up"
           btnLabel="Try for free"
           btnBorder
           title="Standard plan"
           description="Simple for small teams"
-          price={29}
-          billedYearly={348}
+          price={4}
+          billedYearly={48}
         />
         <PricingCard
+          priced
+          link="https://demo-inventory.zequencedigital.com/auth/sign-up"
+          badged
+          badgedText="Most popular"
           btnLabel="Try for free"
           title="Premium plan"
           description="Advanced for medium teams"
-          price={79}
-          billedYearly={948}
+          price={10}
+          billedYearly={90}
         />
         <PricingCard
-          btnLabel="Request for demo"
+          link="https://calendly.com/zequencedigital/30min"
+          linkTarget="_blank"
+          element={
+            <div className="text-black text-2xl text-center flex items-center justify-center w-full xl:text-5xl font-bold leading-[67.20px]">
+              Contact us
+            </div>
+          }
+          btnLabel="Contact sales"
           btnBorder
           title="Enterprise plan"
-          description="Tailored foe larger teams"
+          description="Tailored for larger teams"
           price={129}
           billedYearly={1548}
         />

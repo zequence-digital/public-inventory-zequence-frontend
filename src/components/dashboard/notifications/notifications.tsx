@@ -1,12 +1,12 @@
 "use client";
 
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import { NotificationSkeleton } from "@/components/table/skeleton/notification-skeleton";
-import { useNotificationStatus } from "@/hooks/use-notifications";
-import { useNotifications } from "@/queries/notifications";
 import { EmptyNotificationMessage } from "./empty-notification-message";
 import { NotificationDropdown } from "./notification-dropdown";
+import { NotificationSkeleton } from "@/components/table/skeleton/notification-skeleton";
 import { SingleNotification } from "./single-notification";
+import { useNotificationStatus } from "@/hooks/use-notifications";
+import { useNotifications } from "@/queries/notifications";
 
 export function Notifications() {
   const { readStatus, setReadStatus } = useNotificationStatus();

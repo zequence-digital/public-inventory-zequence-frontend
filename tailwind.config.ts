@@ -18,6 +18,10 @@ const config = {
       },
     },
     extend: {
+      // Font family
+      fontFamily: {
+        geist: ["var(--geist-font)", "sans-serif"],
+      },
       screens: {
         xs: "480px",
         // => @media (min-width: 480px) { ... }
@@ -64,6 +68,7 @@ const config = {
           300: "#112f82",
           400: "#94c4ff",
           500: "#c1aaf9",
+          600: "#c2e5ff",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",

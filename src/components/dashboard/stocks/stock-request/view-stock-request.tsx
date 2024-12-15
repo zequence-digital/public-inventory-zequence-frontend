@@ -1,7 +1,7 @@
-import SvgView from "@/components/svg/svg-view";
-import { useActiveUser } from "@/crypto";
 import type { GetStockRequest } from "@/types";
 import Link from "next/link";
+import SvgView from "@/components/svg/svg-view";
+import { useActiveUser } from "@/crypto";
 
 type Props = {
   stock: GetStockRequest["data"]["records"][number];
