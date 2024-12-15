@@ -1,5 +1,5 @@
-import { LandingPageButton } from "../buttons/landing-page-button";
 import Link from "next/link";
+import { LandingPageButton } from "../buttons/landing-page-button";
 
 export function TransformInventory() {
   return (
@@ -11,7 +11,7 @@ export function TransformInventory() {
           </div>
         </div>
         <div className="pt-4 justify-start items-start gap-4 inline-flex">
-          <Link href="/auth/login">
+          <Link href="/auth/sign-up">
             <LandingPageButton label="Try for free" />
           </Link>
           <LandingPageButton label="Get a demo" hasNoBg />

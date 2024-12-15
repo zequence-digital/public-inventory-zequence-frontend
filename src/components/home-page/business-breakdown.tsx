@@ -16,10 +16,10 @@ export function BusinessBreakdown() {
           </div>
           <div className="flex-col justify-start items-center gap-2 inline-flex">
             <div className="self-stretch text-center text-black text-5xl font-semibold">
-              ₦50m +
+              99.9%
             </div>
             <div className="self-stretch text-center text-black text-base font-normal leading-normal">
-              In inventory managed annually
+              Faster inventory tracking
             </div>
           </div>
           <div className="flex-col justify-start items-center gap-2 inline-flex">
