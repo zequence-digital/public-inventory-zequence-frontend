@@ -3,7 +3,10 @@ import { PricingCard } from "./pricing-card";
 
 export function BusinessPrice() {
   return (
-    <div className="flex flex-col max-w-[1200px] w-full px-4  justify-center items-center mx-auto mt-20">
+    <div
+      id="business-pricing"
+      className="flex flex-col max-w-[1200px] w-full px-4  justify-center items-center mx-auto mt-20"
+    >
       <div className="mb-16 flex flex-col gap-12 items-center justify-center">
         <div className="text-center text-black lg:text-5xl md:text-4xl text-3xl font-bold">
           Flexible plans for every businesses
