@@ -2,7 +2,10 @@ import Image from "next/image";
 
 export function ConnectAndGrow() {
   return (
-    <div className="flex flex-col max-w-[1200px] w-full px-8 justify-center items-center mx-auto mt-20">
+    <div
+      id="features"
+      className="flex flex-col max-w-[1200px] w-full px-8 justify-center items-center mx-auto mt-20"
+    >
       <div className=" flex flex-col items-center justify-center mx-auto gap-3">
         <div className="text-center text-black lg:text-5xl max-w-[700px] w-full lg:leading-[57.60px] md:text-4xl text-3xl font-bold">
           Streamline, connect, and grow with Zequence inventory

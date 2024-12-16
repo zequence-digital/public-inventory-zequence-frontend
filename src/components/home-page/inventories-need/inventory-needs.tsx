@@ -6,7 +6,10 @@ import love from "/public/images/love.svg";
 
 export function InventoryNeeds() {
   return (
-    <div className="flex flex-col max-w-[1200px] w-full px-4  justify-center items-center mx-auto mt-20">
+    <div
+      id="resources"
+      className="flex flex-col max-w-[1200px] w-full px-4  justify-center items-center mx-auto mt-20"
+    >
       <div className="text-center text-black lg:text-5xl md:text-4xl mb-16 text-3xl font-bold">
         Covering all your inventories need
       </div>
