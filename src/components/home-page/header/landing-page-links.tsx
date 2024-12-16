@@ -1,13 +1,13 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 
 const links = [
-  { href: "#", label: "Features" },
-  { href: "#", label: "Resources" },
-  { href: "#", label: "Pricing" },
+  { href: "#features", label: "Features" },
+  { href: "#resources", label: "Resources" },
+  { href: "#business-pricing", label: "Pricing" },
 ];
 
 export function LandingPageLinks() {

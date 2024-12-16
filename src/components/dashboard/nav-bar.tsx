@@ -1,16 +1,23 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import NavLinks from "@/components/dashboard/nav-links";
+import { SubLinks } from "./sub-links";
+import { UserMenu } from "../user-menu/user-menu";
 import theme from "tailwindcss/defaultTheme";
 import { useMediaQuery } from "usehooks-ts";
-import { UserMenu } from "../user-menu/user-menu";
-import { SubLinks } from "./sub-links";
 
-export function SideNav() {
+export function NavBar() {
+  const [mobileDevice, setMobileDevice] = useState(false);
   const isMobile = useMediaQuery(`(max-width: ${theme.screens.md})`);
+
+  useEffect(() => {
+    setMobileDevice(isMobile);
+  }, [isMobile]);
   return (
     <>
-      {isMobile ? (
+      {mobileDevice ? (
         <div className="h-fit fixed top-0 w-full bg-gray-50 shadow-lg z-50">
           <UserMenu />
           <div className="flex items-start justify-between">

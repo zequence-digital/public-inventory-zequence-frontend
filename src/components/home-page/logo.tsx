@@ -4,6 +4,7 @@ import { Variants, useAnimationControls, useScroll } from "framer-motion";
 import { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 const ScrollToTopContainerVariants: Variants = {
   hide: { opacity: 0, y: 100 },
@@ -23,9 +24,10 @@ type Props = {
 };
 
 export function Logo({ className, alt, src }: Props) {
+  const [isMounted, setIsMounted] = useState(false);
+  const router = useRouter();
   const { scrollYProgress } = useScroll();
   const controls = useAnimationControls();
-  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -41,7 +43,13 @@ export function Logo({ className, alt, src }: Props) {
   if (!isMounted) return null;
 
   return (
-    <div onClick={scrollToTop} className={cn(`cursor-pointer`, className)}>
+    <div
+      onClick={() => {
+        scrollToTop();
+        router.push("/");
+      }}
+      className={cn(`cursor-pointer`, className)}
+    >
       <picture>
         <img
           width={80}
