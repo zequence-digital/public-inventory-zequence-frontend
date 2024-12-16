@@ -1,15 +1,17 @@
 "use client";
 
 import { Cross1Icon, TextAlignJustifyIcon } from "@radix-ui/react-icons";
+import { useReducer, useState } from "react";
 
-import { cn } from "@/lib/utils";
-import { useReducer } from "react";
-import { Logo } from "../logo";
 import { LandingPageCta } from "./landing-page-cta";
 import { LandingPageLinks } from "./landing-page-links";
+import { Logo } from "../logo";
+import { cn } from "@/lib/utils";
 
 export function LandingPageNavigation() {
-  const [open, dispatch] = useReducer((state) => !state, false);
+  const [open, dispatch] = useReducer((state: boolean) => !state, false);
+  const [hashLocation, setHashLocation] = useState("");
+
   return (
     <header
       role="banner"
@@ -43,7 +45,11 @@ export function LandingPageNavigation() {
               },
             )}
           >
-            <LandingPageLinks />
+            <LandingPageLinks
+              setHashLocation={setHashLocation}
+              hashLocation={hashLocation}
+              dispatch={dispatch}
+            />
             <LandingPageCta />
           </div>
           {/* Overlay */}
