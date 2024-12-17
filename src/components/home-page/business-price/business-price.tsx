@@ -47,6 +47,7 @@ export function BusinessPrice() {
           title="Standard plan"
           description="Simple for small teams"
           price={price}
+          billedYearly={price === 4 ? 48 : null}
         />
         <PricingCard
           link="https://calendly.com/zequencedigital/30min"
