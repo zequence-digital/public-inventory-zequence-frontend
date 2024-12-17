@@ -40,6 +40,8 @@ export function BusinessPrice() {
       </div>
       <div className=" grid grid-auto-fit-xl w-full gap-8">
         <PricingCard
+          badged
+          badgedText="Most popular"
           priced
           link="https://demo-inventory.zequencedigital.com/auth/sign-up"
           btnLabel="Try for free"
@@ -57,9 +59,7 @@ export function BusinessPrice() {
               Contact us
             </div>
           }
-          badged
           btnBorder
-          badgedText="Most popular"
           btnLabel="Contact sales"
           title="Premium plan"
           description="Advanced for medium teams"
