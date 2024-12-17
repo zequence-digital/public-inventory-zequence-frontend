@@ -20,7 +20,7 @@ export function BusinessPrice() {
     >
       <div className="mb-16 flex flex-col gap-12 items-center justify-center">
         <div className="text-center text-black lg:text-5xl md:text-4xl text-3xl font-bold">
-          Flexible plans for every businesses
+          Flexible plans for every business
         </div>
         <div className="flex">
           <LandingPageButton
