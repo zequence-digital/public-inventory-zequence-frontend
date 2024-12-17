@@ -11,7 +11,7 @@ type Props = {
   badgedText?: string;
   description: string;
   price: number;
-  billedYearly: number;
+  billedYearly?: number;
   element?: string | React.ReactNode;
   btnLabel: string;
   btnBorder?: boolean;
@@ -72,7 +72,7 @@ export function PricingCard({
                 </span>
               </div>
               <div className="self-stretch text-black text-base font-normal leading-normal">
-                ${billedYearly.toLocaleString()} billed yearly
+                {billedYearly?.toLocaleString()} billed yearly
               </div>
             </div>
           ) : (
