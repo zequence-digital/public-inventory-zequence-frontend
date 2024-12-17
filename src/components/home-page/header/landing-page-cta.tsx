@@ -1,5 +1,6 @@
-import Link from "next/link";
 import { LandingPageButton } from "../buttons/landing-page-button";
+import Link from "next/link";
+import { calendlyLink } from "./links";
 
 export function LandingPageCta() {
   return (
@@ -10,11 +11,13 @@ export function LandingPageCta() {
       >
         Login
       </Link>
-      <LandingPageButton
-        className=" w-full lg:w-fit"
-        label="Get a demo"
-        hasNoBg
-      />
+      <Link target="_blank" className=" w-full lg:w-fit" href={calendlyLink}>
+        <LandingPageButton
+          className=" w-full lg:w-fit"
+          label="Get a demo"
+          hasNoBg
+        />
+      </Link>
       <Link className=" w-full lg:w-fit" href="/auth/sign-up">
         <LandingPageButton className=" w-full lg:w-fit" label="Try for free" />
       </Link>

@@ -3,11 +3,13 @@ import { cn } from "@/lib/utils";
 export type Props = {
   label: string;
   className?: string;
+  labelClassName?: string;
   hasNoBg?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 export function LandingPageButton({
   label,
   className,
+  labelClassName,
   hasNoBg,
   ...rest
 }: Props) {
@@ -23,9 +25,13 @@ export function LandingPageButton({
       )}
     >
       <p
-        className={cn(`text-white text-base font-medium leading-normal`, {
-          "text-black": hasNoBg,
-        })}
+        className={cn(
+          `text-white text-base font-medium leading-normal`,
+          labelClassName,
+          {
+            "text-black": hasNoBg,
+          },
+        )}
       >
         {label}
       </p>

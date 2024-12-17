@@ -1,5 +1,6 @@
-import Link from "next/link";
 import { LandingPageButton } from "./buttons/landing-page-button";
+import Link from "next/link";
+import { calendlyLink } from "./header/links";
 
 export function HeroHeading() {
   return (
@@ -18,7 +19,9 @@ export function HeroHeading() {
           <Link href="/auth/sign-up">
             <LandingPageButton label="Try for free" />
           </Link>
-          <LandingPageButton label="Get a demo" hasNoBg />
+          <Link href={calendlyLink}>
+            <LandingPageButton label="Get a demo" hasNoBg />
+          </Link>
         </div>
       </div>
     </section>
