@@ -13,7 +13,13 @@ export default function Error({
         <h2>
           {error.message} {error.digest}
         </h2>
-        <button className="text-primary-100 " onClick={() => reset()}>
+        <button
+          className="text-primary-100 "
+          onClick={() => {
+            reset();
+            location.reload();
+          }}
+        >
           Try again
         </button>
       </div>
