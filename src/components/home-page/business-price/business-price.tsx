@@ -31,15 +31,21 @@ export function BusinessPrice() {
           btnBorder
           title="Standard plan"
           description="Simple for small teams"
-          price={4}
-          billedYearly={48}
+          price={5}
+          billedYearly={45}
         />
         <PricingCard
-          priced
-          link="https://demo-inventory.zequencedigital.com/auth/sign-up"
+          link="https://calendly.com/zequencedigital/30min"
+          linkTarget="_blank"
+          element={
+            <div className="text-black text-3xl text-center flex items-center justify-center w-full xl:text-5xl font-bold leading-[67.20px]">
+              Contact us
+            </div>
+          }
           badged
+          btnBorder
           badgedText="Most popular"
-          btnLabel="Try for free"
+          btnLabel="Contact sales"
           title="Premium plan"
           description="Advanced for medium teams"
           price={10}
@@ -49,7 +55,7 @@ export function BusinessPrice() {
           link="https://calendly.com/zequencedigital/30min"
           linkTarget="_blank"
           element={
-            <div className="text-black text-2xl text-center flex items-center justify-center w-full xl:text-5xl font-bold leading-[67.20px]">
+            <div className="text-black text-3xl text-center flex items-center justify-center w-full xl:text-5xl font-bold leading-[67.20px]">
               Contact us
             </div>
           }
