@@ -1,15 +1,18 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import { LandingPageButton } from "../buttons/landing-page-button";
 import { PricingCard } from "./pricing-card";
-import { useEffect } from "react";
-import { useProductBilling } from "@/hooks/use-product-billing";
+import { cn } from "@/lib/utils";
 
 export function BusinessPrice() {
-  const { standard, dispatch } = useProductBilling();
+  const [price, setPrice] = useState(0);
+
   useEffect(() => {
-    dispatch({ type: "standard", payload: 60 });
-  }, [dispatch]);
+    setPrice(4);
+  }, []);
+
   return (
     <div
       id="business-pricing"
@@ -21,20 +24,16 @@ export function BusinessPrice() {
         </div>
         <div className="flex">
           <LandingPageButton
-            onClick={() =>
-              dispatch({
-                type: "standard",
-                payload: 45,
-              })
-            }
-            className=" rounded-r-none border border-primary-100 "
-            label="Pay yearly, save 25%"
+            hasNoBg={price === 5}
+            onClick={() => setPrice(4)}
+            className={cn(`rounded-r-none border border-primary-100`, {})}
+            label="Pay yearly, save 20%"
           />
           <LandingPageButton
-            onClick={() => dispatch({ type: "standard", payload: 60 })}
+            hasNoBg={price === 4}
+            onClick={() => setPrice(5)}
             className=" rounded-l-none w-[193px]"
             label="Pay monthly"
-            hasNoBg
           />
         </div>
       </div>
@@ -45,17 +44,15 @@ export function BusinessPrice() {
           priced
           link="https://demo-inventory.zequencedigital.com/auth/sign-up"
           btnLabel="Try for free"
-          btnBorder
           title="Standard plan"
           description="Simple for small teams"
-          price={5}
-          billedYearly={standard}
+          price={price}
         />
         <PricingCard
           link="https://calendly.com/zequencedigital/30min"
           linkTarget="_blank"
           element={
-            <div className="text-black text-3xl text-center flex items-center justify-center w-full xl:text-5xl font-bold leading-[67.20px]">
+            <div className="text-black text-3xl w-full xl:text-5xl font-bold leading-[67.20px]">
               Contact us
             </div>
           }
@@ -70,7 +67,7 @@ export function BusinessPrice() {
           link="https://calendly.com/zequencedigital/30min"
           linkTarget="_blank"
           element={
-            <div className="text-black text-3xl text-center flex items-center justify-center w-full xl:text-5xl font-bold leading-[67.20px]">
+            <div className="text-black text-3xl w-full xl:text-5xl font-bold leading-[67.20px]">
               Contact us
             </div>
           }
