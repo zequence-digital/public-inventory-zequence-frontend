@@ -1,6 +1,11 @@
 import { useReducer } from "react";
 
-const initialState = {
+type InitialState = {
+  readonly standard: number;
+  readonly premium: number;
+  readonly enterprise: number;
+};
+const initialState: InitialState = {
   standard: 5,
   premium: 10,
   enterprise: 129,
@@ -11,7 +16,7 @@ type Action = {
   payload: number;
 };
 
-function reducerFn(state: typeof initialState, action: Action) {
+function reducerFn(state: InitialState, action: Action) {
   switch (action.type) {
     case "standard":
       return { ...state, standard: action.payload };
