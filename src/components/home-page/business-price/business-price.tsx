@@ -1,7 +1,15 @@
+"use client";
+
 import { LandingPageButton } from "../buttons/landing-page-button";
 import { PricingCard } from "./pricing-card";
+import { useEffect } from "react";
+import { useProductBilling } from "@/hooks/use-product-billing";
 
 export function BusinessPrice() {
+  const { standard, dispatch } = useProductBilling();
+  useEffect(() => {
+    dispatch({ type: "standard", payload: 60 });
+  }, [dispatch]);
   return (
     <div
       id="business-pricing"
@@ -13,10 +21,17 @@ export function BusinessPrice() {
         </div>
         <div className="flex">
           <LandingPageButton
+            onClick={() =>
+              dispatch({
+                type: "standard",
+                payload: 45,
+              })
+            }
             className=" rounded-r-none border border-primary-100 "
-            label="Pay yearly, save 20%"
+            label="Pay yearly, save 25%"
           />
           <LandingPageButton
+            onClick={() => dispatch({ type: "standard", payload: 60 })}
             className=" rounded-l-none w-[193px]"
             label="Pay monthly"
             hasNoBg
@@ -32,7 +47,7 @@ export function BusinessPrice() {
           title="Standard plan"
           description="Simple for small teams"
           price={5}
-          billedYearly={45}
+          billedYearly={standard}
         />
         <PricingCard
           link="https://calendly.com/zequencedigital/30min"
