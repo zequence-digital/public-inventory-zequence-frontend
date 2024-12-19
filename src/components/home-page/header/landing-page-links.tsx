@@ -2,13 +2,8 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { links } from "./links";
 import { usePathname } from "next/navigation";
-
-const links = [
-  { id: 1, href: "#features", label: "Features" },
-  { id: 2, href: "#resources", label: "Resources" },
-  { id: 3, href: "#business-pricing", label: "Pricing" },
-];
 
 type Props = {
   dispatch: React.DispatchWithoutAction;

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import { LandingPageButton } from "../buttons/landing-page-button";
 import { PricingCard } from "./pricing-card";
+import { calendlyLink } from "../header/links";
 import { cn } from "@/lib/utils";
 
 export function BusinessPrice() {
@@ -24,15 +25,17 @@ export function BusinessPrice() {
         </div>
         <div className="flex">
           <LandingPageButton
+            labelClassName="text-xs sm:text-sm"
             hasNoBg={price === 5}
             onClick={() => setPrice(4)}
             className={cn(`rounded-r-none border border-primary-100`, {})}
             label="Pay yearly, save 20%"
           />
           <LandingPageButton
+            labelClassName="text-xs sm:text-sm"
             hasNoBg={price === 4}
             onClick={() => setPrice(5)}
-            className=" rounded-l-none w-[193px]"
+            className=" rounded-l-none sm:w-[193px]"
             label="Pay monthly"
           />
         </div>
@@ -47,9 +50,10 @@ export function BusinessPrice() {
           title="Standard plan"
           description="Simple for small teams"
           price={price}
+          billedYearly={price === 4 ? 48 : null}
         />
         <PricingCard
-          link="https://calendly.com/zequencedigital/30min"
+          link={calendlyLink}
           linkTarget="_blank"
           element={
             <div className="text-black text-3xl w-full xl:text-5xl font-bold leading-[67.20px]">
@@ -64,7 +68,7 @@ export function BusinessPrice() {
           billedYearly={90}
         />
         <PricingCard
-          link="https://calendly.com/zequencedigital/30min"
+          link={calendlyLink}
           linkTarget="_blank"
           element={
             <div className="text-black text-3xl w-full xl:text-5xl font-bold leading-[67.20px]">
