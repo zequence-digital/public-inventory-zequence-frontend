@@ -54,7 +54,7 @@ export type CompleteSignUpData = {
   countryId: number;
   state: string;
   headOffice: string;
-  lga: string;
+  lga?: string;
   userType: string;
   businessProfileRequest: {
     companyName: string;
