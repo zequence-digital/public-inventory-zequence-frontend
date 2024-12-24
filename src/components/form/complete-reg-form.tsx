@@ -2,8 +2,8 @@
 
 import "react-phone-input-2/lib/style.css";
 
-import { DragAndDrop, FileUpload, UserAvatar } from "@/assets";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { DragAndDrop, FileUpload, UserAvatar } from "@/assets";
 import {
   Form,
   FormControl,
@@ -19,47 +19,51 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useAllStates, useAllStatesLga, useCountries } from "@/queries/state";
-import { useFileUpload, useFileUploadState } from "@/services/file-upload";
-import { useCallback, useState } from "react";
 import { UserRole, UserType } from "./components/select-field";
+import { useAllStates, useAllStatesLga, useCountries } from "@/queries/state";
 
-import { Logo } from "@/assets";
+import { ApiErrorMessage } from "../messages/api-error-message";
 import { CardWrapper } from "@/components/auth/card-wrapper";
-import SubmitButton from "@/components/form/components/submit-button";
+import type { CompleteSignUp } from "@/types";
+import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useLocalStorage } from "@/hooks/use-local-storage";
+import { Logo } from "@/assets";
+import PhoneInput from "react-phone-input-2";
+import { Spinner } from "../spinner";
+import SubmitButton from "@/components/form/components/submit-button";
 import { cn } from "@/lib/utils";
 import { completeSignUpSchema } from "@/schemas/complete-registration";
 import { useCompleteRegistration } from "@/services/auth";
-import type { CompleteSignUp } from "@/types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
-import { useDropzone } from "react-dropzone";
 import { useForm } from "react-hook-form";
-import PhoneInput from "react-phone-input-2";
-import { ApiErrorMessage } from "../messages/api-error-message";
-import { Spinner } from "../spinner";
+import { useImageUpload } from "@/hooks/use-image-upload";
+import { useLocalStorage } from "@/hooks/use-local-storage";
+import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export const CompleteSignUpForm = () => {
-  const [selectedImage, setSelectedImage] = useState<File | undefined>();
+  const [countryCode, setCountryCode] = useState("");
   const [state, setState] = useState("");
   const [email] = useLocalStorage("email", "");
 
-  const { mutate: uploadFile, isPending: pendingFileUpload } = useFileUpload(
-    selectedImage as File,
-  );
+  const {
+    selectedImage,
+    setSelectedImage,
+    companyUploadUrl,
+    pendingFileUpload,
+    isDragActive,
+    getRootProps,
+    getInputProps,
+    uploadFile,
+  } = useImageUpload();
 
-  const form = useForm<CompleteSignUp>({
-    resolver: zodResolver(completeSignUpSchema.omit({ emailAddress: true })),
-    mode: "all",
-  });
-
-  const { data: states, isPending, isError, error, isPaused } = useAllStates();
-
-  const { mutate: complete, isPending: pendingComplete } =
-    useCompleteRegistration();
+  const {
+    data: states,
+    isPending,
+    isError,
+    error,
+    isPaused,
+  } = useAllStates(countryCode);
 
   const {
     data: countries,
@@ -69,31 +73,21 @@ export const CompleteSignUpForm = () => {
     isPaused: isPausedCountries,
   } = useCountries();
 
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      setSelectedImage(acceptedFiles?.[0] || undefined);
-      uploadFile(acceptedFiles?.[0] as File);
-    },
-    [uploadFile],
-  );
-
   const {
     data: lgas,
     isPending: isPendingLga,
     isError: isErrorLga,
     error: errorLga,
     isPaused: isPausedLga,
-  } = useAllStatesLga(state);
+  } = useAllStatesLga(countryCode, state);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { mutate: complete, isPending: pendingComplete } =
+    useCompleteRegistration();
 
-  const data = useFileUploadState();
-
-  const companyUploadUrl = data[0]?.data?.data;
-
-  function onStateChange(value: string) {
-    setState(value);
-  }
+  const form = useForm<CompleteSignUp>({
+    resolver: zodResolver(completeSignUpSchema.omit({ emailAddress: true })),
+    mode: "all",
+  });
 
   return (
     <CardWrapper
@@ -208,9 +202,13 @@ export const CompleteSignUpForm = () => {
                     <Select
                       onValueChange={(state) => {
                         field.onChange(state);
-                        onStateChange(state);
+                        const country = countries?.data?.find(
+                          (c) => c.id === Number(state),
+                        );
+                        if (country) {
+                          setCountryCode(country.code);
+                        }
                       }}
-                      defaultValue={state}
                     >
                       <FormControl>
                         <SelectTrigger
@@ -226,7 +224,7 @@ export const CompleteSignUpForm = () => {
                         {countries?.data?.map((country) => (
                           <SelectItem
                             key={country.name}
-                            value={country.id.toString()}
+                            value={country?.id.toString()}
                           >
                             {country.name}
                           </SelectItem>
@@ -255,14 +253,18 @@ export const CompleteSignUpForm = () => {
                         "text-destructive": fieldState?.invalid,
                       })}
                     >
-                      State
+                      State/Province
                     </FormLabel>
                     <Select
                       onValueChange={(state) => {
                         field.onChange(state);
-                        onStateChange(state);
+                        const currentState = states?.data?.find(
+                          (s) => s.slug === state,
+                        );
+                        if (currentState) {
+                          setState(currentState.slug);
+                        }
                       }}
-                      defaultValue={state}
                     >
                       <FormControl>
                         <SelectTrigger
@@ -271,7 +273,7 @@ export const CompleteSignUpForm = () => {
                               isPending,
                           })}
                         >
-                          <SelectValue placeholder="Enter a State" />
+                          <SelectValue placeholder="Enter a State/Province" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -294,54 +296,53 @@ export const CompleteSignUpForm = () => {
               />
               {/* city with local government area as options */}
 
-              <FormField
-                control={form.control}
-                name="lga"
-                render={({ field, fieldState }) => (
-                  <FormItem>
-                    <FormLabel
-                      htmlFor="lga"
-                      className={cn(`text-muted-200 -mb-2`, {
-                        "text-destructive": fieldState?.invalid,
-                      })}
-                    >
-                      LGA
-                    </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger
-                          className={cn(``, {
-                            " animate-pulse cursor-not-allowed bg-slate-400":
-                              isPendingLga,
-                          })}
-                        >
-                          <SelectValue placeholder="Enter a LGA" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {lgas?.data?.map((lga) => (
-                          <SelectItem key={lga} value={lga}>
-                            {lga}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {isErrorLga && (
-                      <ApiErrorMessage
-                        className="text-destructive"
-                        message={errorLga?.message}
-                      />
-                    )}
-                    {isPausedLga && (
-                      <ApiErrorMessage message="Check your network and try again" />
-                    )}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {countryCode === "NG" && (
+                <FormField
+                  control={form.control}
+                  name="lga"
+                  render={({ field, fieldState }) => (
+                    <FormItem>
+                      <FormLabel
+                        htmlFor="lga"
+                        className={cn(`text-muted-200 -mb-2`, {
+                          "text-destructive": fieldState?.invalid,
+                        })}
+                      >
+                        LGA/City
+                      </FormLabel>
+                      <Select onValueChange={field.onChange}>
+                        <FormControl>
+                          <SelectTrigger
+                            className={cn(``, {
+                              " animate-pulse cursor-not-allowed bg-slate-400":
+                                isPendingLga,
+                            })}
+                          >
+                            <SelectValue placeholder="Enter a LGA/City" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {lgas?.data?.map((lga) => (
+                            <SelectItem key={lga} value={lga}>
+                              {lga}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      {isErrorLga && (
+                        <ApiErrorMessage
+                          className="text-destructive"
+                          message={errorLga?.message}
+                        />
+                      )}
+                      {isPausedLga && (
+                        <ApiErrorMessage message="Check your network and try again" />
+                      )}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
 
               {/* Head Office */}
               <FormField
@@ -365,7 +366,7 @@ export const CompleteSignUpForm = () => {
                               fieldState?.invalid,
                           },
                         )}
-                        placeholder="Head Office (e.g. Lekki Phase 1)"
+                        placeholder="Head Office"
                         {...field}
                       />
                     </FormControl>
@@ -568,7 +569,7 @@ export const CompleteSignUpForm = () => {
                                   onChange={(e) => {
                                     field.onChange(e.target.files);
                                     setSelectedImage(
-                                      e.target.files?.[0] ?? undefined,
+                                      e.target.files?.[0] ?? null,
                                     );
                                     uploadFile(selectedImage as File);
                                   }}
