@@ -69,7 +69,7 @@ export type NewInviteeSignupData = {
   mobileNumber: string;
   countryId: number;
   state: string;
-  lga: string;
+  lga?: string;
   imageLink: string;
   username: string;
   password: string;
