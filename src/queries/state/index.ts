@@ -19,7 +19,7 @@ function useCountries(
 }
 
 function useAllStates(
-  countryCode: string = "NG",
+  countryCode: string,
   options?: Omit<
     UndefinedInitialDataOptions<AllStates, Error, AllStates, string[]>,
     "queryKey"
@@ -30,11 +30,13 @@ function useAllStates(
     queryKey: hash,
     queryFn: () => getAllStates(countryCode),
     staleTime: 1000 * 60 * 60 * 24 * 7,
+    enabled: !!countryCode,
     ...options,
   });
 }
 
 function useAllStatesLga(
+  countryCode: string,
   state: string,
   options?: Omit<
     UndefinedInitialDataOptions<LgaByState, Error, LgaByState, string[]>,
@@ -44,7 +46,7 @@ function useAllStatesLga(
   const hash = [stateKeys.readOne, state];
   return useQuery({
     queryKey: hash,
-    queryFn: () => getAllLgaByState(state),
+    queryFn: () => getAllLgaByState(countryCode, state),
     enabled: !!state,
     ...options,
   });

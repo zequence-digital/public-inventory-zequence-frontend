@@ -16,9 +16,12 @@ export async function getAllStates(countryCode: string): Promise<AllStates> {
 
 // /generic/state-lga?state=state
 
-export async function getAllLgaByState(state: string): Promise<LgaByState> {
+export async function getAllLgaByState(
+  countryCode: string,
+  state: string,
+): Promise<LgaByState> {
   const data = await apiClient.get({
-    url: `/generic/state-lga?state=${state}`,
+    url: `/generic/state-lga?state=${state}&countryCode=${countryCode}`,
     auth: false,
   });
   return data as LgaByState;
