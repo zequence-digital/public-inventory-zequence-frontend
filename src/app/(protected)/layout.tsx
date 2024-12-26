@@ -8,7 +8,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className=" min-h-screen">
+    <div className=" min-h-screen ">
       <div className="grid md:grid-cols-[auto_1fr] h-screen ">
         <div className="shadow-lg w-full h-full">
           <NavBar />

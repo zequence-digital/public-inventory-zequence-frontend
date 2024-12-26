@@ -1,10 +1,11 @@
 import "react-day-picker/style.css";
 import "./globals.css";
 
-import type { Metadata } from "next";
-import TanstackQueryProviders from "@/providers/tanstackQuery";
-import { cn } from "@/lib/utils";
+import { LoginAlertForm } from "@/components/form/login-alert-form";
 import { inter } from "@/fonts";
+import { cn } from "@/lib/utils";
+import TanstackQueryProviders from "@/providers/tanstackQuery";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: {
@@ -40,7 +41,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={cn(`antialiased ${inter.className} h-screen`)}>
         <TanstackQueryProviders>
-          <div>{children}</div>
+          <div>
+            {children}
+            <LoginAlertForm />
+          </div>
         </TanstackQueryProviders>
       </body>
     </html>

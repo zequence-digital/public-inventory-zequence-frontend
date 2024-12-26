@@ -98,3 +98,6 @@ export const subLinks = [
     IconComponent: SvgSettings,
   },
 ];
+
+// Default Login Page
+export const defaultLoginPage = "/dashboard/overview";
