@@ -12,19 +12,19 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { Input } from "@/components/ui/input";
-import { useActiveUser } from "@/crypto";
-import { cn } from "@/lib/utils";
-import { loginSchema } from "@/schemas/login";
-import { useLogin } from "@/services/auth";
-import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
+import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useReducer } from "react";
-import { useForm } from "react-hook-form";
 import { Spinner } from "../spinner";
 import SubmitButton from "./components/submit-button";
+import { cn } from "@/lib/utils";
+import { loginSchema } from "@/schemas/login";
+import { useActiveUser } from "@/crypto";
+import { useForm } from "react-hook-form";
+import { useLogin } from "@/services/auth";
+import { usePathname } from "next/navigation";
+import { useReducer } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type LoginSchema = z.infer<typeof loginSchema>;
 export function LoginAlertForm() {
@@ -52,6 +52,9 @@ export function LoginAlertForm() {
             )}
             className="space-y-3 w-full"
           >
+            <h1 className="text-2xl font-semibold text-destructive text-center">
+              Session Expired🕒
+            </h1>
             <FormField
               control={form.control}
               name="queryParam"
@@ -138,7 +141,7 @@ export function LoginAlertForm() {
               loadingLabel={<Spinner className=" border-white" />}
               isPending={isPending}
               className="bg-primary-100 hover:bg-primary-100/90 transition-colors duration-300"
-              label="Sign in"
+              label="Login"
             />
           </form>
         </Form>
