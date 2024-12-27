@@ -39,7 +39,7 @@ export function Notifications() {
           </div>
         )}
         {notifications?.data?.length === 0 && <EmptyNotificationMessage />}
-        <div className="space-y-6 pr-6 pb-10 h-40 overflow-y-scroll">
+        <div className="space-y-6 pr-6 pb-10 h-64 overflow-y-scroll">
           {notifications?.data?.map((notification) => {
             return (
               <div key={notification.guid}>
