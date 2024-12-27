@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 
-import { useActiveUser } from "@/crypto";
-import type { GetAllOrganizationBranch } from "@/types";
-import { EditBranchModalForm } from "../branches/form/edit-branch-form";
 import { DeleteBranch } from "../delete-table-item/delete-branch";
+import { EditBranchModalForm } from "../branches/form/edit-branch-form";
+import type { GetAllOrganizationBranch } from "@/types";
 import { UserMenuAccountAction } from "./user-menu-account-action";
+import { useActiveUser } from "@/crypto";
 
 type Props = {
   branch: GetAllOrganizationBranch["data"][number] | undefined;
@@ -14,8 +14,6 @@ type Props = {
 
 export function UserMenuRadioForm({ branch }: Props) {
   const user = useActiveUser();
-
-  console.log(user);
 
   const [activeBranch, setActiveBranch] = useState<
     GetAllOrganizationBranch["data"][number] | undefined

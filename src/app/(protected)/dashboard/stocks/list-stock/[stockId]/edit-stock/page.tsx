@@ -10,9 +10,5 @@ export default async function EditStockPage(props: Props) {
 
   const { stockId } = params;
 
-  return (
-    <div>
-      <EditStockForm stockId={stockId} />
-    </div>
-  );
+  return <EditStockForm stockId={stockId} />;
 }
