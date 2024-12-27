@@ -10,18 +10,21 @@ import type {
   SignUpData,
   VerifyOtp,
 } from "@/types/auth";
-import { UseMutationOptions, useMutation } from "@tanstack/react-query";
 import { setToLocalStorage, tokenKey, user } from "@/utils";
+import { UseMutationOptions, useMutation } from "@tanstack/react-query";
 
-import { AxiosError } from "axios";
+import { useLocalStorage } from "@/hooks/use-local-storage";
+import { defaultLoginPage } from "@/routes";
 import type { LoginResponse } from "@/types";
+import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import { apiClient } from "../api";
 import authKeys from "./auth-keys";
-import { toast } from "react-toastify";
-import { useLocalStorage } from "@/hooks/use-local-storage";
-import { useRouter } from "next/navigation";
 
 export function useLogin(
+  redirectTo?: string,
+  className?: string,
   options?: UseMutationOptions<LoginResponse, AxiosError, LoginData, unknown>,
 ) {
   const [, setActiveUser] = useLocalStorage(user, "");
@@ -43,8 +46,16 @@ export function useLogin(
         // setToLocalStorage(user, encrypt(JSON.stringify(data)));
         setActiveUser(JSON.stringify(data));
 
+        const hiddenClass = className
+          ? document.querySelector(className)
+          : null;
+
+        if (hiddenClass) {
+          hiddenClass.classList.add("hidden");
+        }
+
         toast.success(data.message);
-        window.location.href = "/dashboard/overview";
+        window.location.href = redirectTo ?? defaultLoginPage;
       }
 
       if (!data.success) {

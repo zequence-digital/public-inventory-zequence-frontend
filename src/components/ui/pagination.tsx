@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import CustomButton from "../dashboard/custom-button";
 
 interface Props<T> {
@@ -25,6 +26,10 @@ export function PaginationComponent<T>({
         <div className=" w-full items-center flex justify-between">
           <div className="flex items-center gap-2">
             <CustomButton
+              className={cn(`border border-gray-300`, {
+                "text-gray-300 shadow-none":
+                  isPlaceholderData || pageNumber === 1,
+              })}
               label="Previous page"
               onClick={() => {
                 if (!isPlaceholderData && pageNumber > 1) {
@@ -34,6 +39,10 @@ export function PaginationComponent<T>({
               disabled={isPlaceholderData || pageNumber === 1}
             />
             <CustomButton
+              className={cn(`border border-gray-300`, {
+                "text-gray-300 shadow-none":
+                  isPlaceholderData || totalPages === pageNumber,
+              })}
               isPending={isFetching}
               label="Next page"
               onClick={() => {

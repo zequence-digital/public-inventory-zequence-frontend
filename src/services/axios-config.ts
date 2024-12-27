@@ -12,7 +12,6 @@ import axios, {
 } from "axios";
 
 import { jwtDecode } from "jwt-decode";
-import { logOut } from "./auth";
 
 const axiosInstance = axios.create({
   baseURL,
@@ -42,10 +41,9 @@ const onRequestError = (error: AxiosError): Promise<AxiosError> => {
 };
 
 const onResponse = (response: AxiosResponse): AxiosResponse => {
+  const alertDivElement = <HTMLDivElement>document.querySelector(".alert-form");
   if (response.data.message === "Expired token") {
-    setTimeout(() => {
-      logOut();
-    }, 1000);
+    alertDivElement.classList.remove("hidden");
   }
 
   return response;
