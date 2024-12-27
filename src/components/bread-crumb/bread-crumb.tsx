@@ -7,9 +7,9 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
+import { BackButton } from "./back-button";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
-import { BackButton } from "./back-button";
 
 type BreadCrumbsProps = { className?: string; title?: string };
 export function BreadCrumbComponent({ className, title }: BreadCrumbsProps) {
@@ -28,7 +28,7 @@ export function BreadCrumbComponent({ className, title }: BreadCrumbsProps) {
   const organizedPathname = pathname.split("/").slice(1);
 
   return (
-    <div className="">
+    <div className="max-w-2xl w-full overflow-clip">
       {organizedPathname.length > 2 && (
         <BackButton title="Back" className=" ml-0 border-none" />
       )}
