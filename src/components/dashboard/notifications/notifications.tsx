@@ -18,7 +18,7 @@ export function Notifications() {
   } = useNotifications(readStatus);
   return (
     <div>
-      <div className="max-w-[573px] w-full  border-r border-muted-150">
+      <div className="max-w-lg w-full  border-r border-muted-150">
         <div className="w-full flex items-center justify-between gap-2 mb-12">
           <div className="text-slate-700 text-2xl font-semibold">
             Notifications

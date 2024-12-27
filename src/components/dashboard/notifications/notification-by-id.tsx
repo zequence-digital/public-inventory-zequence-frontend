@@ -1,10 +1,8 @@
 "use client";
 
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import Image from "next/image";
 import { NotificationSkeleton } from "@/components/table/skeleton/notification-skeleton";
 import { formatDateDifference } from "@/lib/utils";
-import productIcon from "/public/icons/products.svg";
 import { useMemo } from "react";
 import { useNotifications } from "@/queries/notifications";
 
@@ -25,12 +23,6 @@ export function NotificationById({ notificationId }: Props) {
     <div className=" w-full px-4">
       <div className="w-full flex items-center justify-between gap-2 mb-12">
         <div className="text-slate-700 text-2xl font-semibold flex items-center gap-2">
-          <div className="relative">
-            {notification?.readStatus === "READ" ? null : (
-              <div className="w-1.5 h-1.5 bg-blue-700 rounded-full absolute -right-1" />
-            )}
-            <Image src={productIcon} alt="Product icon" />
-          </div>
           Notification🔔
         </div>
       </div>
@@ -46,14 +38,16 @@ export function NotificationById({ notificationId }: Props) {
       )}
       {/* Notification Card */}
       <div className="w-full">
-        <div className="w-full">
-          <div className="text-slate-700 text-base font-semibold">
-            {notification?.description}
+        <div className="w-full space-y-2">
+          <div className="flex items-center justify-between gap-4">
+            <div className="text-slate-700 text-base font-semibold">
+              {notification?.description}
+            </div>
+            <div className="text-slate-500 text-xs font-medium">
+              {formatDateDifference(notification?.createdAt as string)}
+            </div>
           </div>
           <div>{notification?.message}</div>
-        </div>
-        <div className="text-slate-500 text-xs font-medium">
-          {formatDateDifference(notification?.createdAt as string)}
         </div>
       </div>
     </div>
