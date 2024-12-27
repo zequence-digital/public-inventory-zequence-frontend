@@ -49,7 +49,6 @@ export function useMarkNotificationAsReadOrUnread(
     mutationKey: [notificationKeys.create],
     onSuccess(data) {
       if (data.success) {
-        toast.success(data.message);
         queryClient.invalidateQueries({
           queryKey: [notificationKeys.read],
         });

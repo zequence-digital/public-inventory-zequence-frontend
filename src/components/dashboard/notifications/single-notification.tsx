@@ -1,10 +1,11 @@
 import { cn, formatDateDifference } from "@/lib/utils";
 
-import { useMarkNotificationAsReadOrUnread } from "@/queries/notifications";
 import type { GetAllNotifications } from "@/types";
 import Image from "next/image";
-import { useState } from "react";
+import Link from "next/link";
 import productIcon from "/public/icons/products.svg";
+import { useCallback } from "react";
+import { useMarkNotificationAsReadOrUnread } from "@/queries/notifications";
 
 type Props = {
   notification: GetAllNotifications["data"][number];
@@ -13,34 +14,30 @@ type Props = {
 export function SingleNotification({ notification }: Props) {
   const { mutate: markAsReadOrUnread, isPending } =
     useMarkNotificationAsReadOrUnread();
-  const [zoom, setZoom] = useState(false);
+
+  const handleReadStatus = useCallback(() => {
+    if (notification?.readStatus === "UNREAD") {
+      markAsReadOrUnread({
+        guid: notification?.guid,
+        readStatus: "READ",
+      });
+    }
+
+    if (notification?.readStatus === "READ") {
+      markAsReadOrUnread({
+        guid: notification?.guid,
+        readStatus: "UNREAD",
+      });
+    }
+  }, [notification, markAsReadOrUnread]);
 
   return (
-    <div
-      onClick={() => {
-        if (
-          notification?.readStatus === "UNREAD" ||
-          notification?.readStatus === "ALL"
-        ) {
-          markAsReadOrUnread({
-            guid: notification?.guid,
-            readStatus: "READ",
-          });
-        }
-
-        if (notification?.readStatus === "READ") {
-          markAsReadOrUnread({
-            guid: notification?.guid,
-            readStatus: "UNREAD",
-          });
-        }
-
-        setZoom(!zoom);
-      }}
+    <Link
+      href={`/dashboard/notifications/${notification?.guid}`}
+      onClick={handleReadStatus}
       className={cn(
         `w-full cursor-pointer flex items-start justify-between gap-6 transform transition-transform duration-300`,
         {
-          "scale-105 shadow-md p-3": zoom,
           "cursor-not-allowed": isPending,
         },
       )}
@@ -62,6 +59,6 @@ export function SingleNotification({ notification }: Props) {
       <div className="text-slate-500 text-xs font-medium">
         {formatDateDifference(notification?.createdAt)}
       </div>
-    </div>
+    </Link>
   );
 }
