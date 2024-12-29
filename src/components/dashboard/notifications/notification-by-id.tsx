@@ -14,8 +14,8 @@ export function NotificationById({ notificationId }: Props) {
   const { data: notifications, isError, isPending, error } = useNotifications();
 
   const notification = useMemo(() => {
-    return notifications?.data.find(
-      (notification) => notification.guid === notificationId,
+    return notifications?.data?.find(
+      (notification) => notification?.guid === notificationId,
     );
   }, [notifications, notificationId]);
 
