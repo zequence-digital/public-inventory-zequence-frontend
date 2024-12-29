@@ -33,7 +33,7 @@ export function SingleNotification({ notification }: Props) {
 
   return (
     <Link
-      href={`/dashboard/notifications/${notification?.guid}`}
+      href={`/dashboard/notifications/${notification?.guid}/notification`}
       onClick={handleReadStatus}
       className={cn(
         `w-full cursor-pointer flex items-start justify-between gap-6 transform transition-transform duration-300`,
