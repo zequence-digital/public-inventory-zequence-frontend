@@ -5,6 +5,9 @@ type Props = {
     stockUsageId: string;
   }>;
 };
+
+export const dynamic = "force-static";
+
 export default async function EditStockUsagePage(props: Props) {
   const params = await props.params;
 
