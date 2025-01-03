@@ -6,6 +6,8 @@ type Props = {
   }>;
 };
 
+export const dynamic = "force-static";
+
 const EditSalesPage = async (props: Props) => {
   const params = await props.params;
 
