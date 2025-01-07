@@ -1,14 +1,19 @@
 "use client";
 
 import { useDeleteStockUsage } from "@/queries/stocks";
+import type { GetAllStockUsage } from "@/types";
 import { useState } from "react";
 import { Alert } from "../dialog/alert-dialog";
 import SvgTrash from "../svg/svg-trash";
 
-export function DeleteStockUsage({ id }: { id: string }) {
+type Props = {
+  sales: GetAllStockUsage["data"]["records"][number];
+};
+
+export function DeleteStockUsage({ sales }: Props) {
   const [open, setOpen] = useState(false);
 
-  const { mutate: deleteSales, isPending } = useDeleteStockUsage(id);
+  const { mutate: deleteSales, isPending } = useDeleteStockUsage(sales?.guid);
 
   return (
     <div>
@@ -18,7 +23,7 @@ export function DeleteStockUsage({ id }: { id: string }) {
         open={open}
         onOpenChange={setOpen}
         handleContinue={() => {
-          deleteSales(id);
+          deleteSales(sales?.guid);
           setOpen(false);
         }}
         handleCancel={() => setOpen(false)}

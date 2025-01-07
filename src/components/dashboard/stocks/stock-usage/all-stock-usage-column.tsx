@@ -1,14 +1,14 @@
 "use client";
 
-import { Checkbox } from "@/components/ui/checkbox";
-import { ColumnDef } from "@tanstack/react-table";
-import { DataTableColumnHeader } from "@/components/table/ui/data-table-column-header";
-import { DateFormat } from "@/components/ui/date-format";
 import { DeleteStockUsage } from "@/components/delete-table-item/delete-stock-usage";
-import type { GetAllStockUsage } from "@/types";
-import Link from "next/link";
 import SvgEdit from "@/components/svg/svg-edit";
+import { DataTableColumnHeader } from "@/components/table/ui/data-table-column-header";
+import { Checkbox } from "@/components/ui/checkbox";
+import { DateFormat } from "@/components/ui/date-format";
 import { cn } from "@/lib/utils";
+import type { GetAllStockUsage } from "@/types";
+import { ColumnDef } from "@tanstack/react-table";
+import Link from "next/link";
 
 type StockUsage = GetAllStockUsage["data"]["records"][number];
 
@@ -95,7 +95,7 @@ export const allStockUsageColumns: ColumnDef<StockUsage>[] = [
 
       return (
         <div className="flex gap-4 items-center">
-          <DeleteStockUsage id={sales.guid} />
+          <DeleteStockUsage sales={sales} />
           <Link
             href={`/dashboard/stocks/stock-usage/${sales.guid}/edit-stock-usage`}
           >
