@@ -30,7 +30,7 @@ import plus from "/public/images/plus.svg";
 import { useCurrentBranch } from "@/hooks/use-current-branch";
 import { useDashboardItems } from "@/queries/dashboard-overview";
 import { useForm } from "react-hook-form";
-import { useProducts } from "@/queries/products";
+import { useUnpaginatedData } from "@/hooks/use-unpaginated-data";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 type Props = {
@@ -59,11 +59,11 @@ export function EditSalesForm({ salesId }: Props) {
   } = useDashboardItems("ALL");
 
   const {
-    data: product,
-    isError: isErrorProduct,
-    isPending: pendingProduct,
-    error: errorProduct,
-  } = useProducts();
+    activeProducts,
+    pendingEntireProduct,
+    isErrorEntireProduct,
+    errorEntireProduct,
+  } = useUnpaginatedData();
 
   const {
     data: sales,
@@ -186,8 +186,8 @@ export function EditSalesForm({ salesId }: Props) {
                         <Select
                           onValueChange={(value) => {
                             field.onChange(value);
-                            const item = product?.data?.records?.find(
-                              (item) => item.name === value,
+                            const item = activeProducts?.find(
+                              (item) => item?.name === value,
                             );
 
                             if (item) {
@@ -200,7 +200,7 @@ export function EditSalesForm({ salesId }: Props) {
                               `w-full h-[48px] px-4  text-sm bg-white border border-muted-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent`,
                               {
                                 "animate-pulse bg-gray-300":
-                                  pendingProduct || pendingSales,
+                                  pendingEntireProduct || pendingSales,
                               },
                             )}
                           >
@@ -209,21 +209,21 @@ export function EditSalesForm({ salesId }: Props) {
                             />
                           </SelectTrigger>
                           <SelectContent>
-                            {product?.data?.records?.map((item) => (
+                            {activeProducts?.map((item) => (
                               <SelectItem
                                 id={item.guid}
                                 key={item.guid}
-                                value={item.name}
+                                value={item?.name}
                               >
-                                {item.name}
+                                {item?.name}
                               </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
                       </FormControl>
-                      {(isErrorProduct || isErrorSales) && (
+                      {(isErrorEntireProduct || isErrorSales) && (
                         <FormMessage>
-                          {errorProduct?.message || errorSales?.message}
+                          {errorEntireProduct?.message || errorSales?.message}
                         </FormMessage>
                       )}
                       <FormMessage />
