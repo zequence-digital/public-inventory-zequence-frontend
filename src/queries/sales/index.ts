@@ -112,6 +112,9 @@ export function useEditSales(
         queryClient.invalidateQueries({
           queryKey: [salesKeys.read],
         });
+        queryClient.invalidateQueries({
+          queryKey: [salesKeys.readOne],
+        });
         router.push("/dashboard/sales/add-sales");
       }
 
