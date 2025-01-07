@@ -11,12 +11,12 @@ import { cn, formatDate } from "@/lib/utils";
 import { useReducer, useRef } from "react";
 
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import { Spinner } from "@/components/spinner";
-import { useSingleGroupSales } from "@/queries/sales";
 import { Cross1Icon } from "@radix-ui/react-icons";
-import { useReactToPrint } from "react-to-print";
 import CustomButton from "../../custom-button";
+import { Spinner } from "@/components/spinner";
 import { ViewInvoice } from "./view-invoice";
+import { useReactToPrint } from "react-to-print";
+import { useSingleGroupSales } from "@/queries/sales";
 
 type Props = {
   className?: string;
@@ -93,8 +93,11 @@ export function SalesInvoiceModal({ className, id, ...rest }: Props) {
                         className="grid grid-cols-4 gap-4"
                       >
                         <div className="space-y-1">
-                          <div className="text-xs text-slate-700">
-                            {item?.productData?.name}
+                          <div className="text-xs text-slate-700 flex flex-col">
+                            <span className="font-semibold">
+                              {item?.productData?.name}
+                            </span>
+                            <span>[{item?.productData?.notes}]</span>
                           </div>
                         </div>
                         <div className="space-y-1">
