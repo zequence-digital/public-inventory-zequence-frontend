@@ -58,7 +58,6 @@ export function EditSalesInvoiceModal({ className, sales, ...rest }: Props) {
         branchId: true,
         customerType: true,
         item: true,
-        quantityRequested: true,
       }),
     ),
     mode: "all",
