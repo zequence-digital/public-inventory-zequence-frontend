@@ -49,6 +49,8 @@ export function EditStockUsageForm({ stockUsageId }: Props) {
     resolver: zodResolver(
       AddStockUsageSchema.omit({
         branchId: true,
+        stockRefNumber: true,
+        quantity: true,
       }),
     ),
     mode: "all",
@@ -81,6 +83,17 @@ export function EditStockUsageForm({ stockUsageId }: Props) {
     error: errorStock,
     isPending: pendingStock,
   } = useStocks(pageNumber, search, branchId?.id);
+
+  useEffect(() => {
+    const item = stockList?.data?.records?.find(
+      (item) =>
+        item?.name.toLocaleLowerCase() ===
+        stockUsage?.data?.stock?.name.toLocaleLowerCase(),
+    );
+    if (item) {
+      setReferenceNumber(item?.referenceNumber);
+    }
+  }, [stockList?.data?.records, stockUsage?.data?.stock?.name, stockUsageId]);
 
   return (
     <div>
@@ -139,6 +152,7 @@ export function EditStockUsageForm({ stockUsageId }: Props) {
                       <FormLabel>Stock category</FormLabel>
                       <FormControl>
                         <Select
+                          defaultValue={referenceNumber}
                           onValueChange={(value) => {
                             field.onChange(value);
                             const item = stockList?.data?.records?.find(

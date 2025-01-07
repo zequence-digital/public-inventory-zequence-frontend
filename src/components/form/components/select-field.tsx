@@ -36,6 +36,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
 }) => {
   return (
     <Select
+      value={defaultValue}
       name={name}
       onValueChange={onValueChange}
       defaultValue={defaultValue}
