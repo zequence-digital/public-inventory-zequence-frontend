@@ -80,6 +80,7 @@ export function CategoryList() {
           data={categories?.data?.records ?? []}
         />
         <PaginationComponent
+          isFetching={isFetching}
           totalPages={categories?.data?.meta?.numberOfPages ?? 0}
           isPlaceholderData={isPlaceholderData}
           items={categories?.data?.records ?? []}

@@ -73,7 +73,7 @@ export function EditSalesInvoiceModal({ className, sales, ...rest }: Props) {
 
   return (
     <>
-      {user?.data?.businessProfile?.role === "CEO" && (
+      {user?.data?.roleName === "ADMIN" && (
         <>
           <EditInvoicePack onOpenChange={onOpenChange} />
           <AlertDialog open={open} onOpenChange={onOpenChange}>

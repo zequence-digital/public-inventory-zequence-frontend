@@ -79,6 +79,7 @@ export function ProductList() {
           data={products?.data?.records ?? []}
         />
         <PaginationComponent
+          isFetching={isFetching}
           totalPages={products?.data?.meta?.numberOfPages ?? 0}
           isPlaceholderData={isPlaceholderData}
           items={products?.data?.records ?? []}

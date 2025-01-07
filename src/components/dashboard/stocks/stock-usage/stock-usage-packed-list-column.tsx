@@ -1,13 +1,13 @@
 "use client";
 
-import { Checkbox } from "@/components/ui/checkbox";
-import { ColumnDef } from "@tanstack/react-table";
-import { DataTableColumnHeader } from "@/components/table/ui/data-table-column-header";
-import { DateFormat } from "@/components/ui/date-format";
 import { DeleteGroupStockUsage } from "@/components/delete-table-item/delete-group-stock-usage";
-import type { GetAllGroupStockUsage } from "@/types";
-import { ViewAndPrintStockUsageModal } from "./view-and-print-stock-usage";
+import { DataTableColumnHeader } from "@/components/table/ui/data-table-column-header";
+import { Checkbox } from "@/components/ui/checkbox";
+import { DateFormat } from "@/components/ui/date-format";
 import { cn } from "@/lib/utils";
+import type { GetAllGroupStockUsage } from "@/types";
+import { ColumnDef } from "@tanstack/react-table";
+import { ViewAndPrintStockUsageModal } from "./view-and-print-stock-usage";
 
 type StockUsage = GetAllGroupStockUsage["data"]["records"][number];
 
@@ -48,15 +48,18 @@ export const stockUsagePackedListColumns: ColumnDef<StockUsage>[] = [
   {
     accessorKey: "stockUsages",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Stock Names" />
+      <DataTableColumnHeader column={column} title="Stock" />
     ),
     cell: ({ row }) => {
       const stocks = row.getValue("stockUsages") as StockUsage["stockUsages"];
+      const firstStockItem = stocks[0];
+      const otherItems = stocks.slice(1);
       return (
         <div>
-          {stocks?.map((stock) => (
-            <div key={stock.guid}>{stock.stock?.name}</div>
-          ))}
+          <div>{firstStockItem.stock?.name}</div>
+          {otherItems.length > 0 && (
+            <div className="text-muted-400">+{otherItems.length} more</div>
+          )}
         </div>
       );
     },
@@ -78,11 +81,14 @@ export const stockUsagePackedListColumns: ColumnDef<StockUsage>[] = [
     ),
     cell: ({ row }) => {
       const stocks = row.getValue("stockUsages") as StockUsage["stockUsages"];
+      const firstStockItem = stocks[0];
+      const otherItems = stocks.slice(1);
       return (
         <div>
-          {stocks?.map((stock) => (
-            <div key={stock.guid}>{stock.stock?.category?.name}</div>
-          ))}
+          <div>{firstStockItem.stock?.category?.name}</div>
+          {otherItems.length > 0 && (
+            <div className="text-muted-400">+{otherItems.length} more</div>
+          )}
         </div>
       );
     },
@@ -90,15 +96,14 @@ export const stockUsagePackedListColumns: ColumnDef<StockUsage>[] = [
   {
     accessorKey: "stockUsages",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Quantity" />
+      <DataTableColumnHeader column={column} title="Total Item" />
     ),
     cell: ({ row }) => {
-      const quantity = row.getValue("stockUsages") as StockUsage["stockUsages"];
+      const items = row.getValue("stockUsages") as StockUsage["stockUsages"];
+      const totalItems = items?.length;
       return (
         <div>
-          {quantity?.map((stock) => (
-            <div key={stock.guid}>{stock.quantity}</div>
-          ))}
+          <div>{totalItems}</div>
         </div>
       );
     },
