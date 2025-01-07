@@ -9,14 +9,14 @@ import {
 } from "@/queries/dashboard-overview";
 import { useMemo, useState } from "react";
 
-import { ProductOverview } from "@/components/dashboard/home/product-overview";
-import { StockOverview } from "@/components/dashboard/home/stock-overview";
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import { allItemsColumn } from "@/components/table/data/all-items-columns";
 import { DataTable } from "@/components/table/ui/data-table";
 import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
 import { ExportToCsv } from "@/components/table/ui/export-to-csv";
 import { PaginationComponent } from "@/components/ui/pagination";
+import { ProductOverview } from "@/components/dashboard/home/product-overview";
+import { StockOverview } from "@/components/dashboard/home/stock-overview";
+import { allItemsColumn } from "@/components/table/data/all-items-columns";
 import { useDashboardItemsStore } from "@/store/use-dashboard-items";
 
 export function Overview() {
@@ -97,6 +97,7 @@ export function Overview() {
           data={items?.data?.records ?? []}
         />
         <PaginationComponent
+          isFetching={isFetching}
           totalPages={items?.data?.meta?.numberOfPages ?? 0}
           isPlaceholderData={isPlaceholderData}
           items={items?.data?.records ?? []}

@@ -83,6 +83,7 @@ export function AllStockUsage() {
           data={stockUsage?.data?.records ?? []}
         />
         <PaginationComponent
+          isFetching={isFetching}
           totalPages={stockUsage?.data?.meta?.numberOfPages ?? 0}
           isPlaceholderData={isPlaceholderData}
           items={stockUsage?.data?.records ?? []}

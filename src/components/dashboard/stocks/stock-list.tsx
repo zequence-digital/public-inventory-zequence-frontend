@@ -88,6 +88,7 @@ export function StockList() {
           data={stocks?.data?.records ?? []}
         />
         <PaginationComponent
+          isFetching={isFetching}
           totalPages={stocks?.data?.meta?.numberOfPages ?? 0}
           isPlaceholderData={isPlaceholderData}
           items={stocks?.data?.records ?? []}

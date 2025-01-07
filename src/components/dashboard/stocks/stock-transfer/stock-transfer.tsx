@@ -42,7 +42,7 @@ export function StockTransfer() {
     return <ApiErrorMessage message={error?.message} />;
   }
   return (
-    <div>
+    <>
       <AddStockTransferForm />
       <div className="py-4 w-full space-y-2">
         <div className=" mb-4 flex w-full items-center justify-between gap-1">
@@ -69,6 +69,7 @@ export function StockTransfer() {
           data={stocks?.data?.records ?? []}
         />
         <PaginationComponent
+          isFetching={isFetching}
           totalPages={stocks?.data?.meta?.numberOfPages ?? 0}
           isPlaceholderData={isPlaceholderData}
           items={stocks?.data?.records ?? []}
@@ -76,6 +77,6 @@ export function StockTransfer() {
           setPageNumber={setPageNumber}
         />
       </div>
-    </div>
+    </>
   );
 }

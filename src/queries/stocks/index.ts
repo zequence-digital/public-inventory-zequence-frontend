@@ -49,11 +49,11 @@ import {
 
 import { AuthResponse } from "@/types/auth";
 import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
 import dashboardOverviewKeys from "../dashboard-overview/dashboard-overview-keys";
 import notificationKeys from "../notifications/notification-keys";
 import stockKeys from "./stock-keys";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export function useEntireStock(
   options?: Omit<
@@ -234,7 +234,12 @@ export function useStockTransfer(
     "queryKey" | "queryFn"
   >,
 ) {
-  const hash = [stockKeys.read, "stock-transfer"];
+  const hash = [
+    stockKeys.read,
+    "stock-transfer",
+    pageNumber.toString(),
+    search,
+  ];
   const queryStockTransfer = useQuery({
     queryKey: hash,
     queryFn: () => getStockTransfer(pageNumber, search),
