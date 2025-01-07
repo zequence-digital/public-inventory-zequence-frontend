@@ -17,11 +17,11 @@ export function SalesList() {
   const allSalesGuid = sales?.data?.records.map((sale) => sale.guid);
 
   const totalAmount = useMemo(() => {
-    return sales?.data?.records.reduce((acc, sale) => acc + sale.amount, 0);
+    return sales?.data?.records.reduce((acc, sale) => acc + sale?.amount, 0);
   }, [sales?.data?.records]);
 
   const totalItem = useMemo(() => {
-    return sales?.data?.records.length;
+    return sales?.data?.records?.length;
   }, [sales?.data?.records]);
 
   if (isError) {
@@ -35,7 +35,7 @@ export function SalesList() {
         columns={salesColumns}
         data={sales?.data?.records ?? []}
       />
-      {sales?.data?.records && sales.data.records.length > 0 && (
+      {sales?.data?.records && sales?.data?.records?.length > 0 && (
         <div className="flex items-end justify-between w-full">
           <div className="flex gap-2 items-end">
             <CustomButton

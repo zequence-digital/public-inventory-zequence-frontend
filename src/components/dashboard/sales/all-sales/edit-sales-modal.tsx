@@ -14,6 +14,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import type { GroupSales, UpdateSale } from "@/types";
 import { cn, formatDate, formatName } from "@/lib/utils";
 import { useEditSingleSalePack, useSingleGroupSales } from "@/queries/sales";
 import { useReducer, useRef } from "react";
@@ -26,21 +27,25 @@ import { DeleteSales } from "@/components/delete-table-item/delete-sales";
 import { EditInvoicePack } from "./edit-invoice-pack";
 import { InputField } from "@/components/form/components/input-field";
 import { Spinner } from "@/components/spinner";
-import type { UpdateSale } from "@/types";
 import { useActiveUser } from "@/crypto";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 type Props = {
   className?: string;
-  id: string;
+  sales: GroupSales["data"]["records"][number];
 } & React.HTMLAttributes<HTMLDivElement>;
 
-export function EditSalesInvoiceModal({ className, id, ...rest }: Props) {
+export function EditSalesInvoiceModal({ className, sales, ...rest }: Props) {
   const ref = useRef<HTMLFormElement | null>(null);
   const user = useActiveUser();
   const [open, onOpenChange] = useReducer((open) => !open, false);
-  const { data: invoice, isPending, isError, error } = useSingleGroupSales(id);
+  const {
+    data: invoice,
+    isPending,
+    isError,
+    error,
+  } = useSingleGroupSales(sales?.guid);
   const { mutate: updateSales, isPending: pendingUpdateSales } =
     useEditSingleSalePack(onOpenChange, ref);
 
@@ -68,7 +73,7 @@ export function EditSalesInvoiceModal({ className, id, ...rest }: Props) {
 
   return (
     <>
-      {user?.data?.roleName === "ADMIN" && (
+      {user?.data?.businessProfile?.role === "CEO" && (
         <>
           <EditInvoicePack onOpenChange={onOpenChange} />
           <AlertDialog open={open} onOpenChange={onOpenChange}>
