@@ -80,6 +80,7 @@ export function AllSales() {
           data={sales?.data?.records ?? []}
         />
         <PaginationComponent
+          isFetching={isFetching}
           totalPages={sales?.data?.meta?.numberOfPages ?? 0}
           isPlaceholderData={isPlaceholderData}
           items={sales?.data?.records ?? []}

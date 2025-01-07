@@ -212,7 +212,12 @@ export function AddStockUsageForm() {
             <CustomButton
               src={plus}
               type="submit"
-              className="bg-primary-100 text-white border-primary-100 hover:bg-primary-100/90 w-fit flex mt-8"
+              className={cn(
+                `bg-primary-100 text-white border-primary-100 hover:bg-primary-100/90 w-fit flex mt-8`,
+                {
+                  "cursor-not-allowed": isPending,
+                },
+              )}
               label="Add and Continue"
               pendingLabel={<Spinner className=" border-white" />}
               isPending={isPending}

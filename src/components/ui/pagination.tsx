@@ -1,7 +1,7 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import CustomButton from "../dashboard/custom-button";
+import { cn } from "@/lib/utils";
 
 interface Props<T> {
   items: T;

@@ -31,7 +31,7 @@ export function DeleteSalesPack({ sales }: Props) {
       />
       {sales?.invoiceLogData &&
         sales?.invoiceLogData?.length === 0 &&
-        user?.data?.businessProfile?.role === "CEO" && (
+        user?.data?.roleName === "ADMIN" && (
           <button disabled={isPending} onClick={() => setOpen(true)}>
             <SvgTrash className="size-4 stroke-muted-400 hover:stroke-destructive cursor-pointer" />
           </button>
