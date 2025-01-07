@@ -13,13 +13,13 @@ export function useCurrentBranch() {
 
   const currentBranch = useMemo(() => {
     return branches?.data?.find(
-      (branch) => branch.name === user?.data?.branch.name,
+      (branch) => branch?.name === user?.data?.branch?.name,
     );
   }, [branches, user]);
 
   const filterNotCurrentBranch = useMemo(() => {
     return branches?.data?.filter(
-      (branch) => branch.name !== currentBranch?.name,
+      (branch) => branch?.name !== currentBranch?.name,
     );
   }, [branches, currentBranch]);
 
