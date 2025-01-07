@@ -1,6 +1,5 @@
 "use client";
 
-import { AddSalesSchema, customerType } from "@/schemas/sales/add-sales-schema";
 import {
   Form,
   FormControl,
@@ -17,21 +16,22 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useEditSales, useSale } from "@/queries/sales";
+import { AddSalesSchema, customerType } from "@/schemas/sales/add-sales-schema";
 import { useEffect, useRef, useState } from "react";
 
-import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import CustomButton from "../../custom-button";
 import { InputField } from "@/components/form/components/input-field";
-import { SalesListOverview } from "../sales-list-overview";
+import { ApiErrorMessage } from "@/components/messages/api-error-message";
 import { Spinner } from "@/components/spinner";
-import type { UpdateSale } from "@/types";
-import { cn } from "@/lib/utils";
-import plus from "/public/images/plus.svg";
 import { useCurrentBranch } from "@/hooks/use-current-branch";
-import { useDashboardItems } from "@/queries/dashboard-overview";
-import { useForm } from "react-hook-form";
 import { useUnpaginatedData } from "@/hooks/use-unpaginated-data";
+import { cn } from "@/lib/utils";
+import { useDashboardItems } from "@/queries/dashboard-overview";
+import type { UpdateSale } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import CustomButton from "../../custom-button";
+import { SalesListOverview } from "../sales-list-overview";
+import plus from "/public/images/plus.svg";
 
 type Props = {
   salesId: string;
@@ -43,7 +43,13 @@ export function EditSalesForm({ salesId }: Props) {
 
   const form = useForm<UpdateSale>({
     resolver: zodResolver(
-      AddSalesSchema.omit({ productRefNumber: true, branchId: true }),
+      AddSalesSchema.omit({
+        productRefNumber: true,
+        branchId: true,
+        customerType: true,
+        quantityRequested: true,
+        item: true,
+      }),
     ),
     mode: "all",
   });
@@ -75,10 +81,16 @@ export function EditSalesForm({ salesId }: Props) {
   const { mutate: updateSales, isPending } = useEditSales(ref);
 
   useEffect(() => {
-    if (sales?.data?.product?.name) {
-      setReferenceNumber(sales?.data?.product?.referenceNumber);
+    const item = activeProducts?.find(
+      (item) =>
+        item?.name.toLocaleLowerCase() ===
+        sales?.data?.product?.name.toLocaleLowerCase(),
+    );
+
+    if (item) {
+      setReferenceNumber(item?.referenceNumber);
     }
-  }, [sales?.data?.product?.name, sales?.data?.product?.referenceNumber]);
+  }, [activeProducts, sales?.data?.product?.name, salesId]);
 
   if (isErrorItems) {
     return <ApiErrorMessage message={errorItems?.message} />;
