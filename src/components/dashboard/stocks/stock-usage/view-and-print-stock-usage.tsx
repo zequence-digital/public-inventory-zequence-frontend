@@ -8,11 +8,13 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { cn, formatDate } from "@/lib/utils";
+import { useReducer, useRef } from "react";
 
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
+import { Spinner } from "@/components/spinner";
 import { useSingleGroupStockUsage } from "@/queries/stocks";
 import { Cross1Icon } from "@radix-ui/react-icons";
-import { useReducer } from "react";
+import { useReactToPrint } from "react-to-print";
 import CustomButton from "../../custom-button";
 import { ViewStockUsage } from "./view-stock-usage";
 
@@ -23,6 +25,12 @@ type Props = {
 
 export function ViewAndPrintStockUsageModal({ className, id, ...rest }: Props) {
   const [open, onOpenChange] = useReducer((open) => !open, false);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const reactToPrintFn = useReactToPrint({
+    contentRef,
+    bodyClass: "w-xs, p-6",
+    pageStyle: "@page { size: A4; margin: 0; }",
+  });
   const {
     data: packedStockUsage,
     isPending,
@@ -35,7 +43,7 @@ export function ViewAndPrintStockUsageModal({ className, id, ...rest }: Props) {
   }
 
   if (isPending) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   return (
@@ -54,7 +62,7 @@ export function ViewAndPrintStockUsageModal({ className, id, ...rest }: Props) {
               className="size-5 text-muted-400 w-fit ml-auto flex justify-end cursor-pointer items-end mb-10"
               onClick={onOpenChange}
             />
-            <div className=" space-y-6">
+            <div className=" space-y-6" ref={contentRef}>
               <AlertDialogTitle className="w-full flex items-center justify-between border border-slate-700 p-4 rounded-lg mb-6">
                 <div className="space-y-1">
                   <div className="text-sm text-slate-500">Date created:</div>
@@ -112,7 +120,7 @@ export function ViewAndPrintStockUsageModal({ className, id, ...rest }: Props) {
 
           <div className="flex items-center justify-between h-full mt-auto">
             <CustomButton
-              onClick={() => window.print()}
+              onClick={() => reactToPrintFn()}
               className="bg-primary-100 h-fit text-white"
               label="Download"
             />
