@@ -94,7 +94,7 @@ export const allSalesColumns: ColumnDef<Sales>[] = [
       return (
         <div className="flex items-center gap-2">
           <SalesInvoiceModal id={sales.guid} />
-          <EditSalesInvoiceModal id={sales.guid} />
+          <EditSalesInvoiceModal sales={sales} />
           <DeleteSalesPack sales={sales} />
         </div>
       );
