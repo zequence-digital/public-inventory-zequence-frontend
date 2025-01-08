@@ -12,19 +12,19 @@ import {
 import { useCategory, useEditCategory } from "@/queries/categories";
 import { useRef, useState } from "react";
 
+import type { AddCategory } from "@/types";
+import { AddCategorySchema } from "@/schemas/categories/add-category-schema";
+import { ApiErrorMessage } from "@/components/messages/api-error-message";
+import CustomButton from "../../custom-button";
 import { InputField } from "@/components/form/components/input-field";
 import { RadioField } from "@/components/form/components/radio-field";
 import SelectField from "@/components/form/components/select-field";
-import { values } from "@/components/form/form-data/category-values";
-import { ApiErrorMessage } from "@/components/messages/api-error-message";
 import { Spinner } from "@/components/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { AddCategorySchema } from "@/schemas/categories/add-category-schema";
-import type { AddCategory } from "@/types";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import CustomButton from "../../custom-button";
+import { values } from "@/components/form/form-data/category-values";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type Props = {
   categoryId: string;
@@ -47,8 +47,6 @@ export function EditCategoryForm({ categoryId }: Props) {
       AddCategorySchema.omit({
         categoryType: true,
         status: true,
-        description: true,
-        name: true,
       }),
     ),
     mode: "all",
