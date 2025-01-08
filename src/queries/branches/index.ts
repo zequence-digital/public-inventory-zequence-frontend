@@ -104,9 +104,6 @@ export function useUpdateBranch(
         queryClient.invalidateQueries({
           queryKey: [branchKeys.read],
         });
-        queryClient.invalidateQueries({
-          queryKey: [branchKeys.readOne],
-        });
       }
       if (!data.success) {
         toast.error(data.message);
