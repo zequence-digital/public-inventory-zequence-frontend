@@ -27,15 +27,7 @@ export function EditProductForm({ productId }: Props) {
 
   const form = useForm<UpdateProduct>({
     resolver: zodResolver(
-      AddProductSchema.omit({
-        categoryGuid: true,
-        branchId: true,
-        name: true,
-        quantity: true,
-        threshold: true,
-        price: true,
-        notes: true,
-      }).optional(),
+      AddProductSchema.omit({ categoryGuid: true, branchId: true }),
     ),
     mode: "all",
   });

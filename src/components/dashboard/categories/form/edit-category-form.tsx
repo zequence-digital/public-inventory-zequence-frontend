@@ -80,7 +80,6 @@ export function EditCategoryForm({ categoryId }: Props) {
                 <FormItem className=" max-w-[15rem] w-full">
                   <FormControl className="w-full">
                     <RadioField
-                      value={category?.data?.categoryType}
                       values={values}
                       defaultValue={category?.data?.categoryType}
                       className="justify-between w-full radio-category"
