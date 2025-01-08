@@ -49,11 +49,11 @@ import {
 
 import { AuthResponse } from "@/types/auth";
 import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
 import dashboardOverviewKeys from "../dashboard-overview/dashboard-overview-keys";
 import notificationKeys from "../notifications/notification-keys";
 import stockKeys from "./stock-keys";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export function useEntireStock(
   options?: Omit<
@@ -176,12 +176,6 @@ export function useEditStock(
         });
         queryClient.invalidateQueries({
           queryKey: [dashboardOverviewKeys.read],
-        });
-        queryClient.invalidateQueries({
-          queryKey: [notificationKeys.read],
-        });
-        queryClient.invalidateQueries({
-          queryKey: [stockKeys.readOne],
         });
         router.push("/dashboard/stocks/list-stock");
       }
@@ -325,15 +319,6 @@ export function useEditStockTransfer(
         queryClient.invalidateQueries({
           queryKey: [stockKeys.read, "stock-transfer"],
         });
-        queryClient.invalidateQueries({
-          queryKey: [dashboardOverviewKeys.read],
-        });
-        queryClient.invalidateQueries({
-          queryKey: [notificationKeys.read],
-        });
-        queryClient.invalidateQueries({
-          queryKey: [stockKeys.readOne],
-        });
         router.push("/dashboard/stocks/add-stock-transfer");
       }
 
@@ -447,15 +432,6 @@ export function useEditStockRequest(
         }
         queryClient.invalidateQueries({
           queryKey: [stockKeys.read, "stock-request"],
-        });
-        queryClient.invalidateQueries({
-          queryKey: [dashboardOverviewKeys.read],
-        });
-        queryClient.invalidateQueries({
-          queryKey: [notificationKeys.read],
-        });
-        queryClient.invalidateQueries({
-          queryKey: [stockKeys.readOne],
         });
         router.push("/dashboard/stocks/stock-request");
       }
@@ -576,15 +552,6 @@ export function useEditStockUsage(
         }
         queryClient.invalidateQueries({
           queryKey: [stockKeys.read],
-        });
-        queryClient.invalidateQueries({
-          queryKey: [dashboardOverviewKeys.read],
-        });
-        queryClient.invalidateQueries({
-          queryKey: [notificationKeys.read],
-        });
-        queryClient.invalidateQueries({
-          queryKey: [stockKeys.readOne],
         });
         router.push("/dashboard/stocks/stock-usage");
       }

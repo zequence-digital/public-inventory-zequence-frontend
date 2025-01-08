@@ -137,9 +137,6 @@ export function useEditCategory(
         queryClient.invalidateQueries({
           queryKey: [categoryKeys.read],
         });
-        queryClient.invalidateQueries({
-          queryKey: [categoryKeys.readOne],
-        });
         router.push("/dashboard/categories/list-categories");
       }
 

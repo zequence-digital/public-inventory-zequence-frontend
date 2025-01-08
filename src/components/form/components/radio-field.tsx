@@ -1,14 +1,13 @@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-import { Spinner } from "@/components/spinner";
 import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/spinner";
 import { cn } from "@/lib/utils";
 
 type Props = {
   onValueChange?: (value: string) => void;
   isPending?: boolean;
   defaultValue?: string;
-  value?: string;
   className?: string;
   values?: { label: string; value: string | number }[];
 };
@@ -17,7 +16,6 @@ export function RadioField({
   onValueChange,
   className,
   defaultValue,
-  value,
   values,
   isPending,
 }: Props) {
@@ -27,7 +25,7 @@ export function RadioField({
 
   return (
     <RadioGroup
-      value={value}
+      value={defaultValue}
       defaultValue={defaultValue}
       onValueChange={onValueChange}
       className={cn(`flex`, className)}

@@ -9,15 +9,15 @@ import {
 } from "@/components/ui/form";
 import { useEditProduct, useProduct } from "@/queries/products";
 
+import { AddProductSchema } from "@/schemas/products/add-product-schema";
+import CustomButton from "../../custom-button";
 import { InputField } from "@/components/form/components/input-field";
 import { Spinner } from "@/components/spinner";
-import { useCurrentBranch } from "@/hooks/use-current-branch";
-import { AddProductSchema } from "@/schemas/products/add-product-schema";
 import type { UpdateProduct } from "@/types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRef } from "react";
+import { useCurrentBranch } from "@/hooks/use-current-branch";
 import { useForm } from "react-hook-form";
-import CustomButton from "../../custom-button";
+import { useRef } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type Props = {
   productId: string;
@@ -27,15 +27,7 @@ export function EditProductForm({ productId }: Props) {
 
   const form = useForm<UpdateProduct>({
     resolver: zodResolver(
-      AddProductSchema.omit({
-        categoryGuid: true,
-        branchId: true,
-        name: true,
-        quantity: true,
-        threshold: true,
-        price: true,
-        notes: true,
-      }),
+      AddProductSchema.omit({ categoryGuid: true, branchId: true }),
     ),
     mode: "all",
   });
