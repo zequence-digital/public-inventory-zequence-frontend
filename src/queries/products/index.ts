@@ -142,9 +142,6 @@ export function useEditProduct(
         queryClient.invalidateQueries({
           queryKey: [dashboardOverviewKeys.read],
         });
-        queryClient.invalidateQueries({
-          queryKey: [productKeys.readOne],
-        });
         router.push("/dashboard/products/list-products");
       }
 
