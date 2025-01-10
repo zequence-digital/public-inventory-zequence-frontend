@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     default: "Zequence Digital Inventory Management System",
     template: "%s | Zequence Digital Inventory Management System",
   },
-  metadataBase: new URL("https://staging-inventory.zequencedigital.com"),
+  metadataBase: new URL("https://www.zequencedigital.com/"),
   description:
     "Inventory Management System is a web application that helps businesses manage their inventory.",
   keywords: [

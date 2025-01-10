@@ -1,11 +1,11 @@
 import { cn, formatDateDifference } from "@/lib/utils";
 
+import { useMarkNotificationAsReadOrUnread } from "@/queries/notifications";
 import type { GetAllNotifications } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import productIcon from "/public/icons/products.svg";
 import { useCallback } from "react";
-import { useMarkNotificationAsReadOrUnread } from "@/queries/notifications";
+import productIcon from "/public/icons/products.svg";
 
 type Props = {
   notification: GetAllNotifications["data"][number];
@@ -23,12 +23,12 @@ export function SingleNotification({ notification }: Props) {
       });
     }
 
-    if (notification?.readStatus === "READ") {
-      markAsReadOrUnread({
-        guid: notification?.guid,
-        readStatus: "UNREAD",
-      });
-    }
+    // if (notification?.readStatus === "READ") {
+    //   markAsReadOrUnread({
+    //     guid: notification?.guid,
+    //     readStatus: "UNREAD",
+    //   });
+    // }
   }, [notification, markAsReadOrUnread]);
 
   return (
