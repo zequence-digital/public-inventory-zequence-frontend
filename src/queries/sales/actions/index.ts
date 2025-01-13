@@ -102,9 +102,12 @@ export const submitSales = async (salesInvoiceGuids: string[]) => {
 
 // /sale-invoice/group
 
-export const getGroupSales = async (): Promise<GroupSales> => {
+export const getGroupSales = async (
+  pageNumber: number = 1,
+  search: string,
+): Promise<GroupSales> => {
   const response = await apiClient.get({
-    url: `/sale-invoice/group`,
+    url: `/sale-invoice/group?pageNumber=${pageNumber}${search ? `&search=${search}` : ""}`,
     auth: true,
   });
 

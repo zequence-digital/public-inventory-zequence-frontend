@@ -24,7 +24,7 @@ export function AllSales() {
     isPlaceholderData,
     isFetching,
     isPending,
-  } = useGroupSales();
+  } = useGroupSales(pageNumber, search);
 
   const csvData = useMemo(() => {
     const invoiceData = sales?.data?.records
@@ -50,44 +50,42 @@ export function AllSales() {
     return <ApiErrorMessage message={error?.message} />;
   }
   return (
-    <div>
-      <div className="py-4 w-full space-y-2">
-        <div className=" mb-4 flex w-full items-center justify-between gap-1">
-          {/* Filters */}
-          <DateFilter
-            setEndDate={setEndDate}
-            setStartDate={setStartDate}
-            startDate={startDate}
-            endDate={endDate}
+    <div className="py-4 w-full space-y-2">
+      <div className=" mb-4 flex w-full items-center justify-between gap-1">
+        {/* Filters */}
+        <DateFilter
+          setEndDate={setEndDate}
+          setStartDate={setStartDate}
+          startDate={startDate}
+          endDate={endDate}
+        />
+        <div className="flex items-end justify-end w-full gap-2">
+          <ExportToCsv
+            fileName="sales"
+            csvData={csvData}
+            items={sales?.data?.records ?? []}
           />
-          <div className="flex items-end justify-end w-full gap-2">
-            <ExportToCsv
-              fileName="sales"
-              csvData={csvData}
-              items={sales?.data?.records ?? []}
-            />
-            <DataTableSearchInput
-              searchText={search}
-              setSearchText={setSearch}
-              placeholder="Search for item"
-            />
-          </div>
+          <DataTableSearchInput
+            searchText={search}
+            setSearchText={setSearch}
+            placeholder="Search for item"
+          />
         </div>
-        <DataTable
-          message={`No sales found`}
-          isPending={isPending}
-          columns={allSalesColumns}
-          data={sales?.data?.records ?? []}
-        />
-        <PaginationComponent
-          isFetching={isFetching}
-          totalPages={sales?.data?.meta?.numberOfPages ?? 0}
-          isPlaceholderData={isPlaceholderData}
-          items={sales?.data?.records ?? []}
-          pageNumber={pageNumber}
-          setPageNumber={setPageNumber}
-        />
       </div>
+      <DataTable
+        message={`No sales found`}
+        isPending={isPending}
+        columns={allSalesColumns}
+        data={sales?.data?.records ?? []}
+      />
+      <PaginationComponent
+        isFetching={isFetching}
+        totalPages={sales?.data?.meta?.numberOfPages ?? 0}
+        isPlaceholderData={isPlaceholderData}
+        items={sales?.data?.records ?? []}
+        pageNumber={pageNumber}
+        setPageNumber={setPageNumber}
+      />
     </div>
   );
 }
