@@ -26,9 +26,9 @@ import {
 
 import { AuthResponse } from "@/types/auth";
 import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
 import salesKeys from "./sales-keys";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export function useSales(
   options?: Omit<
@@ -251,15 +251,19 @@ export function useSalesGroupSubmit(
 }
 
 export function useGroupSales(
+  pageNumber: number = 1,
+  search: string,
   options?: Omit<
     UndefinedInitialDataOptions<GroupSales, Error, GroupSales, string[]>,
     "queryKey" | "queryFn"
   >,
 ) {
-  const hash = [salesKeys.read, "group"];
+  const hash = [salesKeys.read, "group", pageNumber.toString(), search].filter(
+    (key) => key !== undefined,
+  );
   const querySales = useQuery({
     queryKey: hash,
-    queryFn: getGroupSales,
+    queryFn: () => getGroupSales(pageNumber, search),
     ...options,
   });
 

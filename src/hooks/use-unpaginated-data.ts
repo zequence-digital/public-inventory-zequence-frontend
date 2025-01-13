@@ -24,7 +24,7 @@ export const useUnpaginatedData = () => {
   } = useEntireStock();
   const activeProducts = useMemo(() => {
     return entireProduct?.filter(
-      (product) => product.status !== "OUT_OF_STOCK",
+      (product) => product?.status !== "OUT_OF_STOCK",
     );
   }, [entireProduct]);
 

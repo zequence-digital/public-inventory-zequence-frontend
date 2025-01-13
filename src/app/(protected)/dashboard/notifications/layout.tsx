@@ -1,4 +1,10 @@
 import { Notifications } from "@/components/dashboard/notifications/notifications";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Notifications",
+  description: "Notifications",
+};
 
 type Props = {
   children: React.ReactNode;

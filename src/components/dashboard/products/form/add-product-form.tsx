@@ -18,18 +18,18 @@ import {
 import { useAddProduct, useProducts } from "@/queries/products";
 import { useEffect, useRef, useState } from "react";
 
-import { InputField } from "@/components/form/components/input-field";
-import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import { Spinner } from "@/components/spinner";
-import { useCurrentBranch } from "@/hooks/use-current-branch";
-import { useUnpaginatedData } from "@/hooks/use-unpaginated-data";
-import { cn } from "@/lib/utils";
-import { AddProductSchema } from "@/schemas/products/add-product-schema";
 import type { AddProduct } from "@/types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { AddProductSchema } from "@/schemas/products/add-product-schema";
+import { ApiErrorMessage } from "@/components/messages/api-error-message";
 import CustomButton from "../../custom-button";
+import { InputField } from "@/components/form/components/input-field";
 import { ProductListOverview } from "../product-list-overview";
+import { Spinner } from "@/components/spinner";
+import { cn } from "@/lib/utils";
+import { useCurrentBranch } from "@/hooks/use-current-branch";
+import { useForm } from "react-hook-form";
+import { useUnpaginatedData } from "@/hooks/use-unpaginated-data";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export function AddProductForm() {
   const ref = useRef<HTMLFormElement | null>(null);
