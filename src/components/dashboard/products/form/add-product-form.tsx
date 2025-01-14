@@ -127,7 +127,7 @@ export function AddProductForm() {
                   control={form.control}
                   name="categoryGuid"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className=" space-y-1">
                       {products && products?.length > 0 ? (
                         <FormLabel>Product Category</FormLabel>
                       ) : null}
@@ -136,7 +136,7 @@ export function AddProductForm() {
                           <Select onValueChange={field.onChange}>
                             <SelectTrigger
                               className={cn(
-                                `w-full h-[48px] px-4  text-sm bg-white border border-muted-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent`,
+                                `w-full h-[48px] px-4 text-sm bg-white border border-muted-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent`,
                                 {
                                   "animate-pulse bg-gray-300":
                                     pendingEntireCategory,

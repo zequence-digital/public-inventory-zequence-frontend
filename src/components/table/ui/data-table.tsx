@@ -21,14 +21,11 @@ import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
-  searchBy?: string;
   data: TData[];
   isPending?: boolean;
-  searchTerm?: string;
-  headers?: React.ReactNode;
   className?: string;
-  message?: string | React.ReactNode;
   table?: ReturnType<typeof useReactTable>;
+  message?: string | React.ReactNode;
 }
 
 export function DataTable<TData, TValue>({

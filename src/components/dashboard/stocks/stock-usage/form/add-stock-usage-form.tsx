@@ -18,17 +18,17 @@ import {
 import { useAddStockUsage, useStocks } from "@/queries/stocks";
 import { useEffect, useRef, useState } from "react";
 
+import type { AddStockUsage } from "@/types";
+import { AddStockUsageSchema } from "@/schemas/stocks/stock-usage/add-stock-usage-schema";
+import { ApiErrorMessage } from "@/components/messages/api-error-message";
 import CustomButton from "@/components/dashboard/custom-button";
 import { InputField } from "@/components/form/components/input-field";
-import { ApiErrorMessage } from "@/components/messages/api-error-message";
 import { Spinner } from "@/components/spinner";
-import { useCurrentBranch } from "@/hooks/use-current-branch";
 import { cn } from "@/lib/utils";
-import { AddStockUsageSchema } from "@/schemas/stocks/stock-usage/add-stock-usage-schema";
-import type { AddStockUsage } from "@/types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import plus from "/public/images/plus.svg";
+import { useCurrentBranch } from "@/hooks/use-current-branch";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export function AddStockUsageForm() {
   const ref = useRef<HTMLFormElement | null>(null);
@@ -128,7 +128,7 @@ export function AddStockUsageForm() {
                     control={form.control}
                     name="stockRefNumber"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="space-y-1">
                         <FormLabel>Stock category</FormLabel>
                         <FormControl>
                           <Select

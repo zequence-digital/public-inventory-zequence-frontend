@@ -56,7 +56,7 @@ export function InputField({
       )}
       <input
         className={cn(
-          `w-full h-[52px] px-4  text-sm bg-white border border-muted-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent`,
+          `w-full h-[48px] px-4  text-sm bg-white border border-muted-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent`,
           className,
           { " bg-muted-600 animate-pulse": isPending },
         )}
