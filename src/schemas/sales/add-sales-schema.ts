@@ -11,6 +11,7 @@ export const customerType = [
   "WALK_IN_CUSTOMER",
   "RETURNING_CUSTOMER",
   "CORPORATE_CUSTOMER",
+  "OTHER",
 ];
 
 export const AddSalesSchema = z.object({

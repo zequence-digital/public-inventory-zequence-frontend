@@ -61,10 +61,8 @@ export function StockTransfer() {
           </div>
         </div>
         <DataTable
-          searchBy={`category`}
           message={`No stocks transfer found`}
           isPending={isPending}
-          searchTerm={`category`}
           columns={stockTransferColumns}
           data={stocks?.data?.records ?? []}
         />

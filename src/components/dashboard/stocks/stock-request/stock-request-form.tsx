@@ -125,7 +125,7 @@ export function StockRequestForm() {
                   control={form.control}
                   name="toBranchId"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="space-y-1">
                       <FormLabel>Request from:</FormLabel>
                       <FormControl>
                         <Select

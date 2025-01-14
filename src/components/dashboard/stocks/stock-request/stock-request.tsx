@@ -3,14 +3,14 @@
 import { useMemo, useState } from "react";
 
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import { stockRequestColumns } from "@/components/table/data/stocks/stock-request-column";
 import { DataTable } from "@/components/table/ui/data-table";
 import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
 import { ExportToCsv } from "@/components/table/ui/export-to-csv";
 import { PaginationComponent } from "@/components/ui/pagination";
-import { formatDate } from "@/lib/utils";
-import { useStockRequest } from "@/queries/stocks";
 import { StockRequestForm } from "./stock-request-form";
+import { formatDate } from "@/lib/utils";
+import { stockRequestColumns } from "@/components/table/data/stocks/stock-request-column";
+import { useStockRequest } from "@/queries/stocks";
 
 export function StockRequest() {
   const [search, setSearch] = useState("");
@@ -68,6 +68,7 @@ export function StockRequest() {
           data={stocks?.data?.records ?? []}
         />
         <PaginationComponent
+          isFetching={isFetching}
           totalPages={stocks?.data?.meta?.numberOfPages ?? 0}
           isPlaceholderData={isPlaceholderData}
           items={stocks?.data?.records ?? []}

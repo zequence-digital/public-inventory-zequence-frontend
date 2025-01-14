@@ -121,7 +121,7 @@ export function AddSalesForm() {
                   control={form.control}
                   name="customerType"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="space-y-1">
                       <FormLabel>Customer Type</FormLabel>
                       <FormControl>
                         <Select onValueChange={field.onChange}>
