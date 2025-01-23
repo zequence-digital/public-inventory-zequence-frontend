@@ -2,6 +2,7 @@
 
 import * as React from "react";
 
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -13,11 +14,10 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 
-import { TableHeading } from "./table-heading";
-import { TableSkeleton } from "../skeleton/table-skeleton";
 import { cn } from "@/lib/utils";
+import { TableSkeleton } from "../skeleton/table-skeleton";
+import { TableHeading } from "./table-heading";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

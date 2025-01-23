@@ -12,7 +12,6 @@ export const AddStockUsageSchema = z.object({
       required_error: "Quantity is required",
       invalid_type_error: "Quantity must be a number",
     })
-    .int()
     .positive(),
   branchId: z.coerce
     .number({
