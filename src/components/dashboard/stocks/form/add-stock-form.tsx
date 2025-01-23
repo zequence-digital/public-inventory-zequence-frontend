@@ -216,6 +216,7 @@ export function AddStockForm() {
                     <FormItem>
                       <FormControl>
                         <InputField
+                          step="any"
                           label="Quantity"
                           id="Quantity"
                           name="Quantity"
@@ -262,6 +263,7 @@ export function AddStockForm() {
                     <FormItem>
                       <FormControl>
                         <InputField
+                          step="any"
                           hasCustomIcon
                           width={15}
                           height={15}
