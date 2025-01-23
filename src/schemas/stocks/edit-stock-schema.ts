@@ -16,7 +16,6 @@ export const EditStockSchema = z.object({
       required_error: "Threshold limit is required",
       invalid_type_error: "Threshold limit must be a number",
     })
-    .int()
     .positive(),
   stockBranch: z
     .string({ required_error: "Product branch is required" })
@@ -31,7 +30,6 @@ export const EditStockSchema = z.object({
       required_error: "Product quantity is required",
       invalid_type_error: "Product quantity must be a number",
     })
-    .int()
     .positive(),
   id: z.number(),
 });

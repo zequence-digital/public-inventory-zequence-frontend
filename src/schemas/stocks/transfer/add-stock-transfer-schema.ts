@@ -4,7 +4,6 @@
 //   "fromBranchId": 0,
 //   "toBranchId": 0
 // }
-
 import { z } from "zod";
 
 export const AddStockTransferSchema = z.object({
@@ -19,14 +18,12 @@ export const AddStockTransferSchema = z.object({
       required_error: "Product quantity is required",
       invalid_type_error: "Product quantity must be a number",
     })
-    .int()
     .positive(),
   fromBranchId: z.coerce
     .number({
       required_error: "Branch is required",
       invalid_type_error: "Branch must be a number",
     })
-    .int()
     .positive(),
   toBranchId: z.string({
     required_error: "Branch is required",
