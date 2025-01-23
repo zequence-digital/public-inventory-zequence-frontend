@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 // {
 //   "name": "string",
 //   "notes": "string",
@@ -24,7 +25,6 @@ export const AddStockSchema = z.object({
       required_error: "Threshold limit is required",
       invalid_type_error: "Threshold limit must be a number",
     })
-    .int()
     .positive(),
   branchId: z.coerce
     .number({
@@ -42,6 +42,5 @@ export const AddStockSchema = z.object({
       required_error: "Product quantity is required",
       invalid_type_error: "Product quantity must be a number",
     })
-    .int()
     .positive(),
 });

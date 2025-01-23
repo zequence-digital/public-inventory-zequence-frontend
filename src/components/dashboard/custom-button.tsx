@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 type CustomButtonProps = {
   src?: string;
@@ -30,18 +30,18 @@ const CustomButton = ({
       {...rest}
       className={cn(`rounded-lg justify-start items-start flex`, className)}
     >
-      <div className="px-4 py-2.5  rounded-lg shadow  justify-center items-center gap-2 flex">
-        <div className=" text-sm font-semibold leading-tight flex items-center gap-2">
+      <div className="py-2.5  rounded-lg shadow  justify-center items-center gap-2 flex">
+        <div className="px-4 text-sm font-semibold leading-tight flex items-center gap-2">
           {src && (
             <Image
-              className={cn(``, imageClassName)}
+              className={cn(`-ml-2`, imageClassName)}
               width={20}
               height={20}
               src={src}
               alt={alt}
             />
           )}
-          {isPending ? pendingLabel : label}
+          <span>{isPending ? pendingLabel : label}</span>
         </div>
       </div>
     </button>
