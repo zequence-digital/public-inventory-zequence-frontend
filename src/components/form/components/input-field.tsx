@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 type InputFieldProps = {
   label?: string;
@@ -11,6 +11,7 @@ type InputFieldProps = {
   width?: number;
   height?: number;
   name: string;
+  step?: number | string;
   isPending?: boolean;
   type: string;
   id: string;
@@ -26,6 +27,7 @@ export function InputField({
   width,
   height,
   name,
+  step,
   isPending,
   className,
   type,
@@ -60,6 +62,7 @@ export function InputField({
           className,
           { " bg-muted-600 animate-pulse": isPending },
         )}
+        step={step}
         id={id}
         name={name}
         type={type}
