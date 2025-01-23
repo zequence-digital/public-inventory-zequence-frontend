@@ -1,5 +1,7 @@
 "use client";
 
+import { InputField } from "@/components/form/components/input-field";
+import { Spinner } from "@/components/spinner";
 import {
   Form,
   FormControl,
@@ -7,17 +9,15 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { useEditStock, useStock } from "@/queries/stocks";
-
-import { AddStockSchema } from "@/schemas/stocks/add-stock-schema";
-import CustomButton from "../../custom-button";
-import { InputField } from "@/components/form/components/input-field";
-import { Spinner } from "@/components/spinner";
-import type { UpdateStock } from "@/types";
 import { useCurrentBranch } from "@/hooks/use-current-branch";
-import { useForm } from "react-hook-form";
-import { useRef } from "react";
+import { useEditStock, useStock } from "@/queries/stocks";
+import { AddStockSchema } from "@/schemas/stocks/add-stock-schema";
+import type { UpdateStock } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRef } from "react";
+import { useForm } from "react-hook-form";
+
+import CustomButton from "../../custom-button";
 
 type Props = {
   stockId: string;
@@ -129,6 +129,7 @@ export function EditStockForm({ stockId }: Props) {
                   <FormItem>
                     <FormControl>
                       <InputField
+                        step="any"
                         defaultValue={stock?.data.quantity}
                         label="Quantity"
                         id="Quantity"
@@ -179,6 +180,7 @@ export function EditStockForm({ stockId }: Props) {
                       <InputField
                         defaultValue={stock?.data.thresholdQuantity}
                         hasCustomIcon
+                        step="any"
                         width={15}
                         height={15}
                         src={`/images/thresh-hold.svg`}

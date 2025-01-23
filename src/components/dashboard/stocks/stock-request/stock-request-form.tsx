@@ -1,5 +1,8 @@
 "use client";
 
+import { InputField } from "@/components/form/components/input-field";
+import { ApiErrorMessage } from "@/components/messages/api-error-message";
+import { Spinner } from "@/components/spinner";
 import {
   Form,
   FormControl,
@@ -15,20 +18,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useAddStockRequest, useStocks } from "@/queries/stocks";
-import { useEffect, useRef, useState } from "react";
-
-import type { AddStockTransfer } from "@/types";
-import { AddStockTransferSchema } from "@/schemas/stocks/transfer/add-stock-transfer-schema";
-import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import CustomButton from "../../custom-button";
-import { InputField } from "@/components/form/components/input-field";
-import { Spinner } from "@/components/spinner";
-import { StockListOverview } from "../stock-list-overview";
-import { cn } from "@/lib/utils";
 import { useCurrentBranch } from "@/hooks/use-current-branch";
-import { useForm } from "react-hook-form";
+import { cn } from "@/lib/utils";
+import { useAddStockRequest, useStocks } from "@/queries/stocks";
+import { AddStockTransferSchema } from "@/schemas/stocks/transfer/add-stock-transfer-schema";
+import type { AddStockTransfer } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+
+import CustomButton from "../../custom-button";
+import { StockListOverview } from "../stock-list-overview";
 
 export function StockRequestForm() {
   const ref = useRef<HTMLFormElement | null>(null);
@@ -254,6 +254,7 @@ export function StockRequestForm() {
                     <FormItem>
                       <FormControl>
                         <InputField
+                          step="any"
                           onChange={field.onChange}
                           label="Quantity"
                           id="quantity"
