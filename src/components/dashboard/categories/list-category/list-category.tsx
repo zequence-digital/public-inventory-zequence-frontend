@@ -1,22 +1,23 @@
 "use client";
 
-import { cn, formatDate } from "@/lib/utils";
-import { useMemo, useState } from "react";
-
+import { DateFilter } from "@/components/filters/date-filter";
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
 import { DataTable } from "@/components/table/ui/data-table";
 import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
-import { DateFilter } from "@/components/filters/date-filter";
 import { ExportToCsv } from "@/components/table/ui/export-to-csv";
 import { PaginationComponent } from "@/components/ui/pagination";
-import { categoriesColumns } from "./data/categories-column";
+import { usePagePagination } from "@/hooks/use-page-pagination";
+import { cn, formatDate } from "@/lib/utils";
 import { useCategories } from "@/queries/categories";
+import { useMemo, useState } from "react";
+
+import { categoriesColumns } from "./data/categories-column";
 
 export function CategoryList() {
   const [search, setSearch] = useState("");
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
-  const [pageNumber, setPageNumber] = useState(1);
+  const { pageNumber, setPageNumber } = usePagePagination();
 
   const {
     data: categories,

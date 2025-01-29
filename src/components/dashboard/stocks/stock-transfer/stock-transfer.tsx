@@ -1,20 +1,21 @@
 "use client";
 
-import { useMemo, useState } from "react";
-
-import { AddStockTransferForm } from "./add-stock-transfer-form";
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
+import { stockTransferColumns } from "@/components/table/data/stocks/stock-transfer-column";
 import { DataTable } from "@/components/table/ui/data-table";
 import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
 import { ExportToCsv } from "@/components/table/ui/export-to-csv";
 import { PaginationComponent } from "@/components/ui/pagination";
+import { usePagePagination } from "@/hooks/use-page-pagination";
 import { formatDate } from "@/lib/utils";
-import { stockTransferColumns } from "@/components/table/data/stocks/stock-transfer-column";
 import { useStockTransfer } from "@/queries/stocks";
+import { useMemo, useState } from "react";
+
+import { AddStockTransferForm } from "./add-stock-transfer-form";
 
 export function StockTransfer() {
   const [search, setSearch] = useState("");
-  const [pageNumber, setPageNumber] = useState(1);
+  const { pageNumber, setPageNumber } = usePagePagination();
   const {
     data: stocks,
     isError,
@@ -23,6 +24,8 @@ export function StockTransfer() {
     isFetching,
     isPending,
   } = useStockTransfer(pageNumber, search);
+
+  console.log(stocks);
 
   const csvData = useMemo(() => {
     if (stocks?.data?.records) {

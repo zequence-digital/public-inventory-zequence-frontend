@@ -1,16 +1,16 @@
 "use client";
 
 import { InStock, OutOfStock, RunningOut } from "@/assets";
-
-import type { AllStock } from "@/types";
-import { Checkbox } from "@/components/ui/checkbox";
-import { ColumnDef } from "@tanstack/react-table";
-import { DataTableColumnHeader } from "../../ui/data-table-column-header";
 import { DeleteStock } from "@/components/delete-table-item/delete-stock";
+import SvgEdit from "@/components/svg/svg-edit";
+import { Checkbox } from "@/components/ui/checkbox";
+import { cn } from "@/lib/utils";
+import type { AllStock } from "@/types";
+import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import Link from "next/link";
-import SvgEdit from "@/components/svg/svg-edit";
-import { cn } from "@/lib/utils";
+
+import { DataTableColumnHeader } from "../../ui/data-table-column-header";
 
 type Stock = AllStock["data"]["records"][number];
 

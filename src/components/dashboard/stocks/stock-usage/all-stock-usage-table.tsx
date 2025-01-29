@@ -1,24 +1,25 @@
 "use client";
 
-import { useMemo, useState } from "react";
-
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import CustomButton from "../../custom-button";
+import { Spinner } from "@/components/spinner";
 import { DataTable } from "@/components/table/ui/data-table";
 import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
 import { ExportToCsv } from "@/components/table/ui/export-to-csv";
-import { NoStockUsageFound } from "./no-stock-usage-found";
 import { PaginationComponent } from "@/components/ui/pagination";
-import { Spinner } from "@/components/spinner";
-import { ViewAndAddStockUsageModal } from "./view-and-add-stock-usage";
+import { usePagePagination } from "@/hooks/use-page-pagination";
 import { formatDate } from "@/lib/utils";
-import plus from "/public/images/plus.svg";
-import { stockUsagePackedListColumns } from "./stock-usage-packed-list-column";
 import { useGroupStockUsage } from "@/queries/stocks";
+import { useMemo, useState } from "react";
+
+import CustomButton from "../../custom-button";
+import { NoStockUsageFound } from "./no-stock-usage-found";
+import { stockUsagePackedListColumns } from "./stock-usage-packed-list-column";
+import { ViewAndAddStockUsageModal } from "./view-and-add-stock-usage";
+import plus from "/public/images/plus.svg";
 
 export function AllStockUsage() {
   const [search, setSearch] = useState("");
-  const [pageNumber, setPageNumber] = useState(1);
+  const { pageNumber, setPageNumber } = usePagePagination();
   const [open, setOpen] = useState(false);
   const {
     data: stockUsage,

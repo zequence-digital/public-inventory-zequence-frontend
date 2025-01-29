@@ -1,21 +1,22 @@
 "use client";
 
-import { useMemo, useState } from "react";
-
+import { DateFilter } from "@/components/filters/date-filter";
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
+import { productsColumns } from "@/components/table/data/products/products-columns";
 import { DataTable } from "@/components/table/ui/data-table";
 import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
-import { DateFilter } from "@/components/filters/date-filter";
 import { ExportToCsv } from "@/components/table/ui/export-to-csv";
 import { PaginationComponent } from "@/components/ui/pagination";
-import { ProductListOverview } from "./product-list-overview";
+import { usePagePagination } from "@/hooks/use-page-pagination";
 import { formatDate } from "@/lib/utils";
-import { productsColumns } from "@/components/table/data/products/products-columns";
 import { useProducts } from "@/queries/products";
+import { useMemo, useState } from "react";
+
+import { ProductListOverview } from "./product-list-overview";
 
 export function ProductList() {
   const [search, setSearch] = useState("");
-  const [pageNumber, setPageNumber] = useState(1);
+  const { pageNumber, setPageNumber } = usePagePagination();
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
   const {

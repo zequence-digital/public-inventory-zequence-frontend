@@ -25,6 +25,7 @@ export const AllStockSchema = z.object({
           guid: z.string(),
         }),
         quantity: z.number(),
+        weight: z.number(),
         referenceNumber: z.string(),
         branch: z.object({
           id: z.number(),

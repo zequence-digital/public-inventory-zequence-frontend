@@ -2,6 +2,10 @@ export type SignUpData = {
   email: string;
 };
 
+export type OAuthSignUpData = {
+  profileRegistrationUrl: string;
+};
+
 export type SendEmailForgotPasswordData = {
   emailAddress: string;
   otpType: string;
@@ -22,6 +26,10 @@ export type ContinueSignUpData = {
 export type AuthResponse = {
   success: boolean;
   message: string;
+};
+
+export type OAuthResponse = AuthResponse & {
+  data: string;
 };
 
 export type FileUploadResponse = {
