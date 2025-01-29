@@ -13,6 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useGoogleRedirect } from "@/hooks/use-google-redirect";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { cn } from "@/lib/utils";
 import { SignUpSchema } from "@/schemas/sign-up";
@@ -26,7 +27,7 @@ import { Spinner } from "../spinner";
 type SignUp = z.infer<typeof SignUpSchema>;
 
 export const SignUpForm = () => {
-  const pathname = location.origin + "/auth/complete-registration";
+  const { pathname } = useGoogleRedirect();
   const form = useForm<SignUp>({
     mode: "all",
     resolver: zodResolver(SignUpSchema),
@@ -42,7 +43,9 @@ export const SignUpForm = () => {
       className="max-w-lg w-full"
       actionLabel="Sign in"
       logo={Logo}
-      socialActionFn={() => googleSignUp({ profileRegistrationUrl: pathname })}
+      socialActionFn={() =>
+        googleSignUp({ profileRegistrationUrl: pathname ?? "" })
+      }
       isSocialPending={isGooglePending}
       message="Create an account"
       showSocial
