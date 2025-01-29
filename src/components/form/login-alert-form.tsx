@@ -1,8 +1,7 @@
 "use client";
 
-import * as z from "zod";
-
 import { EyeClose, EyeOpen } from "@/assets";
+import { Social } from "@/components/auth/social";
 import {
   Form,
   FormControl,
@@ -11,20 +10,21 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
-import Image from "next/image";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
-import { Spinner } from "../spinner";
-import SubmitButton from "./components/submit-button";
+import { useActiveUser } from "@/crypto";
 import { cn } from "@/lib/utils";
 import { loginSchema } from "@/schemas/login";
-import { useActiveUser } from "@/crypto";
-import { useForm } from "react-hook-form";
 import { useLogin } from "@/services/auth";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useReducer } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
+import { Spinner } from "../spinner";
+import SubmitButton from "./components/submit-button";
 
 type LoginSchema = z.infer<typeof loginSchema>;
 export function LoginAlertForm() {
@@ -41,7 +41,7 @@ export function LoginAlertForm() {
     <div className="alert-form hidden" role="alert">
       {/* Overlay */}
       <div className="fixed top-0 left-0 right-0 bottom-0 bg-black/80 z-[1000]" />
-      <div className="absolute top-0 p-4 h-fit bg-white rounded-md left-0 right-0 bottom-0 z-[2000] flex items-center max-w-2xl mx-auto justify-center mt-auto mb-auto">
+      <div className="absolute top-0 p-4 h-fit bg-white rounded-md left-0 right-0 bottom-0 z-[2000] flex items-center flex-col max-w-2xl mx-auto justify-center mt-auto mb-auto">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit((data) =>
@@ -145,6 +145,7 @@ export function LoginAlertForm() {
             />
           </form>
         </Form>
+        <Social className="mt-4" />
       </div>
     </div>
   );
