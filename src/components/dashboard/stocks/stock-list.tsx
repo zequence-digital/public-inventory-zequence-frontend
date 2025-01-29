@@ -1,21 +1,22 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-
+import { DateFilter } from "@/components/filters/date-filter";
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
+import { stocksColumns } from "@/components/table/data/stocks/stocks-columns";
 import { DataTable } from "@/components/table/ui/data-table";
 import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
-import { DateFilter } from "@/components/filters/date-filter";
 import { ExportToCsv } from "@/components/table/ui/export-to-csv";
 import { PaginationComponent } from "@/components/ui/pagination";
-import { StockListOverview } from "./stock-list-overview";
-import { formatDate } from "@/lib/utils";
-import { stocksColumns } from "@/components/table/data/stocks/stocks-columns";
 import { useCurrentBranch } from "@/hooks/use-current-branch";
+import { usePagePagination } from "@/hooks/use-page-pagination";
+import { formatDate } from "@/lib/utils";
 import { useStocks } from "@/queries/stocks";
+import { useEffect, useMemo, useState } from "react";
+
+import { StockListOverview } from "./stock-list-overview";
 
 export function StockList() {
-  const [pageNumber, setPageNumber] = useState(1);
+  const { pageNumber, setPageNumber } = usePagePagination();
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
   const [search, setSearch] = useState("");

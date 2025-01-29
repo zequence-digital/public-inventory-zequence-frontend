@@ -1,9 +1,14 @@
+import { useLocalStorage } from "@/hooks/use-local-storage";
+import { defaultLoginPage } from "@/routes";
+import type { LoginResponse } from "@/types";
 import type {
   AuthResponse,
   CompleteSignUpData,
   ContinueSignUpData,
   LoginData,
   NewInviteeSignupData,
+  OAuthResponse,
+  OAuthSignUpData,
   ResendCode,
   ResetPasswordData,
   SendEmailForgotPasswordData,
@@ -12,13 +17,10 @@ import type {
 } from "@/types/auth";
 import { setToLocalStorage, tokenKey, user } from "@/utils";
 import { UseMutationOptions, useMutation } from "@tanstack/react-query";
-
-import { useLocalStorage } from "@/hooks/use-local-storage";
-import { defaultLoginPage } from "@/routes";
-import type { LoginResponse } from "@/types";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+
 import { apiClient } from "../api";
 import authKeys from "./auth-keys";
 
@@ -99,6 +101,41 @@ export function useSignUp(
   return signUp;
 }
 
+// Google Sign Up
+export function useGoogleSignUp(
+  options?: UseMutationOptions<
+    OAuthResponse,
+    AxiosError,
+    OAuthSignUpData,
+    unknown
+  >,
+) {
+  const router = useRouter();
+  const signUp = useMutation({
+    mutationFn: async (data: OAuthSignUpData) => {
+      const response = await apiClient.post({
+        url: `/auth/oauth/authorization/initiate`,
+        body: data,
+        auth: false,
+      });
+
+      return response as OAuthResponse;
+    },
+    onSuccess: (data) => {
+      if (data.success) {
+        router.push(data.data);
+      }
+      if (!data.success) {
+        toast.error(data.message);
+      }
+    },
+    ...options,
+  });
+
+  return signUp;
+}
+
+// Send Email OTP for Reset Password
 export function useSendEmailOptForResetPassword(
   ref: React.MutableRefObject<HTMLFormElement | null>,
   setIsOpen?: (value: boolean) => void,
@@ -140,6 +177,7 @@ export function useSendEmailOptForResetPassword(
   return signUp;
 }
 
+// Reset Password
 export function useResetPassword(
   options?: UseMutationOptions<
     AuthResponse,
@@ -174,6 +212,8 @@ export function useResetPassword(
 
   return signUp;
 }
+
+// Continue Sign Up
 export function useContinueSignUp(
   options?: UseMutationOptions<
     AuthResponse,
