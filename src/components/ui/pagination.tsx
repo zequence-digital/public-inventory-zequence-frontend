@@ -1,7 +1,10 @@
 "use client";
 
-import CustomButton from "../dashboard/custom-button";
 import { cn } from "@/lib/utils";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+
+import CustomButton from "../dashboard/custom-button";
 
 interface Props<T> {
   items: T;
@@ -20,6 +23,25 @@ export function PaginationComponent<T>({
   totalPages,
   isPlaceholderData,
 }: Props<T>) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+
+    if (Array.isArray(items) && items.length > 0) {
+      params.set("page", pageNumber.toString());
+    } else {
+      params.delete("page");
+    }
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  }, [pageNumber, pathname, router, searchParams, items]);
+
+  function handlePageParams(pageNumber: string) {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", pageNumber.toString());
+  }
   return (
     <div>
       {Array.isArray(items) && items.length > 0 && (
@@ -34,6 +56,7 @@ export function PaginationComponent<T>({
               onClick={() => {
                 if (!isPlaceholderData && pageNumber > 1) {
                   setPageNumber(pageNumber - 1);
+                  handlePageParams(pageNumber.toString());
                 }
               }}
               disabled={isPlaceholderData || pageNumber === 1}
@@ -48,6 +71,7 @@ export function PaginationComponent<T>({
               onClick={() => {
                 if (!isPlaceholderData && totalPages) {
                   setPageNumber(pageNumber + 1);
+                  handlePageParams(pageNumber.toString());
                 }
               }}
               disabled={isPlaceholderData || totalPages === pageNumber}

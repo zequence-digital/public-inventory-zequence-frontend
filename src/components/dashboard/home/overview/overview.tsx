@@ -1,28 +1,27 @@
 "use client";
 
-import {} from "react-csv";
-
+import { ProductOverview } from "@/components/dashboard/home/product-overview";
+import { StockOverview } from "@/components/dashboard/home/stock-overview";
+import { ApiErrorMessage } from "@/components/messages/api-error-message";
+import { allItemsColumn } from "@/components/table/data/all-items-columns";
+import { DataTable } from "@/components/table/ui/data-table";
+import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
+import { ExportToCsv } from "@/components/table/ui/export-to-csv";
+import { PaginationComponent } from "@/components/ui/pagination";
+import { usePagePagination } from "@/hooks/use-page-pagination";
 import { cn, formatDate } from "@/lib/utils";
 import {
   useDashboardItems,
   useDashboardOverview,
 } from "@/queries/dashboard-overview";
-import { useMemo, useState } from "react";
-
-import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import { DataTable } from "@/components/table/ui/data-table";
-import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
-import { ExportToCsv } from "@/components/table/ui/export-to-csv";
-import { PaginationComponent } from "@/components/ui/pagination";
-import { ProductOverview } from "@/components/dashboard/home/product-overview";
-import { StockOverview } from "@/components/dashboard/home/stock-overview";
-import { allItemsColumn } from "@/components/table/data/all-items-columns";
 import { useDashboardItemsStore } from "@/store/use-dashboard-items";
+import { useMemo, useState } from "react";
+import "react-csv";
 
 export function Overview() {
   const { item } = useDashboardItemsStore();
   const [search, setSearch] = useState("");
-  const [pageNumber, setPageNumber] = useState(1);
+  const { pageNumber, setPageNumber } = usePagePagination();
   const {
     data: overview,
     isError: isErrorOverview,

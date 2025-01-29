@@ -1,21 +1,22 @@
 "use client";
 
-import { useMemo, useState } from "react";
-
 import { ApiErrorMessage } from "@/components/messages/api-error-message";
+import { stockRequestColumns } from "@/components/table/data/stocks/stock-request-column";
 import { DataTable } from "@/components/table/ui/data-table";
 import { DataTableSearchInput } from "@/components/table/ui/data-table-search-input";
 import { ExportToCsv } from "@/components/table/ui/export-to-csv";
 import { PaginationComponent } from "@/components/ui/pagination";
-import { StockRequestForm } from "./stock-request-form";
+import { usePagePagination } from "@/hooks/use-page-pagination";
 import { formatDate } from "@/lib/utils";
-import { stockRequestColumns } from "@/components/table/data/stocks/stock-request-column";
 import { useStockRequest } from "@/queries/stocks";
+import { useMemo, useState } from "react";
+
+import { StockRequestForm } from "./stock-request-form";
 
 export function StockRequest() {
   const [search, setSearch] = useState("");
+  const { pageNumber, setPageNumber } = usePagePagination();
 
-  const [pageNumber, setPageNumber] = useState(1);
   const {
     data: stocks,
     isError,

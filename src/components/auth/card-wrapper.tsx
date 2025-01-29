@@ -1,17 +1,16 @@
 "use client";
 
+import { BackButton } from "@/components/auth/back-button";
+import { Header } from "@/components/auth/header";
+import { Social } from "@/components/auth/social";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-
-import { BackButton } from "@/components/auth/back-button";
-import { Header } from "@/components/auth/header";
-import { Social } from "@/components/auth/social";
-import { StaticImageData } from "next/image";
 import { cn } from "@/lib/utils";
+import { StaticImageData } from "next/image";
 
 interface CardWrapperProps {
   children: React.ReactNode;
@@ -21,6 +20,9 @@ interface CardWrapperProps {
   message?: string;
   logo?: StaticImageData | string;
   showSocial?: boolean;
+  socialLabel?: string;
+  socialActionFn?: () => void;
+  isSocialPending?: boolean;
   actionLabel?: string;
   className?: string;
 }
@@ -33,6 +35,9 @@ export const CardWrapper = ({
   message,
   logo,
   showSocial,
+  socialLabel,
+  socialActionFn,
+  isSocialPending,
   actionLabel,
   className,
 }: CardWrapperProps) => {
@@ -50,7 +55,12 @@ export const CardWrapper = ({
       <CardContent className="p-0">{children}</CardContent>
       {showSocial && (
         <CardFooter className="p-0">
-          <Social className="mt-4" />
+          <Social
+            socialActionFn={socialActionFn}
+            isSocialPending={isSocialPending}
+            socialLabel={socialLabel}
+            className="mt-4"
+          />
         </CardFooter>
       )}
       <CardFooter>

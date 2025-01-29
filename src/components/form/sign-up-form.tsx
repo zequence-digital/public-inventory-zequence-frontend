@@ -1,7 +1,9 @@
 "use client";
 
-import * as z from "zod";
-
+import { Logo } from "@/assets";
+import { CardWrapper } from "@/components/auth/card-wrapper";
+import OrDivider from "@/components/form/components/or-divider";
+import SubmitButton from "@/components/form/components/submit-button";
 import {
   Form,
   FormControl,
@@ -10,29 +12,30 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
-import { Logo } from "@/assets";
-import { CardWrapper } from "@/components/auth/card-wrapper";
-import OrDivider from "@/components/form/components/or-divider";
-import SubmitButton from "@/components/form/components/submit-button";
 import { Input } from "@/components/ui/input";
+import { useGoogleRedirect } from "@/hooks/use-google-redirect";
 import { useLocalStorage } from "@/hooks/use-local-storage";
 import { cn } from "@/lib/utils";
 import { SignUpSchema } from "@/schemas/sign-up";
-import { useSignUp } from "@/services/auth";
+import { useGoogleSignUp, useSignUp } from "@/services/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import * as z from "zod";
+
 import { Spinner } from "../spinner";
 
 type SignUp = z.infer<typeof SignUpSchema>;
 
 export const SignUpForm = () => {
+  const { pathname } = useGoogleRedirect();
   const form = useForm<SignUp>({
     mode: "all",
     resolver: zodResolver(SignUpSchema),
   });
 
   const { mutate: signUp, isPending } = useSignUp();
+  const { mutate: googleSignUp, isPending: isGooglePending } =
+    useGoogleSignUp();
   const [, setEmail] = useLocalStorage("email", "");
 
   return (
@@ -40,8 +43,13 @@ export const SignUpForm = () => {
       className="max-w-lg w-full"
       actionLabel="Sign in"
       logo={Logo}
+      socialActionFn={() =>
+        googleSignUp({ profileRegistrationUrl: pathname ?? "" })
+      }
+      isSocialPending={isGooglePending}
       message="Create an account"
       showSocial
+      socialLabel="Sign up with Google"
       headerLabel="Set up your account easily"
       backButtonHref="/auth/login"
       backButtonLabel="Already have an account?"
