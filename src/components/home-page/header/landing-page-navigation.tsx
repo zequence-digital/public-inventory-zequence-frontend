@@ -1,12 +1,12 @@
 "use client";
 
-import { Cross1Icon, TextAlignJustifyIcon } from "@radix-ui/react-icons";
+import { cn } from "@/lib/utils";
 import { useReducer, useState } from "react";
 
+import { Logo } from "../logo";
+import { HamBurgerMenu } from "./hamburger-menu";
 import { LandingPageCta } from "./landing-page-cta";
 import { LandingPageLinks } from "./landing-page-links";
-import { Logo } from "../logo";
-import { cn } from "@/lib/utils";
 
 export function LandingPageNavigation() {
   const [open, dispatch] = useReducer((state: boolean) => !state, false);
@@ -18,19 +18,9 @@ export function LandingPageNavigation() {
       className=" mb-10 shadow sticky bg-white top-0 left-0 z-50 h-16 lg:py-2 py-4"
     >
       <div className="flex justify-between items-center max-w-[1440px] w-full md:px-16  px-4 mx-auto">
-        <div className="flex items-center gap-20 w-full">
+        <div className="flex items-center justify-between gap-20 w-full">
           <Logo className=" shrink-0" />
-          {open ? (
-            <Cross1Icon
-              onClick={dispatch}
-              className=" lg:hidden text-black flex justify-end ml-auto size-5 cursor-pointer"
-            />
-          ) : (
-            <TextAlignJustifyIcon
-              onClick={dispatch}
-              className=" lg:hidden text-black flex justify-end ml-auto size-8 cursor-pointer"
-            />
-          )}
+          <HamBurgerMenu open={open} dispatch={dispatch} />
           <div
             className={cn(
               `

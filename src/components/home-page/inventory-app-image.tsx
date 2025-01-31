@@ -1,9 +1,10 @@
 import Image from "next/image";
+
 import crown from "/public/images/crown.svg";
 
 export function InventoryAppImage() {
   return (
-    <div className="flex lg:w-[80%] md:px-8 px-4 w-[90%] justify-center items-center mt-20 mx-auto relative">
+    <div className="flex max-w-[1200px] md:px-8 px-4 justify-center items-center mt-20 mx-auto relative">
       <div className="absolute -top-[41px] -left-[2px]">
         <Image src={crown} alt="Crown" width={45} height={40} />
       </div>

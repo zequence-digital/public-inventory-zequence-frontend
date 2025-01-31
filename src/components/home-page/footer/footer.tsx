@@ -1,5 +1,5 @@
-import { FooterLinks } from "./footer-links";
 import { Logo } from "../logo";
+import { FooterLinks } from "./footer-links";
 import { SubFooter } from "./sub-footer";
 import { SubscribeNewsLetter } from "./subscribe-news-letter";
 
@@ -26,7 +26,7 @@ export function Footer() {
   return (
     <footer className="bg-black px-8 pb-16">
       <div className="max-w-[1400px] mx-auto w-full py-10 flex justify-center gap-10 lg:justify-start max-lg:flex-col">
-        <Logo src="/images/logo-white.png" />
+        <Logo src="/images/logo-white.svg" />
 
         <div className=" flex max-lg:flex-col gap-10">
           <FooterLinks title="Features" links={featuresLinks} />
