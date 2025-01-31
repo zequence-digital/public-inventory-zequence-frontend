@@ -1,9 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { links } from "./links";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
+
+import { links } from "./links";
 
 type Props = {
   dispatch: React.DispatchWithoutAction;
@@ -32,10 +33,10 @@ export function LandingPageLinks({
                 href={href}
                 className={cn(
                   "text-black text-base font-normal leading-normal hover:text-primary-100",
-                  {
-                    "text-primary-100 font-semibold":
-                      hashLocation === href || pathname === href,
-                  },
+                  // {
+                  //   "text-primary-100 font-semibold":
+                  //     hashLocation === href || pathname === href,
+                  // },
                 )}
               >
                 {label}

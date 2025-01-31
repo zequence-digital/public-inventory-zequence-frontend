@@ -69,6 +69,8 @@ const config = {
           400: "#94c4ff",
           500: "#c1aaf9",
           600: "#c2e5ff",
+          700: "#EDF1FE",
+          800: "#D4DFFF",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
