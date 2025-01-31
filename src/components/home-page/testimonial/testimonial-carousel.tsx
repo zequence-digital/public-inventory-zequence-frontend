@@ -43,7 +43,7 @@ export function TestimonialCarousel() {
         setApi={setApi}
         className="w-full"
       >
-        <CarouselContent className=" max-w-lg w-full">
+        <CarouselContent className=" max-w-xl w-full">
           {Array.from({ length: 5 }).map((_, index) => (
             <CarouselItem className="px-8 w-full" key={index}>
               <UserTestimonial />
@@ -54,9 +54,14 @@ export function TestimonialCarousel() {
           <div className="py-2 text-center text-sm text-muted-foreground">
             {Array.from({ length: count }).map((_, index) => (
               <span
+                onClick={() => {
+                  if (api) {
+                    api.scrollTo(index);
+                  }
+                }}
                 key={index}
                 className={cn(
-                  "inline-block w-2 h-2 rounded-full bg-muted-900 mx-1",
+                  "inline-block cursor-pointer size-2 rounded-full bg-muted-900 mx-1",
                   {
                     " bg-muted-500": index === current - 1,
                   },
