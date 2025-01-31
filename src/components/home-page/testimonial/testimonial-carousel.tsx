@@ -1,16 +1,15 @@
 "use client";
 
-import * as React from "react";
-
 import {
   Carousel,
+  type CarouselApi,
   CarouselContent,
   CarouselItem,
-  type CarouselApi,
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
-import Autoplay from "embla-carousel-autoplay";
+import * as React from "react";
+
 import { UserTestimonial } from "./user-testimonial";
 
 export function TestimonialCarousel() {
@@ -34,13 +33,13 @@ export function TestimonialCarousel() {
   return (
     <div className="w-full mt-16 pb-2">
       <Carousel
-        plugins={[
-          Autoplay({
-            delay: 2000,
-            stopOnMouseEnter: true,
-            stopOnInteraction: false,
-          }),
-        ]}
+        // plugins={[
+        //   Autoplay({
+        //     delay: 2000,
+        //     stopOnMouseEnter: true,
+        //     stopOnInteraction: false,
+        //   }),
+        // ]}
         setApi={setApi}
         className="w-full"
       >

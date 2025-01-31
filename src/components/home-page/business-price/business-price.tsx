@@ -1,11 +1,11 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
 import { LandingPageButton } from "../buttons/landing-page-button";
-import { PricingCard } from "./pricing-card";
 import { calendlyLink } from "../header/links";
-import { cn } from "@/lib/utils";
+import { PricingCard } from "./pricing-card";
 
 export function BusinessPrice() {
   const [price, setPrice] = useState(0);
@@ -25,17 +25,20 @@ export function BusinessPrice() {
         </div>
         <div className="flex">
           <LandingPageButton
-            labelClassName="text-xs sm:text-sm"
+            labelClassName="text-xs sm:text-sm shrink-0"
             hasNoBg={price === 5}
             onClick={() => setPrice(4)}
-            className={cn(`rounded-r-none border border-primary-100`, {})}
+            className={cn(
+              `rounded-r-none w-full border border-primary-100`,
+              {},
+            )}
             label="Pay yearly, save 20%"
           />
           <LandingPageButton
-            labelClassName="text-xs sm:text-sm"
+            labelClassName="text-xs sm:text-sm shrink-0"
             hasNoBg={price === 4}
             onClick={() => setPrice(5)}
-            className=" rounded-l-none sm:w-[193px]"
+            className=" rounded-l-none w-full"
             label="Pay monthly"
           />
         </div>

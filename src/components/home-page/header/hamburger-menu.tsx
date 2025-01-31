@@ -24,7 +24,7 @@ export function HamBurgerMenu({ open, dispatch }: Props) {
                             `,
           {
             "transform rotate-45": open,
-            "translate-y-[8px]": open,
+            "translate-y-[7px]": open,
           },
         )}
       />
