@@ -136,7 +136,7 @@ export function useGoogleSignUp(
   return signUp;
 }
 
-export function useGoogleLogin(
+export function useGoogleOAuthLogin(
   redirectTo?: string,
   className?: string,
   options?: UseMutationOptions<LoginResponse, AxiosError, GoogleLogin, unknown>,
