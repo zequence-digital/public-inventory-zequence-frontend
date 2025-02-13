@@ -25,6 +25,7 @@ interface CardWrapperProps {
   isSocialPending?: boolean;
   actionLabel?: string;
   className?: string;
+  isGoogleLogin?: boolean;
 }
 
 export const CardWrapper = ({
@@ -38,6 +39,7 @@ export const CardWrapper = ({
   socialLabel,
   socialActionFn,
   isSocialPending,
+  isGoogleLogin,
   actionLabel,
   className,
 }: CardWrapperProps) => {
@@ -56,6 +58,7 @@ export const CardWrapper = ({
       {showSocial && (
         <CardFooter className="p-0">
           <Social
+            isGoogleLogin={isGoogleLogin}
             socialActionFn={socialActionFn}
             isSocialPending={isSocialPending}
             socialLabel={socialLabel}

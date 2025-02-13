@@ -1,7 +1,5 @@
 "use client";
 
-import * as z from "zod";
-
 import { EyeClose, EyeOpen, Logo } from "@/assets";
 import {
   Form,
@@ -11,7 +9,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { loginSchema } from "@/schemas/login";
@@ -21,6 +18,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useReducer } from "react";
 import { useForm } from "react-hook-form";
+import * as z from "zod";
+
 import { CardWrapper } from "../auth/card-wrapper";
 import { Spinner } from "../spinner";
 import OrDivider from "./components/or-divider";
@@ -42,6 +41,7 @@ const LoginForm = () => {
       logo={Logo}
       message="Log in to your account"
       showSocial
+      isGoogleLogin
       headerLabel="Welcome back! please enter your details."
       backButtonHref="/auth/sign-up"
       backButtonLabel="Don't have an account?"

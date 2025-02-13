@@ -27,7 +27,7 @@ import { Spinner } from "../spinner";
 type SignUp = z.infer<typeof SignUpSchema>;
 
 export const SignUpForm = () => {
-  const { pathname } = useGoogleRedirect();
+  const { pathname } = useGoogleRedirect("/auth/complete-registration");
   const form = useForm<SignUp>({
     mode: "all",
     resolver: zodResolver(SignUpSchema),
