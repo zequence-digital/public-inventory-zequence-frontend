@@ -2,7 +2,6 @@
 
 import { Google } from "@/assets";
 import SubmitButton from "@/components/form/components/submit-button";
-import { useGoogleRedirect } from "@/hooks/use-google-redirect";
 import { cn } from "@/lib/utils";
 import { useGoogleLogin } from "@/services/auth";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
@@ -24,7 +23,6 @@ export const Social = ({
   className,
   isGoogleLogin,
 }: Props) => {
-  const { pathname } = useGoogleRedirect("/dashboard/overview");
   const { mutate: googleLogin } = useGoogleLogin();
   const onSuccess = (credentialResponse: CredentialResponse) => {
     const { credential } = credentialResponse;
@@ -44,7 +42,6 @@ export const Social = ({
       {isGoogleLogin ? (
         <div className="w-full mt-6 [&_svg]:hidden relative">
           <GoogleLogin
-            login_uri={pathname}
             onSuccess={onSuccess}
             onError={onError}
             text="signin_with"
