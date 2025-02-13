@@ -55,6 +55,8 @@ export type LoginData = {
   password: string;
 };
 
+export type GoogleLogin = { email: string };
+
 export type CompleteSignUpData = {
   emailAddress: string;
   fullName: string;

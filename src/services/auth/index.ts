@@ -5,6 +5,7 @@ import type {
   AuthResponse,
   CompleteSignUpData,
   ContinueSignUpData,
+  GoogleLogin,
   LoginData,
   NewInviteeSignupData,
   OAuthResponse,
@@ -133,6 +134,52 @@ export function useGoogleSignUp(
   });
 
   return signUp;
+}
+
+export function useGoogleLogin(
+  redirectTo?: string,
+  className?: string,
+  options?: UseMutationOptions<LoginResponse, AxiosError, GoogleLogin, unknown>,
+) {
+  const [, setActiveUser] = useLocalStorage(user, "");
+  const login = useMutation({
+    mutationFn: async (data: GoogleLogin): Promise<LoginResponse> => {
+      const response = await apiClient.post({
+        url: `/auth/oauth/login?email=${data.email}`,
+        body: null,
+        auth: false,
+      });
+
+      return response as LoginResponse;
+    },
+
+    mutationKey: [authKeys.create],
+    onSuccess(data) {
+      if (data.success) {
+        setToLocalStorage(tokenKey, data.data.credentials.accessToken);
+        setActiveUser(JSON.stringify(data));
+
+        const hiddenClass = className
+          ? document.querySelector(className)
+          : null;
+
+        if (hiddenClass) {
+          hiddenClass.classList.add("hidden");
+        }
+
+        toast.success(data.message);
+
+        window.location.href = redirectTo ?? defaultLoginPage;
+      }
+
+      if (!data.success) {
+        toast.error(data.message);
+      }
+    },
+    ...options,
+  });
+
+  return login;
 }
 
 // Send Email OTP for Reset Password
