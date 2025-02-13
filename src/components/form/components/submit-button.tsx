@@ -9,6 +9,7 @@ type SubmitButtonProps = {
   isPending?: boolean;
   children?: React.ReactNode;
   className?: string;
+  labelClassName?: string;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const SubmitButton: React.FC<SubmitButtonProps> = ({
@@ -17,6 +18,7 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({
   isPending,
   loadingLabel,
   className,
+  labelClassName,
   ...rest
 }) => {
   return (
@@ -49,7 +51,11 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({
       )}
     >
       {children}
-      {isPending ? loadingLabel : label}
+      {isPending ? (
+        loadingLabel
+      ) : (
+        <span className={cn(``, labelClassName)}>{label}</span>
+      )}
     </Button>
   );
 };
