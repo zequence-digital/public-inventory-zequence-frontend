@@ -7,8 +7,6 @@ The Inventory Management Application is designed to help businesses efficiently 
 ![Inventory Management](public/images/inventory-app-sample.svg)
 
 
-
-
 - **Stock Management**: Track and manage stock levels for various products.
 - **Product Management**: Track and manage product levels.
 - **Reporting**: Generate reports on stock levels, sales, and more.
