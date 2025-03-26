@@ -1,5 +1,9 @@
 "use client";
 
+import CustomButton from "@/components/dashboard/custom-button";
+import { InputField } from "@/components/form/components/input-field";
+import { ApiErrorMessage } from "@/components/messages/api-error-message";
+import { Spinner } from "@/components/spinner";
 import {
   Form,
   FormControl,
@@ -15,20 +19,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useAddStockUsage, useStocks } from "@/queries/stocks";
-import { useEffect, useRef, useState } from "react";
-
-import type { AddStockUsage } from "@/types";
-import { AddStockUsageSchema } from "@/schemas/stocks/stock-usage/add-stock-usage-schema";
-import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import CustomButton from "@/components/dashboard/custom-button";
-import { InputField } from "@/components/form/components/input-field";
-import { Spinner } from "@/components/spinner";
-import { cn } from "@/lib/utils";
-import plus from "/public/images/plus.svg";
 import { useCurrentBranch } from "@/hooks/use-current-branch";
-import { useForm } from "react-hook-form";
+import { cn } from "@/lib/utils";
+import { useAddStockUsage, useStocks } from "@/queries/stocks";
+import { AddStockUsageSchema } from "@/schemas/stocks/stock-usage/add-stock-usage-schema";
+import type { AddStockUsage } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+
+import plus from "/public/images/plus.svg";
 
 export function AddStockUsageForm() {
   const ref = useRef<HTMLFormElement | null>(null);
@@ -63,12 +63,19 @@ export function AddStockUsageForm() {
     }
   }, [currentBranch]);
 
+  // const {
+  //   data: stockList,
+  //   isError: isErrorStock,
+  //   error: errorStock,
+  //   isPending: pendingStock,
+  // } = useStocks(pageNumber, search, branchId?.id);
+
   const {
     data: stockList,
     isError: isErrorStock,
     error: errorStock,
     isPending: pendingStock,
-  } = useStocks(pageNumber, search, branchId?.id);
+  } = useStocks(pageNumber, search, branchId?.id, undefined, undefined, true); // Note the added 'true'
 
   if (isErrorStock) {
     return <ApiErrorMessage message={errorStock.message} />;

@@ -1,11 +1,10 @@
+import { apiClient } from "@/services/api";
 import type {
   CreateOrganizationBranch,
   GetAllOrganizationBranch,
   GetBranchById,
   UpdateOrganizationBranch,
 } from "@/types";
-
-import { apiClient } from "@/services/api";
 
 export const getOrganizationBranches =
   async (): Promise<GetAllOrganizationBranch> => {
