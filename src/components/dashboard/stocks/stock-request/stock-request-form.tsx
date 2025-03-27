@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select";
 import { useCurrentBranch } from "@/hooks/use-current-branch";
 import { cn } from "@/lib/utils";
+import { useDashboardItems } from "@/queries/dashboard-overview";
 import { useAddStockRequest, useStocks } from "@/queries/stocks";
 import { AddStockTransferSchema } from "@/schemas/stocks/transfer/add-stock-transfer-schema";
 import type { AddStockTransfer } from "@/types";
@@ -60,12 +61,19 @@ export function StockRequestForm() {
     }
   }, [currentBranch]);
 
+  // const {
+  //   data: stockList,
+  //   isError: isErrorStock,
+  //   error: errorStock,
+  //   isPending: pendingStock,
+  // } = useStocks(pageNumber, search, branchId?.id);
+
   const {
     data: stockList,
     isError: isErrorStock,
     error: errorStock,
     isPending: pendingStock,
-  } = useStocks(pageNumber, search, branchId?.id);
+  } = useStocks(pageNumber, search, branchId?.id, undefined, undefined, true); // Note the added 'true'
 
   if (isErrorStock) {
     return <ApiErrorMessage message={errorStock.message} />;
@@ -245,7 +253,7 @@ export function StockRequestForm() {
                   </FormItem>
                 </div>
               )}
-
+              {/* select field for picking a quantity */}
               <div>
                 <FormField
                   control={form.control}

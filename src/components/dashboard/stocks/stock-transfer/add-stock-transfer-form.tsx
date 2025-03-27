@@ -60,12 +60,19 @@ export function AddStockTransferForm() {
     }
   }, [currentBranch]);
 
+  // const {
+  //   data: stockList,
+  //   isError: isErrorStock,
+  //   error: errorStock,
+  //   isPending: pendingStock,
+  // } = useStocks(pageNumber, search, branchId?.id);
+
   const {
     data: stockList,
     isError: isErrorStock,
     error: errorStock,
     isPending: pendingStock,
-  } = useStocks(pageNumber, search, branchId?.id);
+  } = useStocks(pageNumber, search, branchId?.id, undefined, undefined, true); // Note the added 'true'
 
   if (isErrorStock) {
     return <ApiErrorMessage message={errorStock.message} />;
