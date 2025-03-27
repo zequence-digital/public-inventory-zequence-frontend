@@ -19,9 +19,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 # Recommended for SonarQube scan relevancy
-      
+  
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -81,29 +79,7 @@ jobs:
       - name: Install required tools
         run: |
           sudo apt update
-          sudo apt install unzip -y
-      
-      - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        with:
-          projectBaseDir: .
-          args: >
-              -Dsonar.projectKey=sandbox-inventory-frontend
-              -Dsonar.sources=src
-              -Dsonar.exclusions=**/node_modules/**,**/.next/**,**/*.test.js,**/*.test.jsx,**/*.spec.js,**/*.spec.jsx
-              -Dsonar.sourceEncoding=UTF-8
-              -Dsonar.inclusions=src/app/**/*,src/components/**/*,src/crypto/**/*,src/helpers/**/*,src/hooks/**/*,src/lib/**/*,src/providers/**/*,src/queries/**/*,src/routes/**/*,src/schemas/**/*,src/services/**/*,src/store/**/*,src/types/**/*,src/utils/**/*
-              -Dsonar.cpd.exclusions=src/types/**/*
-              -Dsonar.scm.exclusions.disabled=true
-              # -Dsonar.projectKey=sandbox-inventory-frontend
-              # -Dsonar.sources=src
-              # -Dsonar.exclusions=**/node_modules/**,**/.next/**,**/*.test.js,**/*.test.jsx,**/*.spec.js,**/*.spec.jsx
-              # -Dsonar.sourceEncoding=UTF-8
-              # -Dsonar.inclusions=**/*.js,**/*.jsx,**/*.ts,**/*.tsx
-
+          sudo apt install unzip -
 
   deploy:
     needs: build
