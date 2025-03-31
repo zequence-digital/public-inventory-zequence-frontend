@@ -1,3 +1,4 @@
+import { apiClient } from "@/services/api";
 import type {
   AddStock,
   AddStockTransfer,
@@ -18,8 +19,6 @@ import type {
   UpdateStockTransfer,
   UpdateStockUsage,
 } from "@/types";
-
-import { apiClient } from "@/services/api";
 
 // /stock/all
 export const getEntireStock = async (): Promise<GetEntireStock> => {
@@ -45,23 +44,60 @@ export const addStock = async (stock: AddStock) => {
 
 // products/get-products?page=0&size=10
 
+// export const getStocks = async (
+//   pageNumber: number = 1,
+//   search: string = "",
+//   branchId: number | undefined,
+//   startDate?: Date | undefined,
+//   endDate?: Date | undefined,
+// ): Promise<AllStock> => {
+//   const response = await apiClient.get({
+//     url: `/stock?branchId=${branchId}&pageNumber=${pageNumber}${search ? `&search=${search}` : ""}${
+//       startDate === undefined
+//         ? ""
+//         : `&startDate=${startDate.toISOString().split("T")[0]}`
+//     }${
+//       endDate === undefined
+//         ? ""
+//         : `&endDate=${endDate.toISOString().split("T")[0]}`
+//     }`,
+//     auth: true,
+//   });
+
+//   return response as AllStock;
+// };
+
 export const getStocks = async (
   pageNumber: number = 1,
   search: string = "",
   branchId: number | undefined,
   startDate?: Date | undefined,
   endDate?: Date | undefined,
+  fetchAll: boolean = false,
 ): Promise<AllStock> => {
+  // If fetchAll is true, modify the URL to fetch all stocks
+  const url = fetchAll
+    ? `/stock?branchId=${branchId}&pageNumber=1&pageSize=1000${search ? `&search=${search}` : ""}${
+        startDate === undefined
+          ? ""
+          : `&startDate=${startDate.toISOString().split("T")[0]}`
+      }${
+        endDate === undefined
+          ? ""
+          : `&endDate=${endDate.toISOString().split("T")[0]}`
+      }`
+    : `/stock?branchId=${branchId}&pageNumber=${pageNumber}${search ? `&search=${search}` : ""}${
+        startDate === undefined
+          ? ""
+          : `&startDate=${startDate.toISOString().split("T")[0]}`
+      }${
+        endDate === undefined
+          ? ""
+          : `&endDate=${endDate.toISOString().split("T")[0]}`
+      }`;
+
   const response = await apiClient.get({
-    url: `/stock?branchId=${branchId}&pageNumber=${pageNumber}${search ? `&search=${search}` : ""}${
-      startDate === undefined
-        ? ""
-        : `&startDate=${startDate.toISOString().split("T")[0]}`
-    }${
-      endDate === undefined
-        ? ""
-        : `&endDate=${endDate.toISOString().split("T")[0]}`
-    }`,
+    url: url,
     auth: true,
   });
 

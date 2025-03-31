@@ -12,6 +12,7 @@ import type {
   SingleStockTransfer,
   SingleStockUsage,
 } from "@/types";
+import { AuthResponse } from "@/types/auth";
 import {
   UndefinedInitialDataOptions,
   UseMutationOptions,
@@ -20,6 +21,12 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+
+import dashboardOverviewKeys from "../dashboard-overview/dashboard-overview-keys";
+import notificationKeys from "../notifications/notification-keys";
 import {
   addStock,
   addStockRequest,
@@ -46,14 +53,7 @@ import {
   updateStockTransfer,
   updateStockUsage,
 } from "./actions";
-
-import { AuthResponse } from "@/types/auth";
-import { AxiosError } from "axios";
-import dashboardOverviewKeys from "../dashboard-overview/dashboard-overview-keys";
-import notificationKeys from "../notifications/notification-keys";
 import stockKeys from "./stock-keys";
-import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
 
 export function useEntireStock(
   options?: Omit<
@@ -76,12 +76,41 @@ export function useEntireStock(
   return queryStock;
 }
 
+// export function useStocks(
+//   pageNumber: number = 1,
+//   search: string = "",
+//   branchId: number | undefined,
+//   startDate?: Date,
+//   endDate?: Date,
+//   options?: Omit<
+//     UndefinedInitialDataOptions<AllStock, Error, AllStock, string[]>,
+//     "queryKey" | "queryFn"
+//   >,
+// ) {
+//   const hash = [
+//     stockKeys.read,
+//     pageNumber.toString(),
+//     search,
+//     branchId?.toString(),
+//     startDate?.toISOString(),
+//     endDate?.toISOString(),
+//   ].filter((key) => key !== undefined);
+//   const queryStocks = useQuery({
+//     queryKey: hash,
+//     queryFn: () => getStocks(pageNumber, search, branchId, startDate, endDate),
+//     enabled: !!branchId,
+//     ...options,
+//   });
+
+//   return queryStocks;
+// }
 export function useStocks(
   pageNumber: number = 1,
   search: string = "",
   branchId: number | undefined,
   startDate?: Date,
   endDate?: Date,
+  fetchAll: boolean = false,
   options?: Omit<
     UndefinedInitialDataOptions<AllStock, Error, AllStock, string[]>,
     "queryKey" | "queryFn"
@@ -94,10 +123,13 @@ export function useStocks(
     branchId?.toString(),
     startDate?.toISOString(),
     endDate?.toISOString(),
+    fetchAll.toString(), // Add fetchAll to the hash to create a unique query key
   ].filter((key) => key !== undefined);
+
   const queryStocks = useQuery({
     queryKey: hash,
-    queryFn: () => getStocks(pageNumber, search, branchId, startDate, endDate),
+    queryFn: () =>
+      getStocks(pageNumber, search, branchId, startDate, endDate, fetchAll),
     enabled: !!branchId,
     ...options,
   });

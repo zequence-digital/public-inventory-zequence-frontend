@@ -15,6 +15,7 @@ import { StockRequestForm } from "./stock-request-form";
 
 export function StockRequest() {
   const [search, setSearch] = useState("");
+
   const { pageNumber, setPageNumber } = usePagePagination();
 
   const {
