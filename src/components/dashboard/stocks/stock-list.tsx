@@ -29,6 +29,16 @@ export function StockList() {
       setBranchId(currentBranch);
     }
   }, [currentBranch]);
+
+  const { data: allStocks, isPending: isPendingAll } = useStocks(
+    1,
+    search,
+    branchId?.id,
+    startDate,
+    endDate,
+    true, // fetchAll: true
+  );
+
   const {
     data: stocks,
     isError,
@@ -59,7 +69,7 @@ export function StockList() {
   }
   return (
     <div>
-      <StockListOverview isPending={isPending} stocks={stocks} />
+      <StockListOverview isPending={isPendingAll} stocks={allStocks} />
       <div className="py-4 w-full space-y-2">
         <div className=" mb-4 flex w-full items-center justify-between gap-1">
           {/* Filters */}
