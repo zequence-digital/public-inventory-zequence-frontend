@@ -1,5 +1,9 @@
 "use client";
 
+import { DeleteSales } from "@/components/delete-table-item/delete-sales";
+import { InputField } from "@/components/form/components/input-field";
+import { ApiErrorMessage } from "@/components/messages/api-error-message";
+import { Spinner } from "@/components/spinner";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -14,22 +18,18 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import type { GroupSales, UpdateSale } from "@/types";
+import { useActiveUser } from "@/crypto";
 import { cn, formatDate, formatName } from "@/lib/utils";
 import { useEditSingleSalePack, useSingleGroupSales } from "@/queries/sales";
-import { useReducer, useRef } from "react";
-
 import { AddSalesSchema } from "@/schemas/sales/add-sales-schema";
-import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import { Cross1Icon } from "@radix-ui/react-icons";
-import CustomButton from "../../custom-button";
-import { DeleteSales } from "@/components/delete-table-item/delete-sales";
-import { EditInvoicePack } from "./edit-invoice-pack";
-import { InputField } from "@/components/form/components/input-field";
-import { Spinner } from "@/components/spinner";
-import { useActiveUser } from "@/crypto";
-import { useForm } from "react-hook-form";
+import type { GroupSales, UpdateSale } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Cross1Icon } from "@radix-ui/react-icons";
+import { useReducer, useRef } from "react";
+import { useForm } from "react-hook-form";
+
+import CustomButton from "../../custom-button";
+import { EditInvoicePack } from "./edit-invoice-pack";
 
 type Props = {
   className?: string;
@@ -92,24 +92,26 @@ export function EditSalesInvoiceModal({ className, sales, ...rest }: Props) {
                 <div className=" space-y-6">
                   <AlertDialogTitle className="w-full flex items-center justify-between border border-slate-700 p-4 rounded-lg mb-6">
                     <div className="space-y-1">
-                      <div className="text-sm text-slate-500">
+                      <div className="text-sm text-slate-500 font-semibold">
                         Date created:
                       </div>
-                      <div className="text-xs text-slate-700">
+                      <div className="text-xs text-slate-700 font-semibold">
                         {formatDate(invoice?.data?.createdAt)}
                       </div>
                     </div>
                     <div className="space-y-1">
-                      <div className="text-sm text-slate-500">
+                      <div className="text-sm text-slate-500 font-semibold">
                         Customer Type:
                       </div>
-                      <div className="text-xs text-slate-700">
+                      <div className="text-xs text-slate-700 font-semibold">
                         {invoice?.data?.invoiceLogData[0]?.customerType}
                       </div>
                     </div>
                     <div className="space-y-1">
-                      <div className="text-sm text-slate-500">Product ID:</div>
-                      <div className="text-xs text-slate-700">
+                      <div className="text-sm text-slate-500 font-semibold">
+                        Product ID:
+                      </div>
+                      <div className="text-xs text-slate-700 font-semibold">
                         {invoice?.data?.salesRefNumber}
                       </div>
                     </div>
