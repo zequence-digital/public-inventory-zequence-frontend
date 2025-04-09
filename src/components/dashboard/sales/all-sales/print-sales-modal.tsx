@@ -61,42 +61,42 @@ export function SalesInvoiceModal({ className, id, ...rest }: Props) {
               <div className=" space-y-6">
                 <AlertDialogTitle className="w-full flex items-center justify-between border border-slate-700 p-4 rounded-lg mb-6">
                   <div className="space-y-1">
-                    <div className="text-sm text-slate-500 font-semibold">
+                    <div className="text-sm text-black font-semibold">
                       Date created:
                     </div>
-                    <div className="text-xs text-slate-700 font-semibold">
+                    <div className="text-xs text-black font-semibold">
                       {formatDate(invoice?.data?.createdAt)}
                     </div>
                   </div>
                   <div className="space-y-1">
-                    <div className="text-sm text-slate-500 font-semibold">
+                    <div className="text-sm text-black font-semibold">
                       Customer Type:
                     </div>
-                    <div className="text-xs text-slate-700 font-semibold">
+                    <div className="text-xs text-black font-semibold">
                       {invoice?.data?.invoiceLogData[0]?.customerType}
                     </div>
                   </div>
                   <div className="space-y-1">
-                    <div className="text-sm text-slate-500 font-semibold">
+                    <div className="text-sm text-black font-semibold">
                       Product ID:
                     </div>
-                    <div className="text-xs text-slate-700 font-semibold">
+                    <div className="text-xs text-black font-semibold">
                       {invoice?.data?.salesRefNumber}
                     </div>
                   </div>
                 </AlertDialogTitle>
                 <AlertDialogDescription className="border border-slate-700 p-4 rounded-lg space-y-3">
                   <div className="grid grid-cols-4 gap-4">
-                    <div className="text-sm text-slate-500 font-semibold">
+                    <div className="text-sm text-black font-semibold">
                       Product Name:
                     </div>
-                    <div className="text-sm text-slate-500 font-semibold">
+                    <div className="text-sm text-black font-semibold">
                       Quantity:
                     </div>
-                    <div className="text-sm text-slate-500 font-semibold">
+                    <div className="text-sm text-black font-semibold">
                       Unit Price:
                     </div>
-                    <div className="text-sm text-slate-500 font-semibold">
+                    <div className="text-sm text-black font-semibold">
                       Total Price:
                     </div>
                   </div>
@@ -107,27 +107,27 @@ export function SalesInvoiceModal({ className, id, ...rest }: Props) {
                         className="grid grid-cols-4 gap-4"
                       >
                         <div className="space-y-1">
-                          <div className="text-xs font-semibold text-slate-700 flex flex-col">
-                            <span className="font-semibold">
+                          <div className="text-xs font-semibold text-black flex flex-col">
+                            <span className="font-semibold text-black">
                               {item?.productData?.name}
                             </span>
-                            <span className="font-semibold ">
+                            <span className="font-semibold text-black">
                               [{item?.productData?.notes}]
                             </span>
                           </div>
                         </div>
                         <div className="space-y-1">
-                          <div className="text-xs text-slate-700 font-semibold">
+                          <div className="text-xs text-black font-semibold">
                             {item?.quantityRequested}
                           </div>
                         </div>
                         <div className="space-y-1">
-                          <div className="text-xs text-slate-700 font-semibold">
+                          <div className="text-xs text-black font-semibold">
                             NGN {item?.rate?.toLocaleString()}
                           </div>
                         </div>
                         <div className="space-y-1">
-                          <div className="text-xs text-slate-700 font-semibold">
+                          <div className="text-xs text-black font-semibold">
                             NGN {item?.amount?.toLocaleString()}
                           </div>
                         </div>
@@ -138,7 +138,7 @@ export function SalesInvoiceModal({ className, id, ...rest }: Props) {
               </div>
               {/* Grand Total */}
               <div className="grid grid-cols-4 p-4">
-                <div className="text-sm text-slate-700 font-semibold">
+                <div className="text-sm text-black font-semibold">
                   Grand Total:
                 </div>
                 <div className="text-xs text-black font-semibold col-span-3 ml-auto border-b border-black">

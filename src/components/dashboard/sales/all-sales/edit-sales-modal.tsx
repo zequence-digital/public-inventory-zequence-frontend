@@ -92,26 +92,26 @@ export function EditSalesInvoiceModal({ className, sales, ...rest }: Props) {
                 <div className=" space-y-6">
                   <AlertDialogTitle className="w-full flex items-center justify-between border border-slate-700 p-4 rounded-lg mb-6">
                     <div className="space-y-1">
-                      <div className="text-sm text-slate-500 font-semibold">
+                      <div className="text-sm text-black font-semibold">
                         Date created:
                       </div>
-                      <div className="text-xs text-slate-700 font-semibold">
+                      <div className="text-xs text-black font-semibold">
                         {formatDate(invoice?.data?.createdAt)}
                       </div>
                     </div>
                     <div className="space-y-1">
-                      <div className="text-sm text-slate-500 font-semibold">
+                      <div className="text-sm text-black font-semibold">
                         Customer Type:
                       </div>
-                      <div className="text-xs text-slate-700 font-semibold">
+                      <div className="text-xs text-black font-semibold">
                         {invoice?.data?.invoiceLogData[0]?.customerType}
                       </div>
                     </div>
                     <div className="space-y-1">
-                      <div className="text-sm text-slate-500 font-semibold">
+                      <div className="text-sm text-black font-semibold">
                         Product ID:
                       </div>
-                      <div className="text-xs text-slate-700 font-semibold">
+                      <div className="text-xs text-black font-semibold">
                         {invoice?.data?.salesRefNumber}
                       </div>
                     </div>
