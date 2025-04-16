@@ -9,12 +9,18 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { useActiveUser } from "@/crypto";
 import { cn, formatDate } from "@/lib/utils";
 import { useSingleGroupSales } from "@/queries/sales";
 import { Cross1Icon } from "@radix-ui/react-icons";
 import { useReducer, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../../../../components/ui/avatar";
 import CustomButton from "../../custom-button";
 import { ViewInvoice } from "./view-invoice";
 
@@ -25,6 +31,7 @@ type Props = {
 
 export function SalesInvoiceModal({ className, id, ...rest }: Props) {
   const [open, onOpenChange] = useReducer((open) => !open, false);
+  const user = useActiveUser();
   const { data: invoice, isPending, isError, error } = useSingleGroupSales(id);
   const contentRef = useRef<HTMLDivElement>(null);
   const reactToPrintFn = useReactToPrint({
@@ -59,6 +66,19 @@ export function SalesInvoiceModal({ className, id, ...rest }: Props) {
             />
             <div className="h-fit" ref={contentRef}>
               <div className=" space-y-6">
+                <div className="relative shrink-0 rounded-lg mb-8 ">
+                  <Avatar className="mx-auto w-20 h-20">
+                    <AvatarImage
+                      style={{ filter: "grayscale(100%) contrast(200%)" }}
+                      src={
+                        user?.data?.businessProfile?.companyLogo ||
+                        user?.data?.photoLink
+                      }
+                      alt="avatar"
+                    />
+                    <AvatarFallback></AvatarFallback>
+                  </Avatar>
+                </div>
                 <AlertDialogTitle className="w-full flex items-center justify-between border border-slate-700 p-4 rounded-lg mb-6">
                   <div className="space-y-1">
                     <div className="text-sm text-black font-semibold">
