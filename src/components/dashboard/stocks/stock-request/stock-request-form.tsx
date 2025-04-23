@@ -216,15 +216,18 @@ export function StockRequestForm() {
                               <SelectValue placeholder="Select a stock" />
                             </SelectTrigger>
                             <SelectContent>
-                              {stockList?.data?.records?.map((item) => (
-                                <SelectItem
-                                  id={item.guid}
-                                  key={item.guid}
-                                  value={item?.name}
-                                >
-                                  {item?.name}
-                                </SelectItem>
-                              ))}
+                              {stockList?.data?.records
+                                ?.slice()
+                                .sort((a, b) => a.name.localeCompare(b.name))
+                                .map((item) => (
+                                  <SelectItem
+                                    id={item.guid}
+                                    key={item.guid}
+                                    value={item?.name}
+                                  >
+                                    {item?.name}
+                                  </SelectItem>
+                                ))}
                             </SelectContent>
                           </Select>
                         </FormControl>
