@@ -28,23 +28,44 @@ export function AllSales() {
   } = useGroupSales(pageNumber, search);
 
   const csvData = useMemo(() => {
-    const invoiceData = sales?.data?.records
-      ?.map((sale) => sale?.invoiceLogData)
-      .flatMap((invoice) => invoice);
-    if (invoiceData) {
-      return invoiceData.map((invoice) => ({
-        ID: invoice?.productData?.guid,
-        Category: invoice?.productData?.category?.name,
-        Branch: invoice?.productData?.branch,
-        "Customer Type": invoice?.customerType,
-        Item: invoice?.productData.name,
-        Rate: invoice?.rate?.toLocaleString(),
-        "Quantity Requested": invoice?.quantityRequested,
-        Price: invoice?.amount?.toLocaleString(),
-        Date: formatDate(invoice?.productData?.createdAt),
-      }));
-    }
-    return [];
+    // const invoiceData =
+    //   sales?.data?.records?.flatMap((sale) => {
+    //     return Array.isArray(sale?.invoiceLogData) ? sale.invoiceLogData : [];
+    //   }) ?? [];
+
+    // return invoiceData.map((invoice) => ({
+    //   ID: invoice?.productData?.guid ?? "N/A",
+    //   Category: invoice?.productData?.category?.name ?? "N/A",
+    //   Branch: invoice?.productData?.branch ?? "N/A",
+    //   "Customer Type": invoice?.customerType ?? "N/A",
+    //   Item: invoice?.productData?.name ?? "N/A",
+    //   Rate: invoice?.rate ? invoice.rate.toLocaleString() : "0",
+    //   "Quantity Requested": invoice?.quantityRequested ?? 0,
+    //   Price: invoice?.amount ? invoice.amount.toLocaleString() : "0",
+    //   Date: invoice?.productData?.createdAt
+    //     ? formatDate(invoice.productData.createdAt)
+    //     : "N/A",
+    // }));
+    const allInvoices =
+      sales?.data?.records?.flatMap((sale) => {
+        return (sale?.invoiceLogData ?? []).map((invoice) => ({
+          "Ref. Number": sale?.salesRefNumber ?? "N/A",
+          "Date Created": sale?.createdAt ? formatDate(sale.createdAt) : "N/A",
+          Category: invoice?.productData?.category?.name ?? "N/A",
+          Branch: invoice?.productData?.branch ?? "N/A",
+          Item: invoice?.productData?.name ?? "N/A",
+          "Customer Type": invoice?.customerType ?? "N/A",
+          Rate:
+            invoice?.rate != null ? `₦${invoice.rate.toLocaleString()}` : "₦0",
+          "Quantity Requested": invoice?.quantityRequested ?? 0,
+          Price:
+            invoice?.amount != null
+              ? `₦${invoice.amount.toLocaleString()}`
+              : "₦0",
+        }));
+      }) ?? [];
+
+    return allInvoices;
   }, [sales?.data?.records]);
 
   if (isError) {
