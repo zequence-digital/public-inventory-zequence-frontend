@@ -4,6 +4,7 @@ import type {
   SingleGroupSales,
   SingleSale,
 } from "@/types";
+import { AuthResponse } from "@/types/auth";
 import {
   UndefinedInitialDataOptions,
   UseMutationOptions,
@@ -11,10 +12,15 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+
 import {
   addSales,
   deleteGroupSales,
   deleteSales,
+  getAllGroupSales,
   getGroupSales,
   getSale,
   getSales,
@@ -23,12 +29,7 @@ import {
   updateSales,
   updateSingleSalePack,
 } from "./actions";
-
-import { AuthResponse } from "@/types/auth";
-import { AxiosError } from "axios";
 import salesKeys from "./sales-keys";
-import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
 
 export function useSales(
   options?: Omit<
@@ -268,6 +269,13 @@ export function useGroupSales(
   });
 
   return querySales;
+}
+
+export function useAllGroupSalesViaQuery(search: string = "") {
+  return useQuery({
+    queryKey: [salesKeys.read, "group", "all", search],
+    queryFn: () => getAllGroupSales(search),
+  });
 }
 
 export function useSingleGroupSales(

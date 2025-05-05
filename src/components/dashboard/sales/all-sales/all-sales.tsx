@@ -8,7 +8,7 @@ import { ExportToCsv } from "@/components/table/ui/export-to-csv";
 import { PaginationComponent } from "@/components/ui/pagination";
 import { usePagePagination } from "@/hooks/use-page-pagination";
 import { formatDate } from "@/lib/utils";
-import { useGroupSales } from "@/queries/sales";
+import { useAllGroupSalesViaQuery, useGroupSales } from "@/queries/sales";
 import { useMemo, useState } from "react";
 
 import { allSalesColumns } from "./table-data/all-sales-column";
@@ -26,6 +26,8 @@ export function AllSales() {
     isFetching,
     isPending,
   } = useGroupSales(pageNumber, search);
+
+  const { data: allSales } = useAllGroupSalesViaQuery();
 
   const csvData = useMemo(() => {
     // const invoiceData =
@@ -46,27 +48,46 @@ export function AllSales() {
     //     ? formatDate(invoice.productData.createdAt)
     //     : "N/A",
     // }));
-    const allInvoices =
-      sales?.data?.records?.flatMap((sale) => {
-        return (sale?.invoiceLogData ?? []).map((invoice) => ({
-          "Ref. Number": sale?.salesRefNumber ?? "N/A",
-          "Date Created": sale?.createdAt ? formatDate(sale.createdAt) : "N/A",
-          Category: invoice?.productData?.category?.name ?? "N/A",
-          Branch: invoice?.productData?.branch ?? "N/A",
-          Item: invoice?.productData?.name ?? "N/A",
-          "Customer Type": invoice?.customerType ?? "N/A",
-          Rate:
-            invoice?.rate != null ? `₦${invoice.rate.toLocaleString()}` : "₦0",
-          "Quantity Requested": invoice?.quantityRequested ?? 0,
-          Price:
-            invoice?.amount != null
-              ? `₦${invoice.amount.toLocaleString()}`
-              : "₦0",
-        }));
-      }) ?? [];
 
-    return allInvoices;
-  }, [sales?.data?.records]);
+    // const allInvoices =
+    //   sales?.data?.records?.flatMap((sale) => {
+    //     return (sale?.invoiceLogData ?? []).map((invoice) => ({
+    //       "Ref. Number": sale?.salesRefNumber ?? "N/A",
+    //       "Date Created": sale?.createdAt ? formatDate(sale.createdAt) : "N/A",
+    //       Category: invoice?.productData?.category?.name ?? "N/A",
+    //       Branch: invoice?.productData?.branch ?? "N/A",
+    //       Item: invoice?.productData?.name ?? "N/A",
+    //       "Customer Type": invoice?.customerType ?? "N/A",
+    //       Rate:
+    //         invoice?.rate != null ? `₦${invoice.rate.toLocaleString()}` : "₦0",
+    //       "Quantity Requested": invoice?.quantityRequested ?? 0,
+    //       Price:
+    //         invoice?.amount != null
+    //           ? `₦${invoice.amount.toLocaleString()}`
+    //           : "₦0",
+    //     }));
+    //   }) ?? [];
+
+    // return allInvoices;
+
+    const invoiceData =
+      allSales?.flatMap((sale) => sale?.invoiceLogData ?? []) ?? [];
+
+    return invoiceData.map((invoice) => ({
+      "Ref. Number": invoice?.productData?.referenceNumber ?? "N/A",
+      "Date Created": invoice?.productData?.createdAt
+        ? formatDate(invoice.productData.createdAt)
+        : "N/A",
+      Category: invoice?.productData?.category?.name ?? "N/A",
+      Branch: invoice?.productData?.branch ?? "N/A",
+      Item: invoice?.productData?.name ?? "N/A",
+      "Customer Type": invoice?.customerType ?? "N/A",
+      Rate: invoice?.rate != null ? `₦${invoice.rate.toLocaleString()}` : "₦0",
+      "Quantity Requested": invoice?.quantityRequested ?? 0,
+      Price:
+        invoice?.amount != null ? `₦${invoice.amount.toLocaleString()}` : "₦0",
+    }));
+  }, [allSales]);
 
   if (isError) {
     return <ApiErrorMessage message={error?.message} />;
