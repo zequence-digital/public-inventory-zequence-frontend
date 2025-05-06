@@ -16,6 +16,7 @@ export const GetEntireStockSchema = z.array(
     quantity: z.number(),
     weight: z.number(),
     referenceNumber: z.string(),
+    costPrice: z.number(),
     branch: z.object({
       id: z.number(),
       name: z.string(),
