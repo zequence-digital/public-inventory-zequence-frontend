@@ -34,6 +34,7 @@ export const AllSalesSchema = z.object({
           photoLink: z.string(),
           notes: z.string(),
           price: z.number(),
+          costPrice: z.number(),
           tags: z.string(),
           quantity: z.number(),
           threshold: z.number(),

@@ -1,6 +1,8 @@
 "use client";
 
-import { AddSalesSchema, customerType } from "@/schemas/sales/add-sales-schema";
+import { InputField } from "@/components/form/components/input-field";
+import { ApiErrorMessage } from "@/components/messages/api-error-message";
+import { Spinner } from "@/components/spinner";
 import {
   Form,
   FormControl,
@@ -16,23 +18,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useRef, useState } from "react";
-
-import type { AddSales } from "@/types";
-import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import CustomButton from "../../custom-button";
-import { InputField } from "@/components/form/components/input-field";
-import { ProductOverview } from "../../home/product-overview";
-import { Spinner } from "@/components/spinner";
-import { StockOverview } from "../../home/stock-overview";
-import { cn } from "@/lib/utils";
-import plus from "/public/images/plus.svg";
-import { useAddSales } from "@/queries/sales";
 import { useCurrentBranch } from "@/hooks/use-current-branch";
-import { useDashboardOverview } from "@/queries/dashboard-overview";
-import { useForm } from "react-hook-form";
 import { useUnpaginatedData } from "@/hooks/use-unpaginated-data";
+import { cn } from "@/lib/utils";
+import { useDashboardOverview } from "@/queries/dashboard-overview";
+import { useAddSales } from "@/queries/sales";
+import { AddSalesSchema, customerType } from "@/schemas/sales/add-sales-schema";
+import type { AddSales } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+
+import CustomButton from "../../custom-button";
+import { ProductOverview } from "../../home/product-overview";
+import { StockOverview } from "../../home/stock-overview";
+import plus from "/public/images/plus.svg";
 
 export function AddSalesForm() {
   const ref = useRef<HTMLFormElement | null>(null);
@@ -83,6 +83,7 @@ export function AddSalesForm() {
                 branchId: currentBranch?.id as number,
                 productRefNumber: referenceNumber,
                 quantityRequested: data.quantityRequested,
+                discountAmount: data.discountAmount,
               }),
             )}
             ref={ref}
@@ -151,7 +152,33 @@ export function AddSalesForm() {
                   )}
                 />
               </div>
+              <div>
+                <FormField
+                  control={form.control}
+                  name="discountAmount"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <InputField
+                          label="Discount Amount"
+                          id="discountAmount"
+                          name="discountAmount"
+                          type="number"
+                          placeholder="Enter discount amount here"
+                          isPending={pendingBranch}
+                          value={field.value || 0}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
 
+                      {isErrorBranch && (
+                        <FormMessage>{errorBranch?.message}</FormMessage>
+                      )}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <div>
                 {/* Item */}
 

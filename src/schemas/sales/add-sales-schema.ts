@@ -35,4 +35,5 @@ export const AddSalesSchema = z.object({
     })
     .int()
     .positive(),
+  discountAmount: z.number().optional().default(0),
 });

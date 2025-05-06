@@ -1,3 +1,4 @@
+import { apiClient } from "@/services/api";
 import type {
   AddSales,
   AllSalesData,
@@ -6,8 +7,6 @@ import type {
   SingleSale,
   UpdateSale,
 } from "@/types";
-
-import { apiClient } from "@/services/api";
 
 // products/add-product
 
@@ -112,6 +111,24 @@ export const getGroupSales = async (
   });
 
   return response as GroupSales;
+};
+
+export const getAllGroupSales = async (
+  search: string,
+): Promise<GroupSales["data"]["records"]> => {
+  const firstPage = await getGroupSales(1, search);
+  const totalPages = firstPage.data.meta.numberOfPages;
+
+  const otherPages = await Promise.all(
+    Array.from({ length: totalPages - 1 }, (_, i) =>
+      getGroupSales(i + 2, search),
+    ),
+  );
+
+  return [
+    ...firstPage.data.records,
+    ...otherPages.flatMap((res) => res.data.records),
+  ];
 };
 
 // /sale-invoice/group/{id}

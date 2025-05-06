@@ -1,5 +1,8 @@
 "use client";
 
+import { InputField } from "@/components/form/components/input-field";
+import { ApiErrorMessage } from "@/components/messages/api-error-message";
+import { Spinner } from "@/components/spinner";
 import {
   Form,
   FormControl,
@@ -15,21 +18,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useAddProduct, useProducts } from "@/queries/products";
-import { useEffect, useRef, useState } from "react";
-
-import type { AddProduct } from "@/types";
-import { AddProductSchema } from "@/schemas/products/add-product-schema";
-import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import CustomButton from "../../custom-button";
-import { InputField } from "@/components/form/components/input-field";
-import { ProductListOverview } from "../product-list-overview";
-import { Spinner } from "@/components/spinner";
-import { cn } from "@/lib/utils";
 import { useCurrentBranch } from "@/hooks/use-current-branch";
-import { useForm } from "react-hook-form";
 import { useUnpaginatedData } from "@/hooks/use-unpaginated-data";
+import { cn } from "@/lib/utils";
+import { useAddProduct, useProducts } from "@/queries/products";
+import { AddProductSchema } from "@/schemas/products/add-product-schema";
+import type { AddProduct } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+
+import CustomButton from "../../custom-button";
+import { ProductListOverview } from "../product-list-overview";
 
 export function AddProductForm() {
   const ref = useRef<HTMLFormElement | null>(null);
@@ -205,6 +205,30 @@ export function AddProductForm() {
                 />
               </div>
               <div>
+                {/* Cost Price */}
+                <FormField
+                  control={form.control}
+                  name="costPrice"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <InputField
+                          label="Cost Price"
+                          id="costPrice"
+                          name="costPrice"
+                          type="number"
+                          placeholder="Enter cost price here"
+                          isPending={isPending}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div>
                 {/* Quantity */}
                 <FormField
                   control={form.control}
@@ -228,8 +252,8 @@ export function AddProductForm() {
                   )}
                 />
               </div>
-              {/* Price */}
-              <div>
+              {/*selling Price */}
+              {/* <div>
                 <FormField
                   control={form.control}
                   name="price"
@@ -251,7 +275,8 @@ export function AddProductForm() {
                     </FormItem>
                   )}
                 />
-              </div>
+              </div> */}
+
               <div>
                 <FormField
                   control={form.control}

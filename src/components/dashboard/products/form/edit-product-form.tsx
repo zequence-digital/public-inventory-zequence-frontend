@@ -1,5 +1,7 @@
 "use client";
 
+import { InputField } from "@/components/form/components/input-field";
+import { Spinner } from "@/components/spinner";
 import {
   Form,
   FormControl,
@@ -7,17 +9,15 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { useEditProduct, useProduct } from "@/queries/products";
-
-import { AddProductSchema } from "@/schemas/products/add-product-schema";
-import CustomButton from "../../custom-button";
-import { InputField } from "@/components/form/components/input-field";
-import { Spinner } from "@/components/spinner";
-import type { UpdateProduct } from "@/types";
 import { useCurrentBranch } from "@/hooks/use-current-branch";
-import { useForm } from "react-hook-form";
-import { useRef } from "react";
+import { useEditProduct, useProduct } from "@/queries/products";
+import { AddProductSchema } from "@/schemas/products/add-product-schema";
+import type { UpdateProduct } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRef } from "react";
+import { useForm } from "react-hook-form";
+
+import CustomButton from "../../custom-button";
 
 type Props = {
   productId: string;
@@ -144,8 +144,8 @@ export function EditProductForm({ productId }: Props) {
                 )}
               />
             </div>
-            {/* Price */}
-            <div>
+            {/* Selling Price */}
+            {/* <div>
               <FormField
                 control={form.control}
                 name="price"
@@ -159,6 +159,31 @@ export function EditProductForm({ productId }: Props) {
                         name="price"
                         type="number"
                         placeholder="Enter product price here"
+                        isPending={isPending || pendingProduct}
+                        onChange={field.onChange}
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div> */}
+            {/* Cost Price */}
+            <div>
+              <FormField
+                control={form.control}
+                name="costPrice"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <InputField
+                        defaultValue={product?.data?.costPrice}
+                        label="Cost Price"
+                        id="costPrice"
+                        name="costPrice"
+                        type="number"
+                        placeholder="Enter product cost price here"
                         isPending={isPending || pendingProduct}
                         onChange={field.onChange}
                       />

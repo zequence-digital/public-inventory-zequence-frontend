@@ -1,6 +1,8 @@
 "use client";
 
-import { AddSalesSchema, customerType } from "@/schemas/sales/add-sales-schema";
+import { InputField } from "@/components/form/components/input-field";
+import { ApiErrorMessage } from "@/components/messages/api-error-message";
+import { Spinner } from "@/components/spinner";
 import {
   Form,
   FormControl,
@@ -16,22 +18,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useEditSales, useSale } from "@/queries/sales";
-import { useEffect, useRef, useState } from "react";
-
-import { ApiErrorMessage } from "@/components/messages/api-error-message";
-import CustomButton from "../../custom-button";
-import { InputField } from "@/components/form/components/input-field";
-import { SalesListOverview } from "../sales-list-overview";
-import { Spinner } from "@/components/spinner";
-import type { UpdateSale } from "@/types";
-import { cn } from "@/lib/utils";
-import plus from "/public/images/plus.svg";
 import { useCurrentBranch } from "@/hooks/use-current-branch";
-import { useDashboardItems } from "@/queries/dashboard-overview";
-import { useForm } from "react-hook-form";
 import { useUnpaginatedData } from "@/hooks/use-unpaginated-data";
+import { cn } from "@/lib/utils";
+import { useDashboardItems } from "@/queries/dashboard-overview";
+import { useEditSales, useSale } from "@/queries/sales";
+import { AddSalesSchema, customerType } from "@/schemas/sales/add-sales-schema";
+import type { UpdateSale } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+
+import CustomButton from "../../custom-button";
+import { SalesListOverview } from "../sales-list-overview";
+import plus from "/public/images/plus.svg";
 
 type Props = {
   salesId: string;
@@ -96,6 +96,7 @@ export function EditSalesForm({ salesId }: Props) {
                 branchId: currentBranch?.id as number,
                 productRefNumber: referenceNumber,
                 quantityRequested: data?.quantityRequested,
+                discountAmount: data.discountAmount,
                 guid: salesId,
               }),
             )}
@@ -167,6 +168,34 @@ export function EditSalesForm({ salesId }: Props) {
                         </Select>
                       </FormControl>
 
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div>
+                <FormField
+                  control={form.control}
+                  name="discountAmount"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <InputField
+                          label="Discount Amount"
+                          id="discountAmount"
+                          name="discountAmount"
+                          type="number"
+                          placeholder="Enter discount amount here"
+                          isPending={pendingBranch}
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+
+                      {isErrorBranch && (
+                        <FormMessage>{errorBranch?.message}</FormMessage>
+                      )}
                       <FormMessage />
                     </FormItem>
                   )}

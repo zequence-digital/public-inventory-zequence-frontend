@@ -2,7 +2,7 @@ export const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 export const channelId = process.env.NEXT_PUBLIC_CHANNEL_ID;
 export const channelSecret = process.env.NEXT_PUBLIC_CHANNEL_SECRET;
 export const googleClientId =
-  "370629286933-afd9d7e65ettgp4q95i7t1ugllvj2an9.apps.googleusercontent.com";
+  "837182910143-jmn1t50m8ua5pcruv4vv75sjgdascq69.apps.googleusercontent.com";
 
 export const tokenKey = "token";
 
