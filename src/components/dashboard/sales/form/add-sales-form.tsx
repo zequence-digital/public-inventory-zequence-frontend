@@ -83,6 +83,7 @@ export function AddSalesForm() {
                 branchId: currentBranch?.id as number,
                 productRefNumber: referenceNumber,
                 quantityRequested: data.quantityRequested,
+                discountAmount: data.discountAmount,
               }),
             )}
             ref={ref}
@@ -154,18 +155,18 @@ export function AddSalesForm() {
               <div>
                 <FormField
                   control={form.control}
-                  name="discountPrice"
+                  name="discountAmount"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <InputField
-                          label="Discount Price"
-                          id="discountPrice"
-                          name="discountPrice"
+                          label="Discount Amount"
+                          id="discountAmount"
+                          name="discountAmount"
                           type="number"
-                          placeholder="Enter discount price here"
+                          placeholder="Enter discount amount here"
                           isPending={pendingBranch}
-                          value={currentBranch?.discountPrice}
+                          value={field.value || 0}
                           onChange={field.onChange}
                         />
                       </FormControl>

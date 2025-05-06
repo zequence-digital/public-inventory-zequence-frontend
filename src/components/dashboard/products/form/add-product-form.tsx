@@ -205,6 +205,30 @@ export function AddProductForm() {
                 />
               </div>
               <div>
+                {/* Cost Price */}
+                <FormField
+                  control={form.control}
+                  name="costPrice"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <InputField
+                          label="Cost Price"
+                          id="costPrice"
+                          name="costPrice"
+                          type="number"
+                          placeholder="Enter cost price here"
+                          isPending={isPending}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div>
                 {/* Quantity */}
                 <FormField
                   control={form.control}
@@ -229,7 +253,7 @@ export function AddProductForm() {
                 />
               </div>
               {/*selling Price */}
-              <div>
+              {/* <div>
                 <FormField
                   control={form.control}
                   name="price"
@@ -251,31 +275,8 @@ export function AddProductForm() {
                     </FormItem>
                   )}
                 />
-              </div>
-              {/*cost Price */}
-              <div>
-                <FormField
-                  control={form.control}
-                  name="price"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <InputField
-                          label="Cost Price"
-                          id="costPrice"
-                          name="costPrice"
-                          type="number"
-                          placeholder="Enter product cost price here"
-                          isPending={isPending}
-                          onChange={field.onChange}
-                        />
-                      </FormControl>
+              </div> */}
 
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
               <div>
                 <FormField
                   control={form.control}

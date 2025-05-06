@@ -30,6 +30,10 @@ export const AddProductSchema = z.object({
     })
     .int()
     .positive(),
+  costPrice: z.coerce.number({
+    required_error: "Product cost price is required",
+    invalid_type_error: "Product cost price must be a number",
+  }),
   price: z.coerce
     .number({
       required_error: "Product price is required",

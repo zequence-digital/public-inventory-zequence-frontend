@@ -37,6 +37,10 @@ export const AddStockSchema = z.object({
     .string({ required_error: "Product category is required" })
     .min(3, { message: "Product category must be at least 3 characters" })
     .trim(),
+  costPrice: z.coerce.number({
+    required_error: "Stocks cost price is required",
+    invalid_type_error: "Stocks cost price must be a number",
+  }),
   quantity: z.coerce
     .number({
       required_error: "Product quantity is required",

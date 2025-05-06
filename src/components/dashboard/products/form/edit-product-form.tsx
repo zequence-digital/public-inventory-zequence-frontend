@@ -145,7 +145,7 @@ export function EditProductForm({ productId }: Props) {
               />
             </div>
             {/* Selling Price */}
-            <div>
+            {/* <div>
               <FormField
                 control={form.control}
                 name="price"
@@ -168,12 +168,12 @@ export function EditProductForm({ productId }: Props) {
                   </FormItem>
                 )}
               />
-            </div>
+            </div> */}
             {/* Cost Price */}
             <div>
               <FormField
                 control={form.control}
-                name="price"
+                name="costPrice"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>

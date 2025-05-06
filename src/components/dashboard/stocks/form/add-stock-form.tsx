@@ -208,6 +208,30 @@ export function AddStockForm() {
                 />
               </div>
               <div>
+                {/* Cost Price */}
+                <FormField
+                  control={form.control}
+                  name="costPrice"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <InputField
+                          label="Cost Price"
+                          id="costPrice"
+                          name="costPrice"
+                          type="number"
+                          placeholder="Enter cost price here"
+                          isPending={isPending}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div>
                 {/* Quantity */}
                 <FormField
                   control={form.control}

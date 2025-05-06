@@ -120,6 +120,30 @@ export function EditStockForm({ stockId }: Props) {
                 )}
               />
             </div>
+            <div>
+              <FormField
+                control={form.control}
+                name="costPrice"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <InputField
+                        defaultValue={stock?.data.costPrice}
+                        label="Cost Price"
+                        id="costPrice "
+                        name="costPrice"
+                        type="number"
+                        placeholder="Enter cost price here"
+                        isPending={isPending || pendingStock}
+                        onChange={field.onChange}
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <div>
               <FormField

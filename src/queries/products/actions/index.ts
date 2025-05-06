@@ -1,3 +1,4 @@
+import { apiClient } from "@/services/api";
 import type {
   AddProduct,
   AllProduct,
@@ -5,8 +6,6 @@ import type {
   SingleProduct,
   UpdateProduct,
 } from "@/types";
-
-import { apiClient } from "@/services/api";
 
 // /product/all
 
