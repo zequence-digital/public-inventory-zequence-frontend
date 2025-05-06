@@ -125,6 +125,7 @@ export function EditSalesInvoiceModal({ className, sales, ...rest }: Props) {
                               updateSales({
                                 quantityRequested: data?.quantityRequested,
                                 guid: item?.guid,
+                                discountAmount: data?.discountAmount ?? 0, // Provide a default value if not set
                               }),
                             )}
                             ref={ref}
