@@ -253,7 +253,7 @@ export function AddProductForm() {
                 />
               </div>
               {/*selling Price */}
-              {/* <div>
+              <div>
                 <FormField
                   control={form.control}
                   name="price"
@@ -275,7 +275,7 @@ export function AddProductForm() {
                     </FormItem>
                   )}
                 />
-              </div> */}
+              </div>
 
               <div>
                 <FormField
